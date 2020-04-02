@@ -1,5 +1,4 @@
 import Category, { ICategory, validateCategory } from "../models/category.model";
-import { Types } from "mongoose";
 import HTTP_STATUS from "../../common/HTTP_Enum";
 import GeneralService from "./generalService";
 

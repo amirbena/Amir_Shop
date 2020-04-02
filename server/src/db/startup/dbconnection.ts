@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import winston from 'winston';
+import winston from '../../startup/logger';
 import path from "path";
 import configJson from "../../common/config.json";
 import { config } from 'dotenv';

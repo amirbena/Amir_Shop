@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importDefault(require("mongoose"));
-var winston_1 = __importDefault(require("winston"));
+var logger_1 = __importDefault(require("../../startup/logger"));
 var path_1 = __importDefault(require("path"));
 var config_json_1 = __importDefault(require("../../common/config.json"));
 var dotenv_1 = require("dotenv");
@@ -51,7 +51,7 @@ function default_1() {
                 case 0:
                     regularPath = config_json_1.default.urlForDotEnvs;
                     absoultePath = process.env.NODE_ENV === 'test' ? path_1.default.join(regularPath, '.test.env') : path_1.default.join(regularPath, '.env');
-                    winston_1.default.info(absoultePath);
+                    logger_1.default.info(absoultePath);
                     dotenv_1.config({ path: absoultePath });
                     if (!(typeof process.env.DB_PATH !== 'undefined')) return [3 /*break*/, 4];
                     _a.label = 1;
@@ -60,14 +60,14 @@ function default_1() {
                     return [4 /*yield*/, mongoose_1.default.connect(process.env.DB_PATH, { useNewUrlParser: true, useUnifiedTopology: true })];
                 case 2:
                     connection = _a.sent();
-                    winston_1.default.info("Connected to " + process.env.DB_PATH + " in " + process.env.NODE_ENV + " enviroment");
+                    logger_1.default.info("Connected to " + process.env.DB_PATH + " in " + process.env.NODE_ENV + " enviroment");
                     return [2 /*return*/, connection];
                 case 3:
                     ex_1 = _a.sent();
-                    winston_1.default.error(" Can't connect  " + ex_1.message);
+                    logger_1.default.error(" Can't connect  " + ex_1.message);
                     return [3 /*break*/, 4];
                 case 4:
-                    winston_1.default.error("Can't connect, please check .env files/ enviromnent variables");
+                    logger_1.default.error("Can't connect, please check .env files/ enviromnent variables");
                     return [2 /*return*/];
             }
         });
