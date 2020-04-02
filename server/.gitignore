@@ -1,0 +1,11 @@
+#config
+src/common/config.json
+#dependencies
+#modules
+node_modules
+
+
+# environments
+
+src/db/config/.env
+src/db/config/.test.env
