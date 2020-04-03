@@ -29,9 +29,9 @@ var CartSchema = new mongoose_1.Schema({
 exports.default = mongoose_1.default.model("Cart", CartSchema);
 function validateCart(model) {
     var schema = {
-        productId: joi_1.default.string().required(),
-        productBuying: joi_1.default.object().required(),
-        date: joi_1.default.date().required().default(Date.now())
+        userId: joi_1.default.string().required(),
+        product: joi_1.default.object().required(),
+        date: joi_1.default.date().default(Date.now())
     };
     return joi_1.validate(model, schema);
 }

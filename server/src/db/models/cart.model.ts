@@ -14,7 +14,7 @@ export interface ICart extends Document {
 export interface ICartValidator {
     userId: string;
     product: ICartDetails;
-    date: Date;
+    date?: Date;
 }
 const CartSchema: Schema = new Schema({
     userId: {
@@ -37,9 +37,9 @@ export default mongoose.model<ICart>("Cart", CartSchema);
 
 export function validateCart(model: ICartValidator) {
     const schema = {
-        productId: Joi.string().required(),
-        productBuying: Joi.object().required(),
-        date: Joi.date().required().default(Date.now())
+        userId: Joi.string().required(),
+        product: Joi.object().required(),
+        date: Joi.date().default(Date.now())
     }
     return validate(model, schema);
 }
