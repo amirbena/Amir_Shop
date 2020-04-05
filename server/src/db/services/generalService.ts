@@ -10,15 +10,11 @@ export default class GeneralService {
     protected static async findUserById(id: string): Promise<{ status: HTTP_STATUS, details?: string, user?: IUser }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
-        if (!id) {
-            status = BAD_REQUEST;
-            details = "Invalid parameter at id";
-            return {
-                status,
-                details
-            }
-        }
         try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Invalid parameter at id");
+            }
             const user = await User.findById(id);
             if (!user) {
                 status = NOT_FOUND;
@@ -40,15 +36,11 @@ export default class GeneralService {
     protected static async findCategoryById(id:string):Promise<{ status: HTTP_STATUS, details?: string, category?: ICategory }>{
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
-        if (!id) {
-            status = BAD_REQUEST;
-            details = "Invalid parameter at id";
-            return {
-                status,
-                details
-            }
-        }
         try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Invalid parameter at id");
+            }
             const category = await Category.findById(id);
             if (!category) {
                 status = NOT_FOUND;
@@ -70,15 +62,11 @@ export default class GeneralService {
     protected static async findProductById(id:string):Promise<{ status: HTTP_STATUS, details?: string, product?: IProduct }>{
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
-        if (!id) {
-            status = BAD_REQUEST;
-            details = "Invalid parameter at id";
-            return {
-                status,
-                details
-            }
-        }
         try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Invalid parameter at id");
+            }
             const product = await Product.findById(id);
             if (!product) {
                 status = NOT_FOUND;
@@ -97,7 +85,7 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findCommentById(id:string):Promise<{ status: HTTP_STATUS, details?: string, comment?: IComment }>{
+    protected static async findPaymentMethodAccordingId(id: string){
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         if (!id) {
@@ -108,7 +96,15 @@ export default class GeneralService {
                 details
             }
         }
+    }
+    protected static async findCommentById(id:string):Promise<{ status: HTTP_STATUS, details?: string, comment?: IComment }>{
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
         try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Invalid parameter at id")
+            }
             const comment = await Comment.findById(id);
             if (!comment) {
                 status = NOT_FOUND;

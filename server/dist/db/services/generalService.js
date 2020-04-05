@@ -55,17 +55,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, user_model_1.default.findById(id)];
                     case 2:
                         user = _a.sent();
@@ -98,17 +94,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, category_model_1.default.findById(id)];
                     case 2:
                         category = _a.sent();
@@ -141,17 +133,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, product_model_1.default.findById(id)];
                     case 2:
                         product = _a.sent();
@@ -176,6 +164,24 @@ var GeneralService = /** @class */ (function () {
             });
         });
     };
+    GeneralService.findPaymentMethodAccordingId = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details;
+            return __generator(this, function (_a) {
+                status = INTERNAL_SERVER_ERROR;
+                details = "";
+                if (!id) {
+                    status = BAD_REQUEST;
+                    details = "Invalid parameter at id";
+                    return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
     GeneralService.findCommentById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, comment, ex_4;
@@ -184,17 +190,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, comment_model_1.default.findById(id)];
                     case 2:
                         comment = _a.sent();

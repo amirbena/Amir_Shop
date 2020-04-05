@@ -290,7 +290,7 @@ var CartService = /** @class */ (function (_super) {
                             throw new Error("Can't find current cart");
                         }
                         status = OK;
-                        details = "suceed deleting";
+                        details = "succeed deleting";
                         return [3 /*break*/, 5];
                     case 4:
                         ex_5 = _c.sent();

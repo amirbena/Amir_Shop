@@ -151,7 +151,7 @@ export default class CartService extends GeneralService {
                 throw new Error("Can't find current cart");
             }
             status=OK;
-            details= "suceed deleting";
+            details= "succeed deleting";
         } catch (ex) {
             details = (ex as Error).message;
         }
