@@ -21,7 +21,7 @@ class CategoryService extends GeneralService {
             insertedCategory = await Category.create(category);
             if (!insertedCategory) throw new Error("Something happend when insert db into status");
             status = OK;
-            details = insertedCategory.toString();
+            details = insertedCategory.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }

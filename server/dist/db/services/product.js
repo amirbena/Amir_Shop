@@ -110,7 +110,7 @@ var ProductService = /** @class */ (function (_super) {
                     case 4:
                         productAdded = _c.sent();
                         status = OK;
-                        details = productAdded.toString();
+                        details = productAdded.toJSON();
                         return [3 /*break*/, 6];
                     case 5:
                         ex_1 = _c.sent();

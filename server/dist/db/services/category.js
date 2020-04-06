@@ -96,7 +96,7 @@ var CategoryService = /** @class */ (function (_super) {
                         if (!insertedCategory)
                             throw new Error("Something happend when insert db into status");
                         status = OK;
-                        details = insertedCategory.toString();
+                        details = insertedCategory.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
                         ex_1 = _a.sent();

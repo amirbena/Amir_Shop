@@ -21,9 +21,14 @@ var CartSchema = new mongoose_1.Schema({
         default: []
     },
     date: {
-        type: Date,
+        type: mongoose_1.Schema.Types.Date,
         required: true,
         default: Date.now()
+    },
+    sum: {
+        type: mongoose_1.Schema.Types.Number,
+        required: true,
+        default: 0
     }
 });
 exports.default = mongoose_1.default.model("Cart", CartSchema);
@@ -31,7 +36,7 @@ function validateCart(model) {
     var schema = {
         userId: joi_1.default.string().required(),
         product: joi_1.default.object().required(),
-        date: joi_1.default.date().default(Date.now())
+        date: joi_1.default.date().default(Date.now()),
     };
     return joi_1.validate(model, schema);
 }

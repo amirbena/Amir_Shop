@@ -41,7 +41,7 @@ export default class ProductService extends GeneralService {
             }
             const productAdded = await Product.create(product);
             status = OK;
-            details = productAdded.toString();
+            details = productAdded.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }

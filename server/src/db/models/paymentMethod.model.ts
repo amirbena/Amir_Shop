@@ -11,7 +11,7 @@ export interface IPaymentMethod extends Document {
 
 const PaymentMethodSchema: Schema = new Schema({
     paymentMethod: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
         unique: true
     }

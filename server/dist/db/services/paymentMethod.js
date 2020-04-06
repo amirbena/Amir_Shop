@@ -94,7 +94,7 @@ var PaymentMethodService = /** @class */ (function (_super) {
                     case 3:
                         result = _a.sent();
                         status = OK;
-                        details = result.toString();
+                        details = result.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
                         ex_1 = _a.sent();
@@ -108,7 +108,7 @@ var PaymentMethodService = /** @class */ (function (_super) {
             });
         });
     };
-    PaymentMethodService.findAllPaymentMethods = function () {
+    PaymentMethodService.getAllPaymentMethods = function () {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, paymentMethods, ex_2;
             return __generator(this, function (_a) {
@@ -130,12 +130,48 @@ var PaymentMethodService = /** @class */ (function (_super) {
                         details = paymentMethods.toString();
                         return [2 /*return*/, {
                                 status: status,
-                                details: details,
                                 paymentMethods: paymentMethods
                             }];
                     case 3:
                         ex_2 = _a.sent();
                         details = ex_2.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    PaymentMethodService.deletePaymentMethod = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, deletedCount, ex_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("invalid id is given");
+                        }
+                        return [4 /*yield*/, paymentMethod_model_1.default.deleteOne({ _id: id })];
+                    case 2:
+                        deletedCount = (_a.sent()).deletedCount;
+                        if (!deletedCount) {
+                            status = NOT_FOUND;
+                            throw new Error("Payment Method not found");
+                        }
+                        status = OK;
+                        details = "The item is deleted succeed";
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_3 = _a.sent();
+                        details = ex_3.message;
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/, {
                             status: status,

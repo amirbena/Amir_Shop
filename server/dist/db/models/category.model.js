@@ -11,7 +11,7 @@ var mongoose_1 = __importStar(require("mongoose"));
 var joi_1 = __importStar(require("joi"));
 var CategorySchema = new mongoose_1.Schema({
     category_name: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true,
         unique: true
     }

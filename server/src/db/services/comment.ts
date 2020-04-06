@@ -52,7 +52,7 @@ export default class CommentService extends GeneralService {
             }
             commentAdded = await Comment.create(comment);
             status = OK;
-            details = commentAdded.toString();
+            details = commentAdded.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }

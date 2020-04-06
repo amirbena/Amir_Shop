@@ -23,7 +23,7 @@ export default class PaymentMethodService extends GeneralService {
             }
             result = await PaymentMethod.create(paymentMethod);
             status = OK;
-            details = result.toString();
+            details = result.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -32,7 +32,7 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async findAllPaymentMethods(): Promise<{ status: HTTP_STATUS, details: string, paymentMethods?: IPaymentMethod[] }> {
+    public static async getAllPaymentMethods(): Promise<{ status: HTTP_STATUS, details?: string, paymentMethods?: IPaymentMethod[] }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -45,7 +45,6 @@ export default class PaymentMethodService extends GeneralService {
             details = paymentMethods.toString();
             return {
                 status,
-                details,
                 paymentMethods
             }
         } catch (ex) {
@@ -56,4 +55,28 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
+    public static async deletePaymentMethod(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("invalid id is given");
+            }
+            const { deletedCount } = await PaymentMethod.deleteOne({ _id: id });
+            if (!deletedCount) {
+                status = NOT_FOUND;
+                throw new Error("Payment Method not found");
+            }
+            status = OK;
+            details = "The item is deleted succeed";
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
+
 }

@@ -21,12 +21,12 @@ const ProductSchema: Schema = new Schema({
         required: true
     },
     price_for_each: {
-        type: Number,
+        type: Schema.Types.Number,
         required: true,
         min: 0.5
     },
     amount: {
-        type: Number,
+        type: Schema.Types.Number,
         required: true,
         min: 1
     },

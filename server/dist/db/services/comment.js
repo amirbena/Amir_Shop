@@ -115,7 +115,7 @@ var CommentService = /** @class */ (function (_super) {
                     case 5:
                         commentAdded = _c.sent();
                         status = OK;
-                        details = commentAdded.toString();
+                        details = commentAdded.toJSON();
                         return [3 /*break*/, 7];
                     case 6:
                         ex_1 = _c.sent();
