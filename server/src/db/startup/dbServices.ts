@@ -3,7 +3,7 @@ import UserService from '../services/user';
 import ProductService from '../services/product';
 import CommentService from "../services/comment";
 
-export default{
+export default {
     CategoryService,
     UserService,
     ProductService,
