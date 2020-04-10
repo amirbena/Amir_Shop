@@ -68,8 +68,8 @@ class UserService extends GeneralService {
             details
         }
     }
-    public static async userLogin(email: string, password: string, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
-        const detailsforQuerying = { email, password };
+    public static async userLogin(detailsforQuerying:any, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
+        const { email, password } = detailsforQuerying;
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         let token: string = "";
