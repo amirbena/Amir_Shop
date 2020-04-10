@@ -4,7 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc&nodemon dist/index.js",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc -p.",
+    "postinstall": "node-config-ts",
     "test": "mocha"
   },
   "repository": {
