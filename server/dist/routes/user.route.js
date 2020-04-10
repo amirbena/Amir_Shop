@@ -126,6 +126,38 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
+        this.getUserById = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, UserService.getUserById(req.body.id)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        if (status !== OK)
+                            return [2 /*return*/, res.status(status).send({
+                                    details: details,
+                                    status: status
+                                })];
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, UserService.deleteUser(req.body.deleter_id)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        if (status !== OK)
+                            return [2 /*return*/, res.status(status).send({
+                                    details: details,
+                                    status: status
+                                })];
+                        return [2 /*return*/, res.send({ details: details })];
+                }
+            });
+        }); };
         this.intiailzeRoutes();
     }
     UserRoute.prototype.intiailzeRoutes = function () {
@@ -133,6 +165,8 @@ var UserRoute = /** @class */ (function () {
         this.router.post(this.path + "/new_user", this.addUser);
         this.router.get(this.path + "/login", this.loginUser);
         this.router.put(this.path + "/admin", [admin_middleware_1.default], this.makeUserAdmin);
+        this.router.get(this.path + "/user", this.getUserById);
+        this.router.delete(this.path, [admin_middleware_1.default]);
     };
     return UserRoute;
 }());

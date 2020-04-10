@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
 import HTTP_STATUS from '../common/HTTP_Enum';
 import adminMiddleware from './middlewares/admin.middleware';
+
 const { UserService } = Services;
 const { NOT_FOUND, OK } = HTTP_STATUS;
 export default class UserRoute {
@@ -16,6 +17,8 @@ export default class UserRoute {
         this.router.post(`${this.path}/new_user`, this.addUser);
         this.router.get(`${this.path}/login`, this.loginUser);
         this.router.put(`${this.path}/admin`, [adminMiddleware], this.makeUserAdmin);
+        this.router.get(`${this.path}/user`, this.getUserById);
+        this.router.delete(this.path, [adminMiddleware])
     }
 
     getUsers = async (req: Request, res: Response) => {
@@ -60,7 +63,21 @@ export default class UserRoute {
         });
         return res.send({ details });
     }
-
+    getUserById = async (req: Request, res: Response) => {
+        const { status, details } = await UserService.getUserById(req.body.id);
+        if (status !== OK) return res.status(status).send({
+            details,
+            status
+        });
+    }
+    deleteUser = async (req: Request, res: Response) => {
+        const { status, details } = await UserService.deleteUser(req.body.deleter_id);
+        if (status !== OK) return res.status(status).send({
+            details,
+            status
+        });
+        return res.send({ details });
+    }
 
 }
 

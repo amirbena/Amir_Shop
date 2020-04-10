@@ -155,7 +155,7 @@ class UserService extends GeneralService {
             details
         }
     }
-    public static async deleteUser(_id: Types.ObjectId): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async deleteUser(_id: string): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
