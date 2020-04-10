@@ -58,7 +58,10 @@ var UserRoute = /** @class */ (function () {
                     case 1:
                         users = _a.sent();
                         if (!users.length)
-                            return [2 /*return*/, res.status(NOT_FOUND).send("<h1> no users into DB</h1>")];
+                            return [2 /*return*/, res.status(NOT_FOUND).send({
+                                    status: NOT_FOUND,
+                                    details: "<h1> no users into DB</h1>"
+                                })];
                         res.send(users);
                         return [2 /*return*/];
                 }
@@ -72,14 +75,54 @@ var UserRoute = /** @class */ (function () {
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, token = _a.token;
                         if (status !== OK)
-                            return [2 /*return*/, res.status(status).send(details)];
+                            return [2 /*return*/, res.status(status).send({
+                                    details: details, status: status
+                                })];
                         if (token) {
-                            res.send({
-                                token: token,
-                                details: details
-                            });
+                            return [2 /*return*/, res.send({
+                                    token: token,
+                                    details: details
+                                })];
                         }
                         return [2 /*return*/];
+                }
+            });
+        }); };
+        this.loginUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details, token;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, UserService.userLogin(req.body, this.jwtPrivateKey)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details, token = _a.token;
+                        if (status !== OK)
+                            return [2 /*return*/, res.status(status).send({
+                                    details: details,
+                                    status: status
+                                })];
+                        if (token) {
+                            return [2 /*return*/, res.send({
+                                    token: token,
+                                    details: details
+                                })];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        this.makeUserAdmin = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, UserService.makeUserAdmin(req.body.id_will_admin)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        if (status !== OK)
+                            return [2 /*return*/, res.status(status).send({
+                                    details: details,
+                                    status: status
+                                })];
+                        return [2 /*return*/, res.send({ details: details })];
                 }
             });
         }); };
@@ -88,6 +131,8 @@ var UserRoute = /** @class */ (function () {
     UserRoute.prototype.intiailzeRoutes = function () {
         this.router.get(this.path, [admin_middleware_1.default], this.getUsers);
         this.router.post(this.path + "/new_user", this.addUser);
+        this.router.get(this.path + "/login", this.loginUser);
+        this.router.put(this.path + "/admin", [admin_middleware_1.default], this.makeUserAdmin);
     };
     return UserRoute;
 }());
