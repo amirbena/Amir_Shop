@@ -76,7 +76,7 @@ var ProductService = /** @class */ (function (_super) {
     function ProductService() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ProductService.AddProduct = function (product) {
+    ProductService.addProduct = function (product) {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, error, _a, statusCategory, detailsCategory, _b, statusAdmin, detailsAdmin, productAdded, ex_1;
             return __generator(this, function (_c) {
@@ -110,7 +110,7 @@ var ProductService = /** @class */ (function (_super) {
                     case 4:
                         productAdded = _c.sent();
                         status = OK;
-                        details = productAdded.toString();
+                        details = productAdded.toJSON();
                         return [3 /*break*/, 6];
                     case 5:
                         ex_1 = _c.sent();

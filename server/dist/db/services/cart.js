@@ -89,7 +89,7 @@ var CartService = /** @class */ (function (_super) {
                     case 3:
                         object = _b.sent();
                         status = OK;
-                        details = object.toString();
+                        details = object.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
                         ex_1 = _b.sent();
@@ -105,18 +105,18 @@ var CartService = /** @class */ (function (_super) {
     };
     CartService.addItemtoCart = function (userId, cartDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, _a, statusUser, detailsUser, schema, error, cart, ex_2;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var status, details, _a, statusUser, detailsUser, schema, error, cart, _b, statusProduct, detailsProduct, product, ex_2;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        _b.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _b.trys.push([1, 5, , 6]);
+                        _c.trys.push([1, 6, , 7]);
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
-                        _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
+                        _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
                         if (statusUser !== CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
@@ -132,23 +132,31 @@ var CartService = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, cart_model_1.default.findOne({ userId: userId, date: new Date() })];
                     case 3:
-                        cart = _b.sent();
+                        cart = _c.sent();
                         if (!cart) {
                             status = NOT_FOUND;
                             throw new Error("Cart not found");
                         }
+                        return [4 /*yield*/, this.findProductById(cartDetails.productId)];
+                    case 4:
+                        _b = _c.sent(), statusProduct = _b.status, detailsProduct = _b.details, product = _b.product;
+                        if (statusProduct !== CONTINUE) {
+                            status = statusProduct;
+                            throw new Error(detailsProduct);
+                        }
+                        cart.sum += product.price_for_each * cartDetails.amountBuying;
                         cart.products.push(cartDetails);
                         return [4 /*yield*/, cart.save()];
-                    case 4:
-                        cart = _b.sent();
-                        status = OK;
-                        details = cart.toString();
-                        return [3 /*break*/, 6];
                     case 5:
-                        ex_2 = _b.sent();
+                        cart = _c.sent();
+                        status = OK;
+                        details = cart.toJSON();
+                        return [3 /*break*/, 7];
+                    case 6:
+                        ex_2 = _c.sent();
                         details = ex_2.message;
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/, {
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/, {
                             status: status,
                             details: details
                         }];
@@ -196,27 +204,27 @@ var CartService = /** @class */ (function (_super) {
             });
         });
     };
-    CartService.changeElementsforproduct = function (userId, cartDetails, sign) {
+    CartService.changeElementsforProduct = function (userId, changedDetails, sign) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, _a, statusUser, detailsUser, schema, error, cart, detailsToDrop, index, ex_4;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var status, details, _a, statusUser, detailsUser, schema, error, cart, _b, statusProduct, detailsProudct, product, addToCart, index, changedSum, ex_4;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        _b.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _b.trys.push([1, 5, , 6]);
+                        _c.trys.push([1, 6, , 7]);
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
-                        _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
+                        _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
                         if (statusUser !== CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
                         schema = {
                             userId: userId,
-                            product: cartDetails
+                            product: changedDetails
                         };
                         error = cart_model_1.validateCart(schema).error;
                         if (error) {
@@ -225,37 +233,50 @@ var CartService = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, cart_model_1.default.findOne({ userId: userId, date: new Date() })];
                     case 3:
-                        cart = _b.sent();
+                        cart = _c.sent();
                         if (!cart) {
                             status = NOT_FOUND;
                             throw new Error("Cart not found");
                         }
-                        detailsToDrop = cart.products.find(function (cartdetail) { return cartDetails.productId === cartdetail.productId; });
-                        if (!detailsToDrop) {
+                        return [4 /*yield*/, this.findProductById(changedDetails.productId)];
+                    case 4:
+                        _b = _c.sent(), statusProduct = _b.status, detailsProudct = _b.details, product = _b.product;
+                        if (statusProduct !== OK) {
+                            status = statusProduct;
+                            throw new Error(detailsProudct);
+                        }
+                        addToCart = cart.products.find(function (cartdetail) { return changedDetails.productId === cartdetail.productId; });
+                        if (!addToCart) {
                             status = NOT_FOUND;
                             throw new Error("detals not found");
                         }
-                        index = cart.products.findIndex(function (cartdetail) { return cartDetails.productId === cartdetail.productId; });
+                        index = cart.products.findIndex(function (cartdetail) { return changedDetails.productId === cartdetail.productId; });
+                        changedSum = addToCart.amountBuying * product.price_for_each;
                         if (sign === "-") {
-                            detailsToDrop.amountBuying -= cartDetails.amountBuying;
+                            addToCart.amountBuying -= changedDetails.amountBuying;
+                            cart.sum -= changedSum;
+                            if (cart.sum <= 0) {
+                                cart.sum = 0;
+                            }
                         }
                         else {
                             if (sign === "+") {
-                                detailsToDrop.amountBuying += cartDetails.amountBuying;
+                                addToCart.amountBuying += changedDetails.amountBuying;
+                                cart.sum += changedSum;
                             }
                         }
-                        cart.products[index] = detailsToDrop;
+                        cart.products[index] = addToCart;
                         return [4 /*yield*/, cart.save()];
-                    case 4:
-                        cart = _b.sent();
-                        status = OK;
-                        details = cart.toString();
-                        return [3 /*break*/, 6];
                     case 5:
-                        ex_4 = _b.sent();
+                        cart = _c.sent();
+                        status = OK;
+                        details = cart.toJSON();
+                        return [3 /*break*/, 7];
+                    case 6:
+                        ex_4 = _c.sent();
                         details = ex_4.message;
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/, {
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/, {
                             status: status,
                             details: details
                         }];
@@ -290,13 +311,46 @@ var CartService = /** @class */ (function (_super) {
                             throw new Error("Can't find current cart");
                         }
                         status = OK;
-                        details = "suceed deleting";
+                        details = "succeed deleting";
                         return [3 /*break*/, 5];
                     case 4:
                         ex_5 = _c.sent();
                         details = ex_5.message;
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    CartService.deleteCartById = function (cartId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, deletedCount, ex_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, cart_model_1.default.deleteOne({ _id: cartId })];
+                    case 2:
+                        deletedCount = (_a.sent()).deletedCount;
+                        if (!deletedCount) {
+                            status = NOT_FOUND;
+                            throw new Error("cart is not found");
+                        }
+                        status = OK;
+                        details = "cart deleted";
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_6 = _a.sent();
+                        details = ex_6.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
                             status: status,
                             details: details
                         }];

@@ -10,6 +10,7 @@ export interface ICart extends Document {
     userId: string;
     products: ICartDetails[];
     date: Date;
+    sum: number;
 }
 export interface ICartValidator {
     userId: string;
@@ -28,9 +29,14 @@ const CartSchema: Schema = new Schema({
         default: []
     },
     date: {
-        type: Date,
+        type: Schema.Types.Date,
         required: true,
         default: Date.now()
+    },
+    sum: {
+        type: Schema.Types.Number,
+        required: true,
+        default: 0
     }
 })
 export default mongoose.model<ICart>("Cart", CartSchema);
@@ -39,7 +45,7 @@ export function validateCart(model: ICartValidator) {
     const schema = {
         userId: Joi.string().required(),
         product: Joi.object().required(),
-        date: Joi.date().default(Date.now())
+        date: Joi.date().default(Date.now()),
     }
     return validate(model, schema);
 }

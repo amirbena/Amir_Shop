@@ -38,16 +38,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
+var express_1 = require("express");
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
+var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var UserService = dbServices_1.default.UserService;
 var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK;
 var UserRoute = /** @class */ (function () {
     function UserRoute() {
         var _this = this;
-        this.router = express_1.default.Router();
+        this.router = express_1.Router();
         this.jwtPrivateKey = process.env.jwtPrivateKey;
         this.path = "/users";
         this.getUsers = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
@@ -161,10 +162,10 @@ var UserRoute = /** @class */ (function () {
         this.intiailzeRoutes();
     }
     UserRoute.prototype.intiailzeRoutes = function () {
-        this.router.get(this.path, [admin_middleware_1.default], this.getUsers);
+        this.router.get(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.getUsers);
         this.router.post(this.path + "/new_user", this.addUser);
         this.router.get(this.path + "/login", this.loginUser);
-        this.router.put(this.path + "/admin", [admin_middleware_1.default], this.makeUserAdmin);
+        this.router.put(this.path + "/admin", [auth_middleware_1.default, admin_middleware_1.default], this.makeUserAdmin);
         this.router.get(this.path + "/user", this.getUserById);
         this.router.delete(this.path, [admin_middleware_1.default]);
     };

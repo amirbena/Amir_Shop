@@ -29,7 +29,7 @@ class UserService extends GeneralService {
             const createdUser = await User.create(user);
             if (createdUser) {
                 status = OK;
-                details = createdUser.toString();
+                details = createdUser.toJSON();
                 token = this.generateAuthToken(createdUser, jwtKey);
             }
 
@@ -59,7 +59,7 @@ class UserService extends GeneralService {
             user.isAdmin = true;
             user = await user.save();
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -91,7 +91,7 @@ class UserService extends GeneralService {
                 details = "please type another password";
             }
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
             token = this.generateAuthToken(user, jwtLogin);
 
         } catch (ex) {
@@ -118,7 +118,7 @@ class UserService extends GeneralService {
             }
             user = (user as IUser);
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
 
         } catch (ex) {
             details = (ex as Error).message;

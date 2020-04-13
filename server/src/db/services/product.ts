@@ -19,7 +19,7 @@ export interface IDetailedProduct {
 const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 export default class ProductService extends GeneralService {
 
-    public static async AddProduct(product: IProduct)
+    public static async addProduct(product: IProduct)
         : Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
@@ -41,7 +41,7 @@ export default class ProductService extends GeneralService {
             }
             const productAdded = await Product.create(product);
             status = OK;
-            details = productAdded.toString();
+            details = productAdded.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -152,7 +152,7 @@ export default class ProductService extends GeneralService {
             details
         }
     }
-    public static async  getAvgRankForEachProduct(id: string)
+    public static async getAvgRankForEachProduct(id: string)
         : Promise<{ status: HTTP_STATUS, details?: string, avgRank?: number }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";

@@ -58,18 +58,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var category_model_1 = __importStar(require("../models/category.model"));
+var paymentMethod_model_1 = __importStar(require("../models/paymentMethod.model"));
 var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var generalService_1 = __importDefault(require("./generalService"));
-var OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
-var CategoryService = /** @class */ (function (_super) {
-    __extends(CategoryService, _super);
-    function CategoryService() {
+var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
+var PaymentMethodService = /** @class */ (function (_super) {
+    __extends(PaymentMethodService, _super);
+    function PaymentMethodService() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    CategoryService.addCategory = function (category) {
+    PaymentMethodService.addPaymentMethod = function (paymentMethod) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, error, insertedCategory, ex_1;
+            var status, details, error, result, ex_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -78,25 +78,23 @@ var CategoryService = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
-                        error = category_model_1.validateCategory(category).error;
+                        error = paymentMethod_model_1.validatePaymentMethod(paymentMethod).error;
                         if (error) {
                             status = BAD_REQUEST;
-                            throw new Error(error.details[0].message);
+                            throw new Error("Invalid input of payment method");
                         }
-                        return [4 /*yield*/, category_model_1.default.findOne({ category_name: category.category_name })];
+                        return [4 /*yield*/, paymentMethod_model_1.default.findOne({ paymentMethod: paymentMethod.paymentMethod })];
                     case 2:
-                        insertedCategory = _a.sent();
-                        if (insertedCategory) {
+                        result = _a.sent();
+                        if (result) {
                             status = BAD_REQUEST;
-                            throw new Error("category is found in db");
+                            throw new Error("has exsiting same payment method");
                         }
-                        return [4 /*yield*/, category_model_1.default.create(category)];
+                        return [4 /*yield*/, paymentMethod_model_1.default.create(paymentMethod)];
                     case 3:
-                        insertedCategory = _a.sent();
-                        if (!insertedCategory)
-                            throw new Error("Something happend when insert db into status");
+                        result = _a.sent();
                         status = OK;
-                        details = insertedCategory.toJSON();
+                        details = result.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
                         ex_1 = _a.sent();
@@ -110,19 +108,9 @@ var CategoryService = /** @class */ (function (_super) {
             });
         });
     };
-    CategoryService.getAllCategories = function () {
+    PaymentMethodService.getAllPaymentMethods = function () {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, category_model_1.default.find()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    CategoryService.deleteCategory = function (_id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var status, details, deletedItem, ex_2;
+            var status, details, paymentMethods, ex_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -131,20 +119,19 @@ var CategoryService = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!_id) {
-                            status = BAD_REQUEST;
-                            throw new Error("_id is null/ undefined ");
-                        }
-                        return [4 /*yield*/, category_model_1.default.deleteOne({ _id: _id })];
+                        return [4 /*yield*/, paymentMethod_model_1.default.find()];
                     case 2:
-                        deletedItem = _a.sent();
-                        if (!deletedItem) {
+                        paymentMethods = _a.sent();
+                        if (!paymentMethods.length) {
                             status = NOT_FOUND;
-                            throw new Error("item is not found on DB");
+                            throw new Error("payment methods not found");
                         }
                         status = OK;
-                        details = "Succeed delete";
-                        return [3 /*break*/, 4];
+                        details = paymentMethods.toString();
+                        return [2 /*return*/, {
+                                status: status,
+                                paymentMethods: paymentMethods
+                            }];
                     case 3:
                         ex_2 = _a.sent();
                         details = ex_2.message;
@@ -157,6 +144,43 @@ var CategoryService = /** @class */ (function (_super) {
             });
         });
     };
-    return CategoryService;
+    PaymentMethodService.deletePaymentMethod = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, deletedCount, ex_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("invalid id is given");
+                        }
+                        return [4 /*yield*/, paymentMethod_model_1.default.deleteOne({ _id: id })];
+                    case 2:
+                        deletedCount = (_a.sent()).deletedCount;
+                        if (!deletedCount) {
+                            status = NOT_FOUND;
+                            throw new Error("Payment Method not found");
+                        }
+                        status = OK;
+                        details = "The item is deleted succeed";
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_3 = _a.sent();
+                        details = ex_3.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    return PaymentMethodService;
 }(generalService_1.default));
-exports.default = CategoryService;
+exports.default = PaymentMethodService;

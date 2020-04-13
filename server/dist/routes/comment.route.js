@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 ;
-var express_1 = __importDefault(require("express"));
+var express_1 = require("express");
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
@@ -48,9 +48,9 @@ var OK = HTTP_Enum_1.default.OK, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, INTE
 var CommentRoute = /** @class */ (function () {
     function CommentRoute() {
         var _this = this;
-        this.router = express_1.default.Router();
+        this.router = express_1.Router();
         this.jwtPrivateKey = process.env.jwtPrivateKey;
-        this.path = "/categories";
+        this.path = "/comments";
         this.addComment = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
