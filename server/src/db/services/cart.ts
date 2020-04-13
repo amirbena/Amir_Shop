@@ -92,7 +92,7 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async changeElementsforproduct(userId: string, changedDetails: ICartDetails, sign: string): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async changeElementsforProduct(userId: string, changedDetails: ICartDetails, sign: string): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {

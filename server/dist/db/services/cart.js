@@ -204,7 +204,7 @@ var CartService = /** @class */ (function (_super) {
             });
         });
     };
-    CartService.changeElementsforproduct = function (userId, changedDetails, sign) {
+    CartService.changeElementsforProduct = function (userId, changedDetails, sign) {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, _a, statusUser, detailsUser, schema, error, cart, _b, statusProduct, detailsProudct, product, addToCart, index, changedSum, ex_4;
             return __generator(this, function (_c) {

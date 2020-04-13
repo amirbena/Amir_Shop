@@ -165,13 +165,13 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
-    UserService.userLogin = function (email, password, jwtLogin) {
+    UserService.userLogin = function (detailsforQuerying, jwtLogin) {
         return __awaiter(this, void 0, void 0, function () {
-            var detailsforQuerying, status, details, token, error, user, validPassword, ex_3;
+            var email, password, status, details, token, error, user, validPassword, ex_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        detailsforQuerying = { email: email, password: password };
+                        email = detailsforQuerying.email, password = detailsforQuerying.password;
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
                         token = "";

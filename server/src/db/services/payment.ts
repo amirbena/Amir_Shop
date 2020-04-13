@@ -45,7 +45,7 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    public static async PaymentPaid(paymentId: string) {
+    public static async paymentPaid(paymentId: string) {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {

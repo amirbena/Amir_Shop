@@ -133,7 +133,7 @@ var PaymentService = /** @class */ (function (_super) {
             });
         });
     };
-    PaymentService.PaymentPaid = function (paymentId) {
+    PaymentService.paymentPaid = function (paymentId) {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, paymentQuerying, statusPayment, detailsPayment, payment, _a, statusUpdating, detailsUpdating, _b, statusCart, detailsCart, ex_2;
             return __generator(this, function (_c) {
