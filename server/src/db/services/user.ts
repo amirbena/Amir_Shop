@@ -6,7 +6,7 @@ import User, { IUser, validateUser } from "../models/user.model";
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import GeneralService from "./generalService";
 
-const { NOT_FOUND, OK, BAD_REQUEST,INTERNAL_SERVER_ERROR,CONTINUE } = HTTP_STATUS;
+const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 class UserService extends GeneralService {
 
     public static async createUser(user: any, jwtKey: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
@@ -29,7 +29,7 @@ class UserService extends GeneralService {
             const createdUser = await User.create(user);
             if (createdUser) {
                 status = OK;
-                details = createdUser.toString();
+                details = createdUser.toJSON();
                 token = this.generateAuthToken(createdUser, jwtKey);
             }
 
@@ -59,7 +59,7 @@ class UserService extends GeneralService {
             user.isAdmin = true;
             user = await user.save();
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -68,8 +68,8 @@ class UserService extends GeneralService {
             details
         }
     }
-    public static async userLogin(email: string, password: string, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
-        const detailsforQuerying = { email, password };
+    public static async userLogin(detailsforQuerying: any, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
+        const { email, password } = detailsforQuerying;
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         let token: string = "";
@@ -91,7 +91,7 @@ class UserService extends GeneralService {
                 details = "please type another password";
             }
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
             token = this.generateAuthToken(user, jwtLogin);
 
         } catch (ex) {
@@ -118,7 +118,7 @@ class UserService extends GeneralService {
             }
             user = (user as IUser);
             status = OK;
-            details = user.toString();
+            details = user.toJSON();
 
         } catch (ex) {
             details = (ex as Error).message;

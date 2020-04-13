@@ -41,6 +41,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var category_model_1 = __importDefault(require("../models/category.model"));
 var product_model_1 = __importDefault(require("../models/product.model"));
 var user_model_1 = __importDefault(require("../models/user.model"));
+var cart_model_1 = __importDefault(require("./../models/cart.model"));
+var paymentMethod_model_1 = __importDefault(require("../models/paymentMethod.model"));
+var payment_model_1 = __importDefault(require("../models/payment.model"));
 var comment_model_1 = __importDefault(require("../models/comment.model"));
 var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
@@ -55,17 +58,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, user_model_1.default.findById(id)];
                     case 2:
                         user = _a.sent();
@@ -98,17 +97,13 @@ var GeneralService = /** @class */ (function () {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, category_model_1.default.findById(id)];
                     case 2:
                         category = _a.sent();
@@ -133,36 +128,32 @@ var GeneralService = /** @class */ (function () {
             });
         });
     };
-    GeneralService.findProductById = function (id) {
+    GeneralService.findCartById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, product, ex_3;
+            var status, details, cart, ex_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, product_model_1.default.findById(id)];
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
+                        return [4 /*yield*/, cart_model_1.default.findById(id)];
                     case 2:
-                        product = _a.sent();
-                        if (!product) {
+                        cart = _a.sent();
+                        if (!cart) {
                             status = NOT_FOUND;
                             throw new Error("product is not found in db");
                         }
                         status = CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
-                                product: product
+                                cart: cart
                             }];
                     case 3:
                         ex_3 = _a.sent();
@@ -176,25 +167,100 @@ var GeneralService = /** @class */ (function () {
             });
         });
     };
-    GeneralService.findCommentById = function (id) {
+    GeneralService.findProductById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, comment, ex_4;
+            var status, details, product, ex_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
-                        if (!id) {
-                            status = BAD_REQUEST;
-                            details = "Invalid parameter at id";
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
+                        return [4 /*yield*/, product_model_1.default.findById(id)];
+                    case 2:
+                        product = _a.sent();
+                        if (!product) {
+                            status = NOT_FOUND;
+                            throw new Error("product is not found in db");
+                        }
+                        status = CONTINUE;
+                        return [2 /*return*/, {
+                                status: status,
+                                product: product
+                            }];
+                    case 3:
+                        ex_4 = _a.sent();
+                        details = ex_4.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    GeneralService.findPaymentMethodAccordingId = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, paymentMethod, ex_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
+                        return [4 /*yield*/, paymentMethod_model_1.default.findById(id)];
+                    case 2:
+                        paymentMethod = _a.sent();
+                        if (!paymentMethod) {
+                            status = NOT_FOUND;
+                            throw new Error("Payment Method not found into db");
+                        }
+                        paymentMethod = paymentMethod;
+                        status = CONTINUE;
+                        return [2 /*return*/, {
+                                status: status,
+                                paymentMethod: paymentMethod
+                            }];
+                    case 3:
+                        ex_5 = _a.sent();
+                        details = ex_5.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details,
+                        }];
+                }
+            });
+        });
+    };
+    GeneralService.findCommentById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, comment, ex_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
                         return [4 /*yield*/, comment_model_1.default.findById(id)];
                     case 2:
                         comment = _a.sent();
@@ -208,8 +274,47 @@ var GeneralService = /** @class */ (function () {
                                 comment: comment
                             }];
                     case 3:
-                        ex_4 = _a.sent();
-                        details = ex_4.message;
+                        ex_6 = _a.sent();
+                        details = ex_6.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    GeneralService.findPaymentById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, payment, ex_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = BAD_REQUEST;
+                            throw new Error("Invalid parameter at id");
+                        }
+                        return [4 /*yield*/, payment_model_1.default.findById(id)];
+                    case 2:
+                        payment = _a.sent();
+                        if (!payment) {
+                            status = NOT_FOUND;
+                            throw new Error("payment is not found in db");
+                        }
+                        status = CONTINUE;
+                        return [2 /*return*/, {
+                                status: status,
+                                payment: payment
+                            }];
+                    case 3:
+                        ex_7 = _a.sent();
+                        details = ex_7.message;
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/, {
                             status: status,

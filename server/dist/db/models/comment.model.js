@@ -21,16 +21,16 @@ var CommentSchema = new mongoose_1.Schema({
         required: true
     },
     title: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true
     },
     comment: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true,
         minlength: 20
     },
     rank: {
-        type: Number,
+        type: mongoose_1.Schema.Types.Number,
         required: true,
         min: 0,
         max: 5

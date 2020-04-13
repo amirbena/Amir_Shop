@@ -21,12 +21,12 @@ var ProductSchema = new mongoose_1.Schema({
         required: true
     },
     price_for_each: {
-        type: Number,
+        type: mongoose_1.Schema.Types.Number,
         required: true,
         min: 0.5
     },
     amount: {
-        type: Number,
+        type: mongoose_1.Schema.Types.Number,
         required: true,
         min: 1
     },

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema,Types } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import Joi, { validate } from "joi";
 
 export interface IComment extends Document {
@@ -21,16 +21,16 @@ const CommentSchema: Schema = new Schema({
         required: true
     },
     title: {
-        type: String,
+        type: Schema.Types.String,
         required: true
     },
     comment: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
         minlength: 20
     },
     rank: {
-        type: Number,
+        type: Schema.Types.Number,
         required: true,
         min: 0,
         max: 5

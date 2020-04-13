@@ -1,5 +1,4 @@
 import Category, { ICategory, validateCategory } from "../models/category.model";
-import { Types } from "mongoose";
 import HTTP_STATUS from "../../common/HTTP_Enum";
 import GeneralService from "./generalService";
 
@@ -22,7 +21,7 @@ class CategoryService extends GeneralService {
             insertedCategory = await Category.create(category);
             if (!insertedCategory) throw new Error("Something happend when insert db into status");
             status = OK;
-            details = insertedCategory.toString();
+            details = insertedCategory.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }

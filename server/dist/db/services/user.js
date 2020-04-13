@@ -106,7 +106,7 @@ var UserService = /** @class */ (function (_super) {
                         createdUser = _b.sent();
                         if (createdUser) {
                             status = OK;
-                            details = createdUser.toString();
+                            details = createdUser.toJSON();
                             token = this.generateAuthToken(createdUser, jwtKey);
                         }
                         return [3 /*break*/, 7];
@@ -151,7 +151,7 @@ var UserService = /** @class */ (function (_super) {
                     case 3:
                         user = _b.sent();
                         status = OK;
-                        details = user.toString();
+                        details = user.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
                         ex_2 = _b.sent();
@@ -165,13 +165,13 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
-    UserService.userLogin = function (email, password, jwtLogin) {
+    UserService.userLogin = function (detailsforQuerying, jwtLogin) {
         return __awaiter(this, void 0, void 0, function () {
-            var detailsforQuerying, status, details, token, error, user, validPassword, ex_3;
+            var email, password, status, details, token, error, user, validPassword, ex_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        detailsforQuerying = { email: email, password: password };
+                        email = detailsforQuerying.email, password = detailsforQuerying.password;
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
                         token = "";
@@ -199,7 +199,7 @@ var UserService = /** @class */ (function (_super) {
                             details = "please type another password";
                         }
                         status = OK;
-                        details = user.toString();
+                        details = user.toJSON();
                         token = this.generateAuthToken(user, jwtLogin);
                         return [3 /*break*/, 5];
                     case 4:
@@ -240,7 +240,7 @@ var UserService = /** @class */ (function (_super) {
                         }
                         user = user;
                         status = OK;
-                        details = user.toString();
+                        details = user.toJSON();
                         return [3 /*break*/, 4];
                     case 3:
                         ex_4 = _a.sent();

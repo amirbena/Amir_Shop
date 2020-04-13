@@ -11,27 +11,27 @@ var mongoose_1 = __importStar(require("mongoose"));
 var joi_1 = __importStar(require("joi"));
 var UserSchema = new mongoose_1.Schema({
     fullName: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true,
         unique: true
     },
     address: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true,
         minlength: 5,
         maxlength: 50
     },
     email: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true,
         unique: true
     },
     password: {
-        type: String,
+        type: mongoose_1.Schema.Types.String,
         required: true
     },
     isAdmin: {
-        type: Boolean,
+        type: mongoose_1.Schema.Types.Boolean,
         required: true,
         default: false
     }
