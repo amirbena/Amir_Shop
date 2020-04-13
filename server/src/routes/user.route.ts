@@ -1,22 +1,22 @@
-import express, { Request, Response } from 'express';
+import  {Router, Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
 import HTTP_STATUS from '../common/HTTP_Enum';
 import adminMiddleware from './middlewares/admin.middleware';
-
+import authMiddleware from './middlewares/auth.middleware';
 const { UserService } = Services;
 const { NOT_FOUND, OK } = HTTP_STATUS;
 export default class UserRoute {
-    public router = express.Router();
+    public router = Router();
     private jwtPrivateKey = (process.env.jwtPrivateKey as string);
     public path = "/users";
     constructor() {
         this.intiailzeRoutes()
     }
     private intiailzeRoutes() {
-        this.router.get(this.path, [adminMiddleware], this.getUsers);
+        this.router.get(this.path, [authMiddleware,adminMiddleware], this.getUsers);
         this.router.post(`${this.path}/new_user`, this.addUser);
         this.router.get(`${this.path}/login`, this.loginUser);
-        this.router.put(`${this.path}/admin`, [adminMiddleware], this.makeUserAdmin);
+        this.router.put(`${this.path}/admin`, [authMiddleware,adminMiddleware], this.makeUserAdmin);
         this.router.get(`${this.path}/user`, this.getUserById);
         this.router.delete(this.path, [adminMiddleware])
     }

@@ -1,5 +1,5 @@
 ;
-import express, { Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
 import HTTP_STATUS from '../common/HTTP_Enum';
 import authMiddlware from "./middlewares/auth.middleware";
@@ -8,9 +8,9 @@ const { OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = HTTP_STATUS;
 
 
 export default class CommentRoute {
-    public router = express.Router();
+    public router = Router();
     private jwtPrivateKey = (process.env.jwtPrivateKey as string);
-    public path = "/categories";
+    public path = "/comments";
     constructor() {
         this.intiailzeRoutes()
     }
