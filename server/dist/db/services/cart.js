@@ -286,26 +286,26 @@ var CartService = /** @class */ (function (_super) {
     };
     CartService.deleteSpecificCart = function (userId, dateString) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, date, _a, statusUser, detailsUser, _b, ok, deletedCount, ex_5;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var status, details, date, _a, statusUser, detailsUser, deletedCount, ex_5;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         status = INTERNAL_SERVER_ERROR;
                         details = "";
                         date = new Date(dateString);
-                        _c.label = 1;
+                        _b.label = 1;
                     case 1:
-                        _c.trys.push([1, 4, , 5]);
+                        _b.trys.push([1, 4, , 5]);
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
-                        _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
+                        _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
                         if (statusUser !== CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
                         return [4 /*yield*/, cart_model_1.default.deleteOne({ userId: userId, date: date })];
                     case 3:
-                        _b = _c.sent(), ok = _b.ok, deletedCount = _b.deletedCount;
+                        deletedCount = (_b.sent()).deletedCount;
                         if (!deletedCount) {
                             status = NOT_FOUND;
                             throw new Error("Can't find current cart");
@@ -314,7 +314,7 @@ var CartService = /** @class */ (function (_super) {
                         details = "succeed deleting";
                         return [3 /*break*/, 5];
                     case 4:
-                        ex_5 = _c.sent();
+                        ex_5 = _b.sent();
                         details = ex_5.message;
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/, {
@@ -354,6 +354,85 @@ var CartService = /** @class */ (function (_super) {
                             status: status,
                             details: details
                         }];
+                }
+            });
+        });
+    };
+    CartService.getCartbyUserAndDate = function (userId, dateString) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, date, _a, statusUser, detailsUser, cart, ex_7;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        date = new Date(dateString);
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, this.findUserById(userId)];
+                    case 2:
+                        _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
+                        if (statusUser !== CONTINUE) {
+                            status = statusUser;
+                            throw new Error(detailsUser);
+                        }
+                        return [4 /*yield*/, cart_model_1.default.findOne({ userId: userId, date: date })];
+                    case 3:
+                        cart = _b.sent();
+                        if (!cart) {
+                            status = NOT_FOUND;
+                            throw new Error("the cart is not found");
+                        }
+                        cart = cart;
+                        status = OK;
+                        details = cart.toJSON();
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                cart: cart
+                            }];
+                    case 4:
+                        ex_7 = _b.sent();
+                        details = ex_7.message;
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    CartService.getCartById = function (cartId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var details, _a, status, cartDetails, cart, ex_8;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        details = "";
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.findCartById(cartId)];
+                    case 2:
+                        _a = _b.sent(), status = _a.status, cartDetails = _a.details, cart = _a.cart;
+                        if (status !== OK) {
+                            return [2 /*return*/, {
+                                    status: status,
+                                    details: cartDetails
+                                }];
+                        }
+                        return [2 /*return*/, {
+                                status: OK,
+                                details: details,
+                                cart: cart
+                            }];
+                    case 3:
+                        ex_8 = _b.sent();
+                        details = ex_8.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

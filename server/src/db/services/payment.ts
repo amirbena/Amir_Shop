@@ -1,4 +1,3 @@
-import { IDetailedProduct } from './product';
 import Payment, { IPayment, validatePayment, IPaymentValidator } from "../models/payment.model";
 import Product from '../models/product.model';
 import GeneralService from '../services/generalService';
