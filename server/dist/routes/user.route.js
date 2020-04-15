@@ -43,7 +43,7 @@ var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
-var UserService = dbServices_1.default.UserService;
+var UserService = dbServices_1.default.UserService, CartService = dbServices_1.default.CartService;
 var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK;
 var UserRoute = /** @class */ (function () {
     function UserRoute() {
@@ -144,12 +144,23 @@ var UserRoute = /** @class */ (function () {
             });
         }); };
         this.deleteUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, UserService.deleteUser(req.body.deleter_id)];
+            var id, _a, cartStatus, cartDetails, _b, status, details;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.deleteAllCartAccordingUser(id)];
                     case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        _a = _c.sent(), cartStatus = _a.status, cartDetails = _a.details;
+                        if (cartStatus !== OK) {
+                            return [2 /*return*/, res.status(cartStatus).send({
+                                    status: cartStatus,
+                                    details: cartDetails
+                                })];
+                        }
+                        return [4 /*yield*/, UserService.deleteUser(id)];
+                    case 2:
+                        _b = _c.sent(), status = _b.status, details = _b.details;
                         if (status !== OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details,
