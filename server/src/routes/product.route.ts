@@ -1,14 +1,19 @@
-import { Router, Request, Response } from "express";
+import { Request, Response } from "express";
 import Services from "../db/startup/dbServices";
+import GeneralRoute from './generalRoute.route';
 import authMiddlware from "./middlewares/auth.middleware";
 import adminMiddleware from "./middlewares/admin.middleware";
 import iterableArray from '../common/iterableArray';
 import HTTP_STATUS from "../common/HTTP_Enum";
+
 const { ProductService } = Services;
 
-export default class ProductRoute {
-    public router = Router();
-    public path = "/products";
+export default class ProductRoute extends GeneralRoute {
+    constructor() {
+        super();
+        this.path = "/products";
+        this.intializeRoutes();
+    }
     intializeRoutes() {
         this.router.post(this.path, [authMiddlware, adminMiddleware]
             , this.addProduct);
@@ -18,14 +23,10 @@ export default class ProductRoute {
             , this.getDetailedProduct);
         this.router.put(this.path, [authMiddlware, adminMiddleware]
             , this.updateProductDetails);
-        this.router.delete(this.path, [authMiddlware, adminMiddleware],this.deleteProduct);
+        this.router.delete(this.path, [authMiddlware, adminMiddleware], this.deleteProduct);
         this.router.get(this.path, [authMiddlware, adminMiddleware], this.getProducts);
 
     }
-    constructor() {
-        this.intializeRoutes();
-    }
-
     addProduct = async (req: Request, res: Response) => {
         const { status, details } = await ProductService.addProduct(req.body);
         res.status(status).send({
@@ -80,9 +81,9 @@ export default class ProductRoute {
         const { status, details } = await ProductService.deleteProduct(req.body.productId);
         res.status(status).send({ status, details });
     }
-    getProducts= async (req:Request , res:Response)=>{
+    getProducts = async (req: Request, res: Response) => {
         try {
-            const products= await ProductService.getProducts();
+            const products = await ProductService.getProducts();
             return res.send({
                 status: HTTP_STATUS.OK,
                 details: products
@@ -90,7 +91,7 @@ export default class ProductRoute {
         } catch (ex) {
             return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
                 status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-                details : (ex as Error).message
+                details: (ex as Error).message
             })
         }
     }

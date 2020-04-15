@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -38,20 +51,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
+var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var UserService = dbServices_1.default.UserService, CartService = dbServices_1.default.CartService;
 var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK;
-var UserRoute = /** @class */ (function () {
+var UserRoute = /** @class */ (function (_super) {
+    __extends(UserRoute, _super);
     function UserRoute() {
-        var _this = this;
-        this.router = express_1.Router();
-        this.jwtPrivateKey = process.env.jwtPrivateKey;
-        this.path = "/users";
-        this.getUsers = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        var _this = _super.call(this) || this;
+        _this.getUsers = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var users;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -68,7 +79,7 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.addUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.addUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details, token;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -89,7 +100,7 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.loginUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.loginUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details, token;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -111,7 +122,7 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.makeUserAdmin = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.makeUserAdmin = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -127,7 +138,7 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.getUserById = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getUserById = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -143,7 +154,7 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.deleteUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, _a, cartStatus, cartDetails, _b, status, details;
             return __generator(this, function (_c) {
                 switch (_c.label) {
@@ -170,7 +181,10 @@ var UserRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.intiailzeRoutes();
+        _this.jwtPrivateKey = process.env.jwtPrivateKey;
+        _this.path = "/users";
+        _this.intiailzeRoutes();
+        return _this;
     }
     UserRoute.prototype.intiailzeRoutes = function () {
         this.router.get(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.getUsers);
@@ -181,5 +195,5 @@ var UserRoute = /** @class */ (function () {
         this.router.delete(this.path, [admin_middleware_1.default]);
     };
     return UserRoute;
-}());
+}(generalRoute_route_1.default));
 exports.default = UserRoute;

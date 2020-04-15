@@ -1,5 +1,3 @@
-import { Types } from 'mongoose';
-
 import Comment, { IComment, validateComment } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 import { IProduct } from "../models/product.model";

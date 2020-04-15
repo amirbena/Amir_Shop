@@ -1,5 +1,4 @@
 
-import { Types } from 'mongoose';
 import { ICategory } from '../models/category.model';
 import { IUser } from '../models/user.model';
 import iterableArray from '../../common/iterableArray';

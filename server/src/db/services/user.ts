@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import joi, { validate } from "joi";
 import jwt from 'jsonwebtoken';
@@ -103,7 +102,7 @@ class UserService extends GeneralService {
             token
         }
     }
-    public static async updateUser(_id: Types.ObjectId, detailstoUpdate: object) {
+    public static async updateUser(_id: string, detailstoUpdate: object) {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {

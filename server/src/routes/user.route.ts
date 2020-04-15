@@ -1,15 +1,18 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
 import HTTP_STATUS from '../common/HTTP_Enum';
 import adminMiddleware from './middlewares/admin.middleware';
 import authMiddleware from './middlewares/auth.middleware';
+import GeneralRoute from './generalRoute.route';
 const { UserService, CartService } = Services;
 const { NOT_FOUND, OK } = HTTP_STATUS;
-export default class UserRoute {
-    public router = Router();
-    private jwtPrivateKey = (process.env.jwtPrivateKey as string);
-    public path = "/users";
+
+export default class UserRoute extends GeneralRoute{
+    private jwtPrivateKey: string;
     constructor() {
+        super();
+        this.jwtPrivateKey = (process.env.jwtPrivateKey as string);
+        this.path = "/users";
         this.intiailzeRoutes()
     }
     private intiailzeRoutes() {

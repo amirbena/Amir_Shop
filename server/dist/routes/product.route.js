@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -56,19 +69,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
+var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var iterableArray_1 = __importDefault(require("../common/iterableArray"));
 var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
 var ProductService = dbServices_1.default.ProductService;
-var ProductRoute = /** @class */ (function () {
+var ProductRoute = /** @class */ (function (_super) {
+    __extends(ProductRoute, _super);
     function ProductRoute() {
-        var _this = this;
-        this.router = express_1.Router();
-        this.path = "/products";
-        this.addProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        var _this = _super.call(this) || this;
+        _this.addProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -83,7 +95,7 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.getDetailedProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getDetailedProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details, detailedProduct;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -101,7 +113,7 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.getDetailedProducts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getDetailedProducts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var e_1, _a, _b, status, details, detailedProducts, detailedProduct, detailedAvgProducts, _c, _d, _e, statusChecking, detailsChecking, avgRank, e_1_1;
             return __generator(this, function (_f) {
                 switch (_f.label) {
@@ -159,7 +171,7 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.updateProductDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.updateProductDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, productId, detailsUpdates, _b, status, details;
             return __generator(this, function (_c) {
                 switch (_c.label) {
@@ -176,7 +188,7 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.deleteProduct = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -188,7 +200,7 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.getProducts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getProducts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var products, ex_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -211,7 +223,9 @@ var ProductRoute = /** @class */ (function () {
                 }
             });
         }); };
-        this.intializeRoutes();
+        _this.path = "/products";
+        _this.intializeRoutes();
+        return _this;
     }
     ProductRoute.prototype.intializeRoutes = function () {
         this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addProduct);
@@ -222,5 +236,5 @@ var ProductRoute = /** @class */ (function () {
         this.router.get(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.getProducts);
     };
     return ProductRoute;
-}());
+}(generalRoute_route_1.default));
 exports.default = ProductRoute;

@@ -122,14 +122,11 @@ var PaymentMethodService = /** @class */ (function (_super) {
                         return [4 /*yield*/, paymentMethod_model_1.default.find()];
                     case 2:
                         paymentMethods = _a.sent();
-                        if (!paymentMethods.length) {
-                            status = NOT_FOUND;
-                            throw new Error("payment methods not found");
-                        }
                         status = OK;
                         details = paymentMethods.toString();
                         return [2 /*return*/, {
                                 status: status,
+                                details: details,
                                 paymentMethods: paymentMethods
                             }];
                     case 3:

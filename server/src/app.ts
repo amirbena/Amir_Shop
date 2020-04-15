@@ -1,13 +1,13 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
-import { IService } from './startup/intialzeRoutes';
+import {IRouteService} from './routes/generalRoute.route';
 import logger from './startup/logger';
 
 
-export default class App {
+export default class ServerApplication {
     public app: Application;
     public port: number;
-    constructor(port: number, controllers: IService[]) {
+    constructor(port: number, controllers: IRouteService[]) {
         this.app = express();
         this.port = port;
         this.intializeMiddlewares();
@@ -16,16 +16,17 @@ export default class App {
     private intializeMiddlewares() {
         this.app.use(bodyParser.json());
     }
-    private intializeControllers(controllers: IService[]) {
+    private intializeControllers(controllers: IRouteService[]) {
         controllers.forEach((controller) => {
             this.app.use(`api${controller.path}`, controller.router);
         })
     }
 
     public listen() {
-        this.app.listen(this.port, () => {
+        const server= this.app.listen(this.port, () => {
             logger.log("info", `App listens to ${this.port} PORT`);
         });
+        return server;
     }
 
 }

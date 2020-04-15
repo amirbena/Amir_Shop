@@ -14,6 +14,6 @@ dbconnection_1.default().then(function (result) {
     server.app.get("/", function (request, response) {
         response.send('<h1>Amir shop Application</h1>');
     });
-    server.listen();
+    server = server.listen();
 }).catch(function (err) { return logger_1.default.log("error", err.message); });
 exports.default = server;

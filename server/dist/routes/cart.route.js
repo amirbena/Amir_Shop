@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -38,16 +51,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
+var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var CartService = dbServices_1.default.CartService;
-var CartRoute = /** @class */ (function () {
+var CartRoute = /** @class */ (function (_super) {
+    __extends(CartRoute, _super);
     function CartRoute() {
-        var _this = this;
-        this.router = express_1.Router();
-        this.path = '/carts';
-        this.createNewCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        var _this = _super.call(this) || this;
+        _this.createNewCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -56,15 +68,14 @@ var CartRoute = /** @class */ (function () {
                         return [4 /*yield*/, CartService.createNewCart(id)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        res.status(status).send({
-                            status: status,
-                            details: details
-                        });
-                        return [2 /*return*/];
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
                 }
             });
         }); };
-        this.addNewItemToCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.addNewItemToCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var cartDetails, id, _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -74,15 +85,14 @@ var CartRoute = /** @class */ (function () {
                         return [4 /*yield*/, CartService.addItemtoCart(id, cartDetails)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        res.status(status).send({
-                            status: status,
-                            details: details
-                        });
-                        return [2 /*return*/];
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
                 }
             });
         }); };
-        this.changeDetailsForUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.changeDetailsForUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, changedDetails, sign, id, _b, status, details;
             return __generator(this, function (_c) {
                 switch (_c.label) {
@@ -92,30 +102,28 @@ var CartRoute = /** @class */ (function () {
                         return [4 /*yield*/, CartService.changeElementsforProduct(id, changedDetails, sign)];
                     case 1:
                         _b = _c.sent(), status = _b.status, details = _b.details;
-                        res.status(status).send({
-                            status: status,
-                            details: details
-                        });
-                        return [2 /*return*/];
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
                 }
             });
         }); };
-        this.deleteCartByid = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.deleteCartByid = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, CartService.deleteCartById(req.body.cartId)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        res.status(status).send({
-                            status: status,
-                            details: details
-                        });
-                        return [2 /*return*/];
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
                 }
             });
         }); };
-        this.deleteSpecificCartbyDate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.deleteSpecificCartbyDate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var dateString, id, _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -125,15 +133,33 @@ var CartRoute = /** @class */ (function () {
                         return [4 /*yield*/, CartService.deleteSpecificCart(id, dateString)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        res.status(status).send({
-                            status: status,
-                            details: details
-                        });
-                        return [2 /*return*/];
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
                 }
             });
         }); };
-        this.intializeRoutes();
+        _this.getCartByUserAndDate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var dateString, id, _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        dateString = req.body.dateString;
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.getCartbyUserAndDate(id, dateString)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
+                }
+            });
+        }); };
+        _this.path = '/carts';
+        _this.intializeRoutes();
+        return _this;
     }
     CartRoute.prototype.intializeRoutes = function () {
         this.router.post(this.path, [auth_middleware_1.default], this.createNewCart);
@@ -141,7 +167,8 @@ var CartRoute = /** @class */ (function () {
         this.router.put(this.path + "/changeCart", [auth_middleware_1.default], this.changeDetailsForUser);
         this.router.delete(this.path + "/id", [auth_middleware_1.default], this.deleteCartByid);
         this.router.delete(this.path + "/byDate", [auth_middleware_1.default], this.deleteSpecificCartbyDate);
+        this.router.get(this.path + "/byDate", [auth_middleware_1.default], this.getCartByUserAndDate);
     };
     return CartRoute;
-}());
+}(generalRoute_route_1.default));
 exports.default = CartRoute;

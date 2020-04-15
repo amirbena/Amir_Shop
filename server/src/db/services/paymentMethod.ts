@@ -32,19 +32,16 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async getAllPaymentMethods(): Promise<{ status: HTTP_STATUS, details?: string, paymentMethods?: IPaymentMethod[] }> {
+    public static async getAllPaymentMethods(): Promise<{ status: HTTP_STATUS, details: string, paymentMethods?: IPaymentMethod[] }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const paymentMethods = await PaymentMethod.find();
-            if (!paymentMethods.length) {
-                status = NOT_FOUND;
-                throw new Error("payment methods not found");
-            }
             status = OK;
             details = paymentMethods.toString();
             return {
                 status,
+                details,
                 paymentMethods
             }
         } catch (ex) {
