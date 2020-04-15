@@ -19,7 +19,7 @@ var App = /** @class */ (function () {
     App.prototype.intializeControllers = function (controllers) {
         var _this = this;
         controllers.forEach(function (controller) {
-            _this.app.use("/", controller);
+            _this.app.use("api" + controller.path, controller.router);
         });
     };
     App.prototype.listen = function () {

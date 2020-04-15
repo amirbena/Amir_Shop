@@ -4,12 +4,13 @@ import ProductService from '../services/product';
 import CommentService from "../services/comment";
 import PaymentMethodService from '../services/paymentMethod';
 import PaymentService from "../services/payment";
-
+import CartService from '../services/cart';
 export default {
     CategoryService,
     UserService,
     ProductService,
     CommentService,
     PaymentMethodService,
-    PaymentService
+    PaymentService,
+    CartService
 }
