@@ -162,7 +162,7 @@ export default class CartService extends GeneralService {
                 status = statusUser;
                 throw new Error(detailsUser);
             }
-            const { ok, deletedCount } = await Cart.deleteOne({ userId, date });
+            const { deletedCount } = await Cart.deleteOne({ userId, date });
             if (!deletedCount) {
                 status = NOT_FOUND;
                 throw new Error("Can't find current cart");
@@ -181,19 +181,69 @@ export default class CartService extends GeneralService {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            const { deletedCount} = await Cart.deleteOne({ _id: cartId });
-            if(!deletedCount){
-                status= NOT_FOUND;
+            const { deletedCount } = await Cart.deleteOne({ _id: cartId });
+            if (!deletedCount) {
+                status = NOT_FOUND;
                 throw new Error("cart is not found");
             }
-            status= OK;
-            details= "cart deleted";
+            status = OK;
+            details = "cart deleted";
         } catch (ex) {
             details = (ex as Error).message;
         }
         return {
             status,
             details
+        }
+    }
+    public static async getCartbyUserAndDate(userId: string, dateString: string): Promise<{ status: HTTP_STATUS, details: string, cart?: ICart }> {
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        const date = new Date(dateString);
+        try {
+            const { status: statusUser, details: detailsUser } = await this.findUserById(userId);
+            if (statusUser !== CONTINUE) {
+                status = statusUser;
+                throw new Error(detailsUser);
+            }
+            let cart = await Cart.findOne({ userId, date });
+            if (!cart) {
+                status = NOT_FOUND;
+                throw new Error("the cart is not found");
+            }
+            cart = (cart as ICart);
+            status = OK;
+            details = cart.toJSON();
+            return {
+                status,
+                details,
+                cart
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async getCartById(cartId: string){
+        let details: string = "";
+        try {
+           const {status, details:cartDetails,cart}= await this.findCartById(cartId);
+           if(status !==OK){
+               return {
+                   status,
+                   details: cartDetails
+               }
+           }
+           return {
+               status:OK,
+               details,
+               cart :cart as ICart
+           }
+        } catch (ex) {
+            details = (ex as Error).message;
         }
     }
 }
