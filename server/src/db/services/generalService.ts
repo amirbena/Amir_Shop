@@ -113,7 +113,7 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findPaymentMethodAccordingId(id: string): Promise<{ status: HTTP_STATUS, details?: string, paymentMethod?: IPaymentMethod }> {
+    protected static async findPaymentMethodAccordingId(id: string): Promise<{ status: HTTP_STATUS, details: string, paymentMethod?: IPaymentMethod }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -127,9 +127,11 @@ export default class GeneralService {
                 throw new Error("Payment Method not found into db");
             }
             paymentMethod = (paymentMethod as IPaymentMethod);
+            details= paymentMethod.toString();
             status = CONTINUE;
             return {
                 status,
+                details,
                 paymentMethod
             }
         } catch (ex) {

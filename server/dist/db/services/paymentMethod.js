@@ -178,6 +178,29 @@ var PaymentMethodService = /** @class */ (function (_super) {
             });
         });
     };
+    PaymentMethodService.findPaymentMethodAccordingId = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, status, details, paymentMethod;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, _super.findPaymentMethodAccordingId.call(this, id)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
+                        if (status !== CONTINUE) {
+                            return [2 /*return*/, {
+                                    status: status,
+                                    details: details
+                                }];
+                        }
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                paymentMethod: paymentMethod
+                            }];
+                }
+            });
+        });
+    };
     return PaymentMethodService;
 }(generalService_1.default));
 exports.default = PaymentMethodService;

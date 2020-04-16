@@ -1,10 +1,11 @@
+import { ICartDetails } from './../models/cart.model';
 import Payment, { IPayment, validatePayment, IPaymentValidator } from "../models/payment.model";
 import Product from '../models/product.model';
 import GeneralService from '../services/generalService';
 import HTTP_STATUS from "../../common/HTTP_Enum";
 import CartService from '../services/cart';
 import iterableArray from '../../common/iterableArray';
-import { ICart, ICartDetails } from "../models/cart.model";
+import { ICart } from "../models/cart.model";
 const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STATUS;
 
 export default class PaymentService extends GeneralService {
@@ -44,7 +45,7 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    public static async paymentPaid(paymentId: string) {
+    public static async paymentPaid(paymentId: string): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -57,8 +58,8 @@ export default class PaymentService extends GeneralService {
             }
             payment = (payment as IPayment);
             const { status: statusUpdating, details: detailsUpdating } = await this.updateProduct(payment.cartId);
-            if(statusUpdating!== CONTINUE){
-                status= statusUpdating;
+            if (statusUpdating !== CONTINUE) {
+                status = statusUpdating;
                 throw new Error(` ${detailsUpdating}`);
             }
             const { status: statusCart, details: detailsCart } = await CartService.deleteCartById(payment.cartId);
@@ -69,6 +70,53 @@ export default class PaymentService extends GeneralService {
             // send user details to array
         } catch (ex) {
             details = (ex as Error).message
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async getPayments(): Promise<{ status: HTTP_STATUS, details: string, payments?: IPayment[] }> {
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            const payments = await Payment.find();
+            status = OK;
+            details = payments.toString();
+            return {
+                status,
+                details,
+                payments
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async deletePayment(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Bad request");
+            }
+            const { deletedCount } = await Payment.deleteOne({ _id: id });
+            if (!deletedCount) {
+                status = NOT_FOUND;
+                throw new Error("id is not found into db");
+            }
+            status = OK;
+            details = "Item deleted in succeed";
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
         }
     }
     private static async updateProduct(cartId: string): Promise<{ status: HTTP_STATUS, details: string }> {
@@ -102,4 +150,5 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
+
 }

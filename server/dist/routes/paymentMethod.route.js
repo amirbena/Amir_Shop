@@ -112,14 +112,36 @@ var PaymentMethod = /** @class */ (function (_super) {
                 }
             });
         }); };
+        _this.findPaymentMethodbyId = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details, paymentMethod;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
+                        if (status !== OK) {
+                            return [2 /*return*/, res.status(status).send({
+                                    status: status,
+                                    details: details
+                                })];
+                        }
+                        return [2 /*return*/, res.send({
+                                status: status,
+                                details: details,
+                                paymentMethod: paymentMethod
+                            })];
+                }
+            });
+        }); };
         _this.path = '/paymentMethods';
         _this.intializeRoutes();
         return _this;
     }
     PaymentMethod.prototype.intializeRoutes = function () {
-        this.router.get(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.getPaymentMethods);
+        this.router.get(this.path, [auth_middleware_1.default], this.getPaymentMethods);
         this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addPaymentMethod);
         this.router.delete(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.deletePaymentMethod);
+        this.router.get(this.path + "/ id ", [auth_middleware_1.default], this.findPaymentMethodbyId);
     };
     return PaymentMethod;
 }(generalRoute_route_1.default));

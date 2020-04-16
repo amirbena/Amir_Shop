@@ -15,9 +15,10 @@ export default class PaymentMethod extends GeneralRoute {
         this.intializeRoutes();
     }
     private intializeRoutes() {
-        this.router.get(this.path, [authMiddlware, adminMiddleware], this.getPaymentMethods);
+        this.router.get(this.path, [authMiddlware], this.getPaymentMethods);
         this.router.post(this.path, [authMiddlware, adminMiddleware], this.addPaymentMethod);
         this.router.delete(this.path, [authMiddlware, adminMiddleware], this.deletePaymentMethod);
+        this.router.get(`${this.path}/ id `, [authMiddlware], this.findPaymentMethodbyId);
     }
     getPaymentMethods = async (req: Request, res: Response) => {
         const { status, details, paymentMethods: beforePaymentMethods } = await PaymentMethodService.getAllPaymentMethods();
@@ -41,11 +42,25 @@ export default class PaymentMethod extends GeneralRoute {
             details
         })
     }
-    deletePaymentMethod= async (req:Request, res:Response)=>{
-        const {status,details}= await PaymentMethodService.deletePaymentMethod(req.body.paymentMethod.id);
+    deletePaymentMethod = async (req: Request, res: Response) => {
+        const { status, details } = await PaymentMethodService.deletePaymentMethod(req.body.paymentMethod.id);
         return res.status(status).send({
             status,
             details
+        })
+    }
+    findPaymentMethodbyId = async (req: Request, res: Response) => {
+        const { status, details, paymentMethod } = await PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId);
+        if (status !== OK) {
+            return res.status(status).send({
+                status,
+                details
+            })
+        }
+        return res.send({
+            status,
+            details,
+            paymentMethod
         })
     }
 }
