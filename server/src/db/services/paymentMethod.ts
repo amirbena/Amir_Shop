@@ -78,5 +78,19 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
+    public static async findPaymentMethodAccordingId(id: string): Promise<{ status: HTTP_STATUS, details: string, paymentMethod?: IPaymentMethod }> {
+        const { status, details, paymentMethod } = await super.findPaymentMethodAccordingId(id);
+        if (status !== CONTINUE) {
+            return {
+                status,
+                details
+            }
+        }
+        return {
+            status,
+            details,
+            paymentMethod
+        }
+    }
 
 }

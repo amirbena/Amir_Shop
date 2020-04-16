@@ -229,9 +229,11 @@ var GeneralService = /** @class */ (function () {
                             throw new Error("Payment Method not found into db");
                         }
                         paymentMethod = paymentMethod;
+                        details = paymentMethod.toString();
                         status = CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
+                                details: details,
                                 paymentMethod: paymentMethod
                             }];
                     case 3:
