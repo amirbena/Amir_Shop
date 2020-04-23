@@ -61,7 +61,7 @@ var GeneralService = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!id) {
+                        if (id !== '') {
                             status = BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }

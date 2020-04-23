@@ -9,6 +9,10 @@ export interface IUser extends Document {
     password: string;
     isAdmin: boolean;
 }
+export interface ILogin {
+    email: string;
+    password: string;
+}
 const UserSchema: Schema = new Schema({
     fullName: {
         type: Schema.Types.String,

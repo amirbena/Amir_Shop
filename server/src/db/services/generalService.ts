@@ -13,7 +13,7 @@ export default class GeneralService {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!id) {
+            if (id!=='') {
                 status = BAD_REQUEST;
                 throw new Error("Invalid parameter at id");
             }
