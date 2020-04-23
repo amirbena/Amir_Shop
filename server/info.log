@@ -1,0 +1,15 @@
+{
+  message: 'C:\\AmirProjects\\AmirWeb\\Shop_center\\server\\src\\db\\config\\.env',
+  level: 'info',
+  timestamp: '2020-04-19T15:04:04.950Z'
+}
+{
+  message: 'Connected to mongodb://localhost:27017/amiros_shop in undefined enviroment',
+  level: 'info',
+  timestamp: '2020-04-19T15:04:06.116Z'
+}
+{
+  level: 'info',
+  message: 'App listens to 5000 PORT',
+  timestamp: '2020-04-19T15:04:06.126Z'
+}
