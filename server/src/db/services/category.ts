@@ -2,9 +2,9 @@ import Category, { ICategory, validateCategory } from "../models/category.model"
 import HTTP_STATUS from "../../common/HTTP_Enum";
 import GeneralService from "./generalService";
 
-const {OK,BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND}=HTTP_STATUS;
+const { OK, BAD_REQUEST, CONTINUE, INTERNAL_SERVER_ERROR, NOT_FOUND } = HTTP_STATUS;
 class CategoryService extends GeneralService {
-    public static async addCategory(category: ICategory): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async addCategory(category: any): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details = "";
         try {
@@ -33,7 +33,31 @@ class CategoryService extends GeneralService {
     public static async getAllCategories(): Promise<ICategory[]> {
         return await Category.find();
     }
-
+    public static async getCategoryById(_id: string): Promise<{ status: HTTP_STATUS, details: string, category?: ICategory }> {
+        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            const { status: statusCheck, details: detailsCheck,category } = await this.findCategoryById(_id);
+            if (statusCheck !== CONTINUE) {
+                status= statusCheck;
+                throw new Error(detailsCheck);
+            }
+            status=OK;
+            const categoryAfter= (category as ICategory);
+            details= categoryAfter.toString();
+            return{
+                status,
+                details,
+                category
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
     public static async deleteCategory(_id: string): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";

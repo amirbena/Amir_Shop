@@ -130,11 +130,11 @@ class UserService extends GeneralService {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!_id) {
+            if (_id === "") {
                 status = BAD_REQUEST;
                 throw new Error("ID isn't given");
             }
-            const result = await User.deleteOne({ _id });
+            const result = await User.findByIdAndDelete(_id);
             if (!result) {
                 status = NOT_FOUND;
                 throw new Error("Given ID isn't found in DB");

@@ -1,10 +1,8 @@
-import { IUser } from './../../db/models/user.model';
-import mongoose from 'mongoose';
-import mocha, { beforeEach, before, after, it, describe } from "mocha";
-import chai, { expect, should } from 'chai';
-import iterableArray from '../../common/iterableArray';
-import User from '../../db/models/user.model';
+import { beforeEach, afterEach, it, describe } from "mocha";
 import bcrypt from 'bcrypt';
+import { expect } from 'chai';
+import iterableArray from '../../common/iterableArray';
+import User,{ IUser } from '../../db/models/user.model';
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import database from '../../db/index';
 import userModel from '../../db/models/user.model';
@@ -120,8 +118,8 @@ describe("User Model testing", () => {
         })
         it('should get status of OK if user changed mode to admin', async () => {
             const userPoped = await userModel.findOne({ fullName: "Tal Leon" });
-            const user= (userPoped as IUser);
-            const { status, details } = await database.Services.UserService.makeUserAdmin(user._id);
+            const user = (userPoped as IUser);
+            const { status } = await database.Services.UserService.makeUserAdmin(user._id);
             expect(status).to.be.equal(HTTP_STATUS.OK);
         });
     })
@@ -253,5 +251,95 @@ describe("User Model testing", () => {
             expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
         })
     })
-}
-);
+    describe("GET/: GETALLUSERS", () => {
+        beforeEach(async () => {
+            const passwords = ['123456', '123456', 'talleon'];
+            const salt = await bcrypt.genSalt(20);
+            const encryptedPasswords: string[] = [];
+            let password;
+            for await (password of iterableArray(passwords)) {
+                const encrypted = await bcrypt.hash(password, salt);
+                encryptedPasswords.push(encrypted);
+            }
+            await User.create({
+                fullName: 'Ron Cohen',
+                address: 'Ben Gurion 99, Bat-yam',
+                email: 'roncohen@gmail.com',
+                password: encryptedPasswords[0]
+            })
+            await User.create({
+                fullName: 'David Levi',
+                address: 'Ben Gurion 109, Bat-yam',
+                email: 'davidlevi@gmail.com',
+                password: encryptedPasswords[1]
+            })
+            await User.create({
+                fullName: 'Tal Leon',
+                address: 'Harav Maimon 15, Bat-yam',
+                email: 'tal222881@gmail.com',
+                password: encryptedPasswords[2]
+            })
+        })
+        afterEach(async () => {
+            await User.deleteMany({});
+        })
+        it('should return list of 0 users', async () => {
+            await User.deleteMany({});
+            const users = await database.Services.UserService.getAllUsers();
+            expect(users).length(0);
+        })
+        it('should return list of all users', async () => {
+            const users = await database.Services.UserService.getAllUsers();
+            expect(users).length(3);
+            expect(users[0]).haveOwnProperty("fullName", "Ron Cohen");
+        })
+    })
+    describe("DELETE/: users", () => {
+        beforeEach(async () => {
+            const passwords = ['123456', '123456', 'talleon'];
+            const salt = await bcrypt.genSalt(20);
+            const encryptedPasswords: string[] = [];
+            let password;
+            for await (password of iterableArray(passwords)) {
+                const encrypted = await bcrypt.hash(password, salt);
+                encryptedPasswords.push(encrypted);
+            }
+            await User.create({
+                fullName: 'Ron Cohen',
+                address: 'Ben Gurion 99, Bat-yam',
+                email: 'roncohen@gmail.com',
+                password: encryptedPasswords[0]
+            })
+            await User.create({
+                fullName: 'David Levi',
+                address: 'Ben Gurion 109, Bat-yam',
+                email: 'davidlevi@gmail.com',
+                password: encryptedPasswords[1]
+            })
+            await User.create({
+                fullName: 'Tal Leon',
+                address: 'Harav Maimon 15, Bat-yam',
+                email: 'tal222881@gmail.com',
+                password: encryptedPasswords[2]
+            })
+        })
+        afterEach(async () => {
+            await User.deleteMany({});
+        })
+        it('should return BAD_REQUEST status', async () => {
+            const { status } = await database.Services.UserService.deleteUser("");
+            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+        })
+        it('should return NOT_FOUND status', async () => {
+            const { status } = await database.Services.UserService.deleteUser("A5123456");
+            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+        })
+        it('should  return status OK , and delete Tal Leon user', async () => {
+            const user = await User.findOne({ fullName: "Tal Leon" });
+            const { status } = await database.Services.UserService.deleteUser((user as IUser)._id);
+            expect(status).to.be.equal(HTTP_STATUS.OK);
+            const result = await User.findById((user as IUser)._id);
+            expect(result).to.be.equal(null);
+        })
+    })
+});
