@@ -47,9 +47,9 @@ describe("User Model testing", () => {
         it('should get status of BAD_REQUEST of wrong object', async () => {
             const object = {
                 fullName: '',
-                address: 44,
+                address: 'hh',
                 email: '1333o3',
-                password: true
+                password: "aa"
             };
             const { status } = await database.Services.UserService.createUser(object, jwtKey);
             expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);

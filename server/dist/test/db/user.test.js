@@ -47,10 +47,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var mocha_1 = require("mocha");
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var chai_1 = require("chai");
 var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
 var user_model_1 = __importDefault(require("../../db/models/user.model"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var index_1 = __importDefault(require("../../db/index"));
 var user_model_2 = __importDefault(require("../../db/models/user.model"));
@@ -127,7 +127,7 @@ mocha_1.describe("User Model testing", function () {
                 }
             });
         }); });
-        afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
@@ -144,9 +144,9 @@ mocha_1.describe("User Model testing", function () {
                     case 0:
                         object = {
                             fullName: '',
-                            address: 44,
+                            address: 'hh',
                             email: '1333o3',
-                            password: true
+                            password: "aa"
                         };
                         return [4 /*yield*/, index_1.default.Services.UserService.createUser(object, jwtKey)];
                     case 1:
@@ -267,7 +267,7 @@ mocha_1.describe("User Model testing", function () {
                 }
             });
         }); });
-        afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
@@ -302,16 +302,16 @@ mocha_1.describe("User Model testing", function () {
             });
         }); });
         mocha_1.it('should get status of OK if user changed mode to admin', function () { return __awaiter(_this, void 0, void 0, function () {
-            var userPoped, user, _a, status, details;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var userPoped, user, status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0: return [4 /*yield*/, user_model_2.default.findOne({ fullName: "Tal Leon" })];
                     case 1:
-                        userPoped = _b.sent();
+                        userPoped = _a.sent();
                         user = userPoped;
                         return [4 /*yield*/, index_1.default.Services.UserService.makeUserAdmin(user._id)];
                     case 2:
-                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
                         return [2 /*return*/];
                 }
@@ -389,7 +389,7 @@ mocha_1.describe("User Model testing", function () {
                 }
             });
         }); });
-        afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
@@ -555,7 +555,7 @@ mocha_1.describe("User Model testing", function () {
                 }
             });
         }); });
-        afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
@@ -604,6 +604,241 @@ mocha_1.describe("User Model testing", function () {
                     case 2:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    mocha_1.describe("GET/: GETALLUSERS", function () {
+        mocha_1.beforeEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var e_5, _a, passwords, salt, encryptedPasswords, password, _b, _c, encrypted, e_5_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        passwords = ['123456', '123456', 'talleon'];
+                        return [4 /*yield*/, bcrypt_1.default.genSalt(20)];
+                    case 1:
+                        salt = _d.sent();
+                        encryptedPasswords = [];
+                        _d.label = 2;
+                    case 2:
+                        _d.trys.push([2, 8, 9, 14]);
+                        _b = __asyncValues(iterableArray_1.default(passwords));
+                        _d.label = 3;
+                    case 3: return [4 /*yield*/, _b.next()];
+                    case 4:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 7];
+                        password = _c.value;
+                        return [4 /*yield*/, bcrypt_1.default.hash(password, salt)];
+                    case 5:
+                        encrypted = _d.sent();
+                        encryptedPasswords.push(encrypted);
+                        _d.label = 6;
+                    case 6: return [3 /*break*/, 3];
+                    case 7: return [3 /*break*/, 14];
+                    case 8:
+                        e_5_1 = _d.sent();
+                        e_5 = { error: e_5_1 };
+                        return [3 /*break*/, 14];
+                    case 9:
+                        _d.trys.push([9, , 12, 13]);
+                        if (!(_c && !_c.done && (_a = _b.return))) return [3 /*break*/, 11];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 10:
+                        _d.sent();
+                        _d.label = 11;
+                    case 11: return [3 /*break*/, 13];
+                    case 12:
+                        if (e_5) throw e_5.error;
+                        return [7 /*endfinally*/];
+                    case 13: return [7 /*endfinally*/];
+                    case 14: return [4 /*yield*/, user_model_1.default.create({
+                            fullName: 'Ron Cohen',
+                            address: 'Ben Gurion 99, Bat-yam',
+                            email: 'roncohen@gmail.com',
+                            password: encryptedPasswords[0]
+                        })];
+                    case 15:
+                        _d.sent();
+                        return [4 /*yield*/, user_model_1.default.create({
+                                fullName: 'David Levi',
+                                address: 'Ben Gurion 109, Bat-yam',
+                                email: 'davidlevi@gmail.com',
+                                password: encryptedPasswords[1]
+                            })];
+                    case 16:
+                        _d.sent();
+                        return [4 /*yield*/, user_model_1.default.create({
+                                fullName: 'Tal Leon',
+                                address: 'Harav Maimon 15, Bat-yam',
+                                email: 'tal222881@gmail.com',
+                                password: encryptedPasswords[2]
+                            })];
+                    case 17:
+                        _d.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it('should return list of 0 users', function () { return __awaiter(_this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, index_1.default.Services.UserService.getAllUsers()];
+                    case 2:
+                        users = _a.sent();
+                        chai_1.expect(users).length(0);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it('should return list of all users', function () { return __awaiter(_this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, index_1.default.Services.UserService.getAllUsers()];
+                    case 1:
+                        users = _a.sent();
+                        chai_1.expect(users).length(3);
+                        chai_1.expect(users[0]).haveOwnProperty("fullName", "Ron Cohen");
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    mocha_1.describe("DELETE/: users", function () {
+        mocha_1.beforeEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var e_6, _a, passwords, salt, encryptedPasswords, password, _b, _c, encrypted, e_6_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        passwords = ['123456', '123456', 'talleon'];
+                        return [4 /*yield*/, bcrypt_1.default.genSalt(20)];
+                    case 1:
+                        salt = _d.sent();
+                        encryptedPasswords = [];
+                        _d.label = 2;
+                    case 2:
+                        _d.trys.push([2, 8, 9, 14]);
+                        _b = __asyncValues(iterableArray_1.default(passwords));
+                        _d.label = 3;
+                    case 3: return [4 /*yield*/, _b.next()];
+                    case 4:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 7];
+                        password = _c.value;
+                        return [4 /*yield*/, bcrypt_1.default.hash(password, salt)];
+                    case 5:
+                        encrypted = _d.sent();
+                        encryptedPasswords.push(encrypted);
+                        _d.label = 6;
+                    case 6: return [3 /*break*/, 3];
+                    case 7: return [3 /*break*/, 14];
+                    case 8:
+                        e_6_1 = _d.sent();
+                        e_6 = { error: e_6_1 };
+                        return [3 /*break*/, 14];
+                    case 9:
+                        _d.trys.push([9, , 12, 13]);
+                        if (!(_c && !_c.done && (_a = _b.return))) return [3 /*break*/, 11];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 10:
+                        _d.sent();
+                        _d.label = 11;
+                    case 11: return [3 /*break*/, 13];
+                    case 12:
+                        if (e_6) throw e_6.error;
+                        return [7 /*endfinally*/];
+                    case 13: return [7 /*endfinally*/];
+                    case 14: return [4 /*yield*/, user_model_1.default.create({
+                            fullName: 'Ron Cohen',
+                            address: 'Ben Gurion 99, Bat-yam',
+                            email: 'roncohen@gmail.com',
+                            password: encryptedPasswords[0]
+                        })];
+                    case 15:
+                        _d.sent();
+                        return [4 /*yield*/, user_model_1.default.create({
+                                fullName: 'David Levi',
+                                address: 'Ben Gurion 109, Bat-yam',
+                                email: 'davidlevi@gmail.com',
+                                password: encryptedPasswords[1]
+                            })];
+                    case 16:
+                        _d.sent();
+                        return [4 /*yield*/, user_model_1.default.create({
+                                fullName: 'Tal Leon',
+                                address: 'Harav Maimon 15, Bat-yam',
+                                email: 'tal222881@gmail.com',
+                                password: encryptedPasswords[2]
+                            })];
+                    case 17:
+                        _d.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_model_1.default.deleteMany({})];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it('should return BAD_REQUEST status', function () { return __awaiter(_this, void 0, void 0, function () {
+            var status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, index_1.default.Services.UserService.deleteUser("")];
+                    case 1:
+                        status = (_a.sent()).status;
+                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it('should return NOT_FOUND status', function () { return __awaiter(_this, void 0, void 0, function () {
+            var status;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, index_1.default.Services.UserService.deleteUser("A5123456")];
+                    case 1:
+                        status = (_a.sent()).status;
+                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it('should  return status OK , and delete Tal Leon user', function () { return __awaiter(_this, void 0, void 0, function () {
+            var user, status, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_model_1.default.findOne({ fullName: "Tal Leon" })];
+                    case 1:
+                        user = _a.sent();
+                        return [4 /*yield*/, index_1.default.Services.UserService.deleteUser(user._id)];
+                    case 2:
+                        status = (_a.sent()).status;
+                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        return [4 /*yield*/, user_model_1.default.findById(user._id)];
+                    case 3:
+                        result = _a.sent();
+                        chai_1.expect(result).to.be.equal(null);
                         return [2 /*return*/];
                 }
             });

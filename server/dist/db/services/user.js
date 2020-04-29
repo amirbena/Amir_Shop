@@ -271,11 +271,11 @@ var UserService = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!_id) {
+                        if (_id === "") {
                             status = BAD_REQUEST;
                             throw new Error("ID isn't given");
                         }
-                        return [4 /*yield*/, user_model_1.default.deleteOne({ _id: _id })];
+                        return [4 /*yield*/, user_model_1.default.findByIdAndDelete(_id)];
                     case 2:
                         result = _a.sent();
                         if (!result) {
