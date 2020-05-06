@@ -2,7 +2,7 @@
 import { ICategory } from '../models/category.model';
 import { IUser } from '../models/user.model';
 import iterableArray from '../../common/iterableArray';
-import Comment from '../models/comment.model';
+import Comment, { IComment } from '../models/comment.model';
 import Product, { IProduct, validateProduct, IProductInput } from "../models/product.model";
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import GeneralService from './generalService';
@@ -116,13 +116,13 @@ export default class ProductService extends GeneralService {
                 throw new Error("not found products into db")
             }
             // tslint:disable-next-line: prefer-const
-            for await (let product of iterableArray(products)) {
-                const { status: productStatus, details: detailedProductStatus, detailedProduct } = await this.getDetailedProductById(product);
+            for await (let product of await iterableArray<IProduct>(products)) {
+                const { status: productStatus, details: detailedProductStatus, detailedProduct } = await this.getDetailedProductById((product as IProduct)._id);
                 if (productStatus !== OK) {
                     status = productStatus;
                     throw new Error(detailedProductStatus);
                 }
-                detailedProducts.push(product);
+                detailedProducts.push((detailedProduct as IDetailedProduct));
             }
             status = OK;
             details = "succeeed to find";
@@ -175,8 +175,8 @@ export default class ProductService extends GeneralService {
             }
             let avgRank = 0;
             // tslint:disable-next-line: prefer-const
-            for await (let comment of iterableArray(comments)) {
-                avgRank += comment.rank;
+            for await (let comment of await iterableArray<IComment>(comments)) {
+                avgRank += (comment as IComment).rank;
             }
             avgRank = avgRank / comments.length;
             status = OK;

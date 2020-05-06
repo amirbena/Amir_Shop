@@ -8,7 +8,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc -p.",
     "postinstall": "node-config-ts",
-    "test": "mocha"
+    "test": "nyc --reporter=html mochar --recursive --exit"
   },
   "repository": {
     "type": "git",
