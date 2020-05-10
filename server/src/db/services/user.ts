@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 import joi, { validate } from "joi";
 import jwt from 'jsonwebtoken';
-import User, { IUser, validateUser } from "../models/user.model";
+import User, { IUser,IUserInput ,validateUser, ILogin } from "../models/user.model";
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import GeneralService from "./generalService";
 
 const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 class UserService extends GeneralService {
 
-    public static async createUser(user: any, jwtKey: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
+    public static async createUser(user: IUserInput, jwtKey: string): Promise<{ status: HTTP_STATUS, details: string, token: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let token = '';
         let details = "";
@@ -41,16 +41,12 @@ class UserService extends GeneralService {
             token
         }
     }
-    public static async makeUserAdmin(_id: string): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async makeUserAdmin(_id: any): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!_id) {
-                status = BAD_REQUEST;
-                throw new Error("You have null/ undefinded value- please put real value");
-            }
             const { status: foundUserStatus, details: foundUserDetails, user: foundUser } = await this.findUserById(_id);
-            if (foundUserStatus !== CONTINUE && foundUser) {
+            if (foundUserStatus !== CONTINUE && !foundUser) {
                 status = foundUserStatus;
                 throw new Error(foundUserDetails);
             }
@@ -67,7 +63,7 @@ class UserService extends GeneralService {
             details
         }
     }
-    public static async userLogin(detailsforQuerying: any, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
+    public static async userLogin(detailsforQuerying: ILogin, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
         const { email, password } = detailsforQuerying;
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
@@ -102,11 +98,11 @@ class UserService extends GeneralService {
             token
         }
     }
-    public static async updateUser(_id: string, detailstoUpdate: object) {
+    public static async updateUser(_id: any, detailstoUpdate: object) {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!_id) {
+            if (_id === '') {
                 status = BAD_REQUEST;
                 throw new Error("each of details is invalid- _id is mongoose object id, details to update is object");
             }
@@ -130,39 +126,15 @@ class UserService extends GeneralService {
     public static async getAllUsers(): Promise<IUser[]> {
         return await User.find();
     }
-    public static async getUserById(id: string): Promise<{ status: HTTP_STATUS, details: string, user?: IUser }> {
+    public static async deleteUser(_id: any): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            const { status: userStatus, details: userDetails, user } = await this.findUserById(id);
-            if (userStatus !== CONTINUE) {
-                status = userStatus;
-                throw new Error(userDetails);
-            }
-            status = OK;
-            details = "found";
-            return {
-                status,
-                details,
-                user: user as IUser
-            }
-        } catch (ex) {
-            details = (ex as Error).message;
-        }
-        return {
-            status,
-            details
-        }
-    }
-    public static async deleteUser(_id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
-        let details: string = "";
-        try {
-            if (!_id) {
+            if (_id === "") {
                 status = BAD_REQUEST;
                 throw new Error("ID isn't given");
             }
-            const result = await User.deleteOne({ _id });
+            const result = await User.findByIdAndDelete(_id);
             if (!result) {
                 status = NOT_FOUND;
                 throw new Error("Given ID isn't found in DB");
@@ -184,7 +156,7 @@ class UserService extends GeneralService {
         }, jwtPrivateKey);
         return token;
     }
-    private static validateLogin(details: any) {
+    private static validateLogin(details: ILogin) {
         const schema = {
             email: joi.string().email().required().min(5).max(255),
             password: joi.string().min(5).max(255)

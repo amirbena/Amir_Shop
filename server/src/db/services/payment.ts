@@ -129,15 +129,15 @@ export default class PaymentService extends GeneralService {
                 throw new Error(detailsCart);
             }
             const cartDetailsProducts = (cart as ICart).products;
-            let cartDetail: ICartDetails;
-            for await (cartDetail of iterableArray(cartDetailsProducts)) {
-                const productId = (cartDetail as ICartDetails).productId;
+            // tslint:disable-next-line: prefer-const
+            for await (let cartDetail of await iterableArray<ICartDetails>(cartDetailsProducts)) {
+                const productId =(cartDetail as ICartDetails).productId;
                 const product = await Product.findById(productId);
                 if (!product) {
                     status = NOT_FOUND;
                     throw new Error("one of products not found into db")
                 }
-                product.amount -= cartDetail.amountBuying;
+                product.amount -= (cartDetail as ICartDetails).amountBuying;
                 await product.save();
             }
             status = CONTINUE;

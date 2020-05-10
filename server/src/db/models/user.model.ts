@@ -9,6 +9,17 @@ export interface IUser extends Document {
     password: string;
     isAdmin: boolean;
 }
+export interface IUserInput{
+    fullName: string;
+    address: string;
+    email: string;
+    password: string;
+    isAdmin?: boolean;
+}
+export interface ILogin {
+    email: string;
+    password: string;
+}
 const UserSchema: Schema = new Schema({
     fullName: {
         type: Schema.Types.String,
@@ -38,7 +49,7 @@ const UserSchema: Schema = new Schema({
 })
 export default mongoose.model<IUser>("User", UserSchema);
 
-export function validateUser(user: IUser) {
+export function validateUser(user: IUserInput) {
     const schema = {
         fullName: joi.string().min(5).max(50).required(),
         address: joi.string().min(5).max(50).required(),

@@ -111,7 +111,11 @@ var ProductService = /** @class */ (function (_super) {
                         productAdded = _c.sent();
                         status = OK;
                         details = productAdded.toJSON();
-                        return [3 /*break*/, 6];
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                product: productAdded
+                            }];
                     case 5:
                         ex_1 = _c.sent();
                         details = ex_1.message;
@@ -126,7 +130,7 @@ var ProductService = /** @class */ (function (_super) {
     };
     ProductService.getDetailedProductById = function (productId) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, product, _a, statusCategory, detailsCategory, category, _b, statusAdmin, detailsAdmin, admin, detailedProduct, ex_2;
+            var status, details, product, _a, statusCategory, detailsCategory, category, _b, statusAdmin, detailsAdmin, admin, _id, name, price_for_each, amount, image_url, detailedProduct, ex_2;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -160,13 +164,15 @@ var ProductService = /** @class */ (function (_super) {
                             status = statusAdmin;
                             throw new Error(detailsAdmin);
                         }
+                        _id = product._id, name = product.name, price_for_each = product.price_for_each, amount = product.amount, image_url = product.image_url;
                         detailedProduct = {
-                            _id: product._id,
+                            _id: _id,
                             category: category,
                             admin: admin,
-                            price_for_each: product.price_for_each,
-                            amount: product.amount,
-                            image_url: product.image_url
+                            name: name,
+                            price_for_each: price_for_each,
+                            amount: amount,
+                            image_url: image_url
                         };
                         status = OK;
                         details = "Succeed found";

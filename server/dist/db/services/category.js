@@ -61,7 +61,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var category_model_1 = __importStar(require("../models/category.model"));
 var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var generalService_1 = __importDefault(require("./generalService"));
-var OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
+var OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, CONTINUE = HTTP_Enum_1.default.CONTINUE, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
 var CategoryService = /** @class */ (function (_super) {
     __extends(CategoryService, _super);
     function CategoryService() {
@@ -120,9 +120,47 @@ var CategoryService = /** @class */ (function (_super) {
             });
         });
     };
+    CategoryService.getCategoryById = function (_id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, _a, statusCheck, detailsCheck, category, categoryAfter, ex_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        status = INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.findCategoryById(_id)];
+                    case 2:
+                        _a = _b.sent(), statusCheck = _a.status, detailsCheck = _a.details, category = _a.category;
+                        if (statusCheck !== CONTINUE) {
+                            status = statusCheck;
+                            throw new Error(detailsCheck);
+                        }
+                        status = OK;
+                        categoryAfter = category;
+                        details = categoryAfter.toString();
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                category: category
+                            }];
+                    case 3:
+                        ex_2 = _b.sent();
+                        details = ex_2.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
     CategoryService.deleteCategory = function (_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, deletedItem, ex_2;
+            var status, details, deletedItem, ex_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -146,8 +184,8 @@ var CategoryService = /** @class */ (function (_super) {
                         details = "Succeed delete";
                         return [3 /*break*/, 4];
                     case 3:
-                        ex_2 = _a.sent();
-                        details = ex_2.message;
+                        ex_3 = _a.sent();
+                        details = ex_3.message;
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/, {
                             status: status,

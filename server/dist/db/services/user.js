@@ -134,14 +134,10 @@ var UserService = /** @class */ (function (_super) {
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 4, , 5]);
-                        if (!_id) {
-                            status = BAD_REQUEST;
-                            throw new Error("You have null/ undefinded value- please put real value");
-                        }
                         return [4 /*yield*/, this.findUserById(_id)];
                     case 2:
                         _a = _b.sent(), foundUserStatus = _a.status, foundUserDetails = _a.details, foundUser = _a.user;
-                        if (foundUserStatus !== CONTINUE && foundUser) {
+                        if (foundUserStatus !== CONTINUE && !foundUser) {
                             status = foundUserStatus;
                             throw new Error(foundUserDetails);
                         }
@@ -226,7 +222,7 @@ var UserService = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!_id) {
+                        if (_id === '') {
                             status = BAD_REQUEST;
                             throw new Error("each of details is invalid- _id is mongoose object id, details to update is object");
                         }
@@ -264,46 +260,9 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
-    UserService.getUserById = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var status, details, _a, userStatus, userDetails, user, ex_5;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        status = INTERNAL_SERVER_ERROR;
-                        details = "";
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.findUserById(id)];
-                    case 2:
-                        _a = _b.sent(), userStatus = _a.status, userDetails = _a.details, user = _a.user;
-                        if (userStatus !== CONTINUE) {
-                            status = userStatus;
-                            throw new Error(userDetails);
-                        }
-                        status = OK;
-                        details = "found";
-                        return [2 /*return*/, {
-                                status: status,
-                                details: details,
-                                user: user
-                            }];
-                    case 3:
-                        ex_5 = _b.sent();
-                        details = ex_5.message;
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, {
-                            status: status,
-                            details: details
-                        }];
-                }
-            });
-        });
-    };
     UserService.deleteUser = function (_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, result, ex_6;
+            var status, details, result, ex_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -312,11 +271,11 @@ var UserService = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!_id) {
+                        if (_id === "") {
                             status = BAD_REQUEST;
                             throw new Error("ID isn't given");
                         }
-                        return [4 /*yield*/, user_model_1.default.deleteOne({ _id: _id })];
+                        return [4 /*yield*/, user_model_1.default.findByIdAndDelete(_id)];
                     case 2:
                         result = _a.sent();
                         if (!result) {
@@ -327,8 +286,8 @@ var UserService = /** @class */ (function (_super) {
                         details = "Succeed deleted";
                         return [3 /*break*/, 4];
                     case 3:
-                        ex_6 = _a.sent();
-                        details = ex_6.message;
+                        ex_5 = _a.sent();
+                        details = ex_5.message;
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/, {
                             status: status,
