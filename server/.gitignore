@@ -4,6 +4,10 @@ src/common/config.json
 #modules
 node_modules
 
+#logs 
+
+error.log
+info.log
 
 # environments
 

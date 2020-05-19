@@ -23,8 +23,7 @@ export interface ILogin {
 const UserSchema: Schema = new Schema({
     fullName: {
         type: Schema.Types.String,
-        required: true,
-        unique: true
+        required: true
     },
     address: {
         type: Schema.Types.String,

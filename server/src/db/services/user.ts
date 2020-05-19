@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User, { IUser,IUserInput ,validateUser, ILogin } from "../models/user.model";
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import GeneralService from "./generalService";
-
+import config from '../../common/config.json';
 const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 class UserService extends GeneralService {
 
@@ -23,7 +23,7 @@ class UserService extends GeneralService {
                 status = BAD_REQUEST;
                 throw new Error("User isn't found into DB");
             }
-            const salt = await bcrypt.genSalt(20);
+            const salt = await bcrypt.genSalt();
             user.password = await bcrypt.hash(user.password, salt);
             const createdUser = await User.create(user);
             if (createdUser) {
@@ -102,7 +102,7 @@ class UserService extends GeneralService {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (_id === '') {
+            if (!_id) {
                 status = BAD_REQUEST;
                 throw new Error("each of details is invalid- _id is mongoose object id, details to update is object");
             }

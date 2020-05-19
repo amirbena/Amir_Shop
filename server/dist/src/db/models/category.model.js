@@ -9,18 +9,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importStar(require("mongoose"));
 var joi_1 = __importStar(require("joi"));
-var PaymentMethodSchema = new mongoose_1.Schema({
-    paymentMethod: {
+var CategorySchema = new mongoose_1.Schema({
+    category_name: {
         type: mongoose_1.Schema.Types.String,
         required: true,
         unique: true
     }
 });
-exports.default = mongoose_1.default.model("Payments_Methods", PaymentMethodSchema);
-function validatePaymentMethod(model) {
+exports.default = mongoose_1.default.model("Category", CategorySchema);
+function validateCategory(category) {
     var schema = {
-        paymentMethod: joi_1.default.string().required().min(3).max(55)
+        category_name: joi_1.default.string().required().min(3).max(50)
     };
-    return joi_1.validate(model, schema);
+    return joi_1.validate(category, schema);
 }
-exports.validatePaymentMethod = validatePaymentMethod;
+exports.validateCategory = validateCategory;

@@ -2,200 +2,266 @@ import { beforeEach, afterEach, it, describe } from "mocha";
 import bcrypt from 'bcrypt';
 import { expect } from 'chai';
 import iterableArray from '../../common/iterableArray';
-import User,{ IUser } from '../../db/models/user.model';
+import User, { IUser } from '../../db/models/user.model';
 import HTTP_STATUS from '../../common/HTTP_Enum';
 import database from '../../db/index';
 import userModel from '../../db/models/user.model';
 
 
-const jwtKey: string = (process.env.jwtPrivateKey as string);
 describe("User Model testing", () => {
-
+    const jwtKey = (process.env.jwtPrivateKey as string);
     describe("Testing POST /: -createUser()", () => {
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
 
         it('should get status of BAD_REQUEST of wrong object', async () => {
-            const object = {
-                fullName: '',
-                address: 'hh',
-                email: '1333o3',
-                password: "aa"
-            };
-            const { status } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const object = {
+                    fullName: '',
+                    address: 'hh',
+                    email: '1333o3',
+                    password: "aa"
+                };
+                const { status } = await database.Services.UserService.createUser(object, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get status of BAD_REQUEST of found user in db', async () => {
-            const object = {
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: '123456'
+            try {
+                const object = {
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: '123456'
+                }
+                const { status } = await database.Services.UserService.createUser(object, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
             }
-            const { status } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get status OK  and return token not empty ', async () => {
-            const object = {
-                fullName: 'Amir Benassayag',
-                address: 'agnon6, Bat-yam',
-                email: 'amir12061968@gmail.com',
-                password: '123456'
+            try {
+                const object = {
+                    fullName: 'Amir Benassayag',
+                    address: 'agnon6, Bat-yam',
+                    email: 'amir12061968@gmail.com',
+                    password: '123456'
+                }
+                const { status, token } = await database.Services.UserService.createUser(object, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.OK);
+                expect(token).to.be.not.equal('');
             }
-            const { status, token } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
-            expect(token).to.be.not.equal('');
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
     })
     describe('Testing PUT /: -makeuserAdmin()', () => {
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get BAD_REQUEST if input is empty', async () => {
-            const { status } = await database.Services.UserService.makeUserAdmin('');
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const { status } = await database.Services.UserService.makeUserAdmin('');
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get status of NOT_FOUND if user doesn\'t exist in db', async () => {
-            const { status } = await database.Services.UserService.makeUserAdmin("ABCDRE116789");
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            try {
+                const { status } = await database.Services.UserService.makeUserAdmin("ABCDRE116789");
+                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get status of OK if user changed mode to admin', async () => {
-            const userPoped = await userModel.findOne({ fullName: "Tal Leon" });
-            const user = (userPoped as IUser);
-            const { status } = await database.Services.UserService.makeUserAdmin(user._id);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            try {
+                const userPoped = await userModel.findOne({ fullName: "Tal Leon" });
+                const user = (userPoped as IUser);
+                const { status } = await database.Services.UserService.makeUserAdmin(user._id);
+                expect(status).to.be.equal(HTTP_STATUS.OK);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         });
     })
     describe('Testing GET/: ->userLogin()', () => {
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return BAD_REQUEST if input invalid', async () => {
-            const loginSchema = {
-                email: "amrrr",
-                password: "124"
-            };
-            const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const loginSchema = {
+                    email: "amrrr",
+                    password: "124"
+                };
+                const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return NOT_FOUND if data if email is exist in DB', async () => {
-            const loginSchema = {
-                email: "amir12061968@gmail.com",
-                password: "ABCDEFG"
+            try {
+                const loginSchema = {
+                    email: "amir12061968@gmail.com",
+                    password: "ABCDEFG"
+                }
+                const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
             }
-            const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return NOT_FOUND if data if password doesn\'t match ', async () => {
-            const loginSchema = {
-                email: 'tal222881@gmail.com',
-                password: "ABCDEFG"
+            try {
+                const loginSchema = {
+                    email: 'tal222881@gmail.com',
+                    password: "ABCDEFG"
+                }
+                const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
             }
-            const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return OK if user login is valid', async () => {
-            const userResult = await userModel.findOne({ fullName: "Tal Leon" });
-            if (!userResult) {
-                expect(userResult).be.equal(undefined);
+            try {
+                const userResult = await userModel.findOne({ fullName: "Tal Leon" });
+                if (!userResult) {
+                    expect(userResult).be.equal(undefined);
+                }
+                const user = (userResult as IUser);
+                const password = "talleon";
+                const isEqual = await bcrypt.compare(password, user.password);
+                if (!isEqual) {
+                    return;
+                }
+                const loginSchema = {
+                    email: "tal222881@gmail.com",
+                    password: user.password
+                }
+                const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
+                expect(status).to.be.equal(HTTP_STATUS.OK);
             }
-            const user = (userResult as IUser);
-            const password = "talleon";
-            const isEqual = await bcrypt.compare(password, user.password);
-            if (!isEqual) {
-                return;
-            }
-            const loginSchema = {
-                email: "tal222881@gmail.com",
-                password: user.password
-            }
-            const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
     })
     describe('PUT/: updateUser', () => {
@@ -203,143 +269,202 @@ describe("User Model testing", () => {
             address: 'Hashalom 67, Tel-Aviv'
         }
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get BAD_REQUEST if input is empty', async () => {
-            const { status } = await database.Services.UserService.updateUser('', detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const { status } = await database.Services.UserService.updateUser('', detailsToUpdate);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get NOT_FOUND if user is not found into db', async () => {
-            const { status } = await database.Services.UserService.updateUser('ABCDEF12355', detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const { status } = await database.Services.UserService.updateUser('ABCDEF12355', detailsToUpdate);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should get status OK if update is Succceed', async () => {
-            const userResult = await userModel.findOne({ fullName: "Tal Leon" });
-            if (!userResult) {
-                expect(userResult).be.equal(undefined);
+            try {
+                const userResult = await userModel.findOne({ fullName: "Tal Leon" });
+                if (!userResult) {
+                    expect(userResult).be.equal(undefined);
+                }
+                const user = (userResult as IUser);
+                const { status } = await database.Services.UserService.updateUser(user.id, detailsToUpdate);
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
             }
-            const user = (userResult as IUser);
-            const { status } = await database.Services.UserService.updateUser(user.id, detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
     })
     describe("GET/: GETALLUSERS", () => {
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return list of 0 users', async () => {
-            await User.deleteMany({});
-            const users = await database.Services.UserService.getAllUsers();
-            expect(users).length(0);
+            try {
+                await User.deleteMany({});
+                const users = await database.Services.UserService.getAllUsers();
+                expect(users).length(0);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return list of all users', async () => {
-            const users = await database.Services.UserService.getAllUsers();
-            expect(users).length(3);
-            expect(users[0]).haveOwnProperty("fullName", "Ron Cohen");
+            try {
+                const users = await database.Services.UserService.getAllUsers();
+                expect(users).length(3);
+                expect(users[0]).haveOwnProperty("fullName", "Ron Cohen");
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
     })
-    describe("DELETE/: users", () => {
+    describe("DELETE/:", () => {
         beforeEach(async () => {
-            const passwords = ['123456', '123456', 'talleon'];
-            const salt = await bcrypt.genSalt(20);
-            const encryptedPasswords: string[] = [];
-            let password;
-            for await (password of iterableArray(passwords)) {
-                const encrypted = await bcrypt.hash(password, salt);
-                encryptedPasswords.push(encrypted);
+            try {
+                const passwords = ['123456', '123456', 'talleon'];
+                const salt = await bcrypt.genSalt();
+                const encryptedPasswords: string[] = [];
+                let password;
+                const iterablePasswords= await iterableArray(passwords);
+                for await (password of iterablePasswords){
+                    const encrypted= await bcrypt.hash(password,salt);
+                    encryptedPasswords.push(encrypted);
+                }
+                await User.create({
+                    fullName: 'Ron Cohen',
+                    address: 'Ben Gurion 99, Bat-yam',
+                    email: 'roncohen@gmail.com',
+                    password: encryptedPasswords[0]
+                })
+                await User.create({
+                    fullName: 'David Levi',
+                    address: 'Ben Gurion 109, Bat-yam',
+                    email: 'davidlevi@gmail.com',
+                    password: encryptedPasswords[1]
+                })
+                await User.create({
+                    fullName: 'Tal Leon',
+                    address: 'Harav Maimon 15, Bat-yam',
+                    email: 'tal222881@gmail.com',
+                    password: encryptedPasswords[2]
+                })
             }
-            await User.create({
-                fullName: 'Ron Cohen',
-                address: 'Ben Gurion 99, Bat-yam',
-                email: 'roncohen@gmail.com',
-                password: encryptedPasswords[0]
-            })
-            await User.create({
-                fullName: 'David Levi',
-                address: 'Ben Gurion 109, Bat-yam',
-                email: 'davidlevi@gmail.com',
-                password: encryptedPasswords[1]
-            })
-            await User.create({
-                fullName: 'Tal Leon',
-                address: 'Harav Maimon 15, Bat-yam',
-                email: 'tal222881@gmail.com',
-                password: encryptedPasswords[2]
-            })
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         afterEach(async () => {
-            await User.deleteMany({});
+            try {
+                await User.deleteMany({});
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should return BAD_REQUEST status', async () => {
-            const { status } = await database.Services.UserService.deleteUser("");
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const { status } = await database.Services.UserService.deleteUser("");
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (error) { }
         })
         it('should return NOT_FOUND status', async () => {
-            const { status } = await database.Services.UserService.deleteUser("A5123456");
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            try {
+                const { status } = await database.Services.UserService.deleteUser("A5123456");
+                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
         it('should  return status OK , and delete Tal Leon user', async () => {
-            const user = await User.findOne({ fullName: "Tal Leon" });
-            const { status } = await database.Services.UserService.deleteUser((user as IUser)._id);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
-            const result = await User.findById((user as IUser)._id);
-            expect(result).to.be.equal(null);
+            try {
+                const user = await User.findOne({ fullName: "Tal Leon" });
+                const { status } = await database.Services.UserService.deleteUser((user as IUser)._id);
+                expect(status).to.be.equal(HTTP_STATUS.OK);
+                const result = await User.findById((user as IUser)._id);
+                expect(result).to.be.equal(null);
+            }
+            // tslint:disable-next-line: no-empty
+            catch (ex) { }
         })
     })
 });

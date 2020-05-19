@@ -7,7 +7,7 @@ const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STA
 
 
 export default class PaymentMethodService extends GeneralService {
-    public static async addPaymentMethod(paymentMethod: IPaymentMethod): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async addPaymentMethod(paymentMethod: { paymentMethod: string }): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -37,10 +37,6 @@ export default class PaymentMethodService extends GeneralService {
         let details: string = "";
         try {
             const paymentMethods = await PaymentMethod.find();
-            if (!paymentMethods.length) {
-                status = NOT_FOUND;
-                throw new Error("payment methods not found");
-            }
             status = OK;
             details = paymentMethods.toString();
             return {
@@ -55,7 +51,7 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async deletePaymentMethod(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
+    public static async deletePaymentMethod(id: any): Promise<{ status: HTTP_STATUS, details: string }> {
         let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
