@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { expect } from 'chai';
 import iterableArray from '../../common/iterableArray';
 import User, { IUser } from '../../db/models/user.model';
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import { OK, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import database from '../../db/index';
 import userModel from '../../db/models/user.model';
 
@@ -61,7 +61,7 @@ describe("User Model testing", () => {
                     password: "aa"
                 };
                 const { status } = await database.Services.UserService.createUser(object, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -75,7 +75,7 @@ describe("User Model testing", () => {
                     password: '123456'
                 }
                 const { status } = await database.Services.UserService.createUser(object, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -89,7 +89,7 @@ describe("User Model testing", () => {
                     password: '123456'
                 }
                 const { status, token } = await database.Services.UserService.createUser(object, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.OK);
+                expect(status).to.be.equal(OK);
                 expect(token).to.be.not.equal('');
             }
             // tslint:disable-next-line: no-empty
@@ -140,7 +140,7 @@ describe("User Model testing", () => {
         it('should get BAD_REQUEST if input is empty', async () => {
             try {
                 const { status } = await database.Services.UserService.makeUserAdmin('');
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -148,7 +148,7 @@ describe("User Model testing", () => {
         it('should get status of NOT_FOUND if user doesn\'t exist in db', async () => {
             try {
                 const { status } = await database.Services.UserService.makeUserAdmin("ABCDRE116789");
-                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+                expect(status).to.be.equal(NOT_FOUND);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -158,7 +158,7 @@ describe("User Model testing", () => {
                 const userPoped = await userModel.findOne({ fullName: "Tal Leon" });
                 const user = (userPoped as IUser);
                 const { status } = await database.Services.UserService.makeUserAdmin(user._id);
-                expect(status).to.be.equal(HTTP_STATUS.OK);
+                expect(status).to.be.equal(OK);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -212,7 +212,7 @@ describe("User Model testing", () => {
                     password: "124"
                 };
                 const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -224,7 +224,7 @@ describe("User Model testing", () => {
                     password: "ABCDEFG"
                 }
                 const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+                expect(status).to.be.equal(NOT_FOUND);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -236,7 +236,7 @@ describe("User Model testing", () => {
                     password: "ABCDEFG"
                 }
                 const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+                expect(status).to.be.equal(NOT_FOUND);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -258,7 +258,7 @@ describe("User Model testing", () => {
                     password: user.password
                 }
                 const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-                expect(status).to.be.equal(HTTP_STATUS.OK);
+                expect(status).to.be.equal(OK);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -311,7 +311,7 @@ describe("User Model testing", () => {
         it('should get BAD_REQUEST if input is empty', async () => {
             try {
                 const { status } = await database.Services.UserService.updateUser('', detailsToUpdate);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -319,7 +319,7 @@ describe("User Model testing", () => {
         it('should get NOT_FOUND if user is not found into db', async () => {
             try {
                 const { status } = await database.Services.UserService.updateUser('ABCDEF12355', detailsToUpdate);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -332,7 +332,7 @@ describe("User Model testing", () => {
                 }
                 const user = (userResult as IUser);
                 const { status } = await database.Services.UserService.updateUser(user.id, detailsToUpdate);
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -442,7 +442,7 @@ describe("User Model testing", () => {
         it('should return BAD_REQUEST status', async () => {
             try {
                 const { status } = await database.Services.UserService.deleteUser("");
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (error) { }
@@ -450,7 +450,7 @@ describe("User Model testing", () => {
         it('should return NOT_FOUND status', async () => {
             try {
                 const { status } = await database.Services.UserService.deleteUser("A5123456");
-                expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+                expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
@@ -459,7 +459,7 @@ describe("User Model testing", () => {
             try {
                 const user = await User.findOne({ fullName: "Tal Leon" });
                 const { status } = await database.Services.UserService.deleteUser((user as IUser)._id);
-                expect(status).to.be.equal(HTTP_STATUS.OK);
+                expect(status).to.be.equal(OK);
                 const result = await User.findById((user as IUser)._id);
                 expect(result).to.be.equal(null);
             }

@@ -1,15 +1,15 @@
 import Payment, { IPayment, validatePayment, IPaymentValidator } from "../models/payment.model";
 import Product from '../models/product.model';
 import GeneralService from '../services/generalService';
-import HTTP_STATUS from "../../common/HTTP_Enum";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import CartService from '../services/cart';
 import iterableArray from '../../common/iterableArray';
 import { ICart, ICartDetails } from "../models/cart.model";
-const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STATUS;
+
 
 export default class PaymentService extends GeneralService {
-    public static async addPayment(payment: IPaymentValidator): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addPayment(payment: IPaymentValidator): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { error } = validatePayment(payment);
@@ -45,7 +45,7 @@ export default class PaymentService extends GeneralService {
         }
     }
     public static async paymentPaid(paymentId: string) {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const paymentQuerying = await this.findPaymentById(paymentId);
@@ -71,8 +71,8 @@ export default class PaymentService extends GeneralService {
             details = (ex as Error).message
         }
     }
-    private static async updateProduct(cartId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    private static async updateProduct(cartId: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusCart, details: detailsCart, cart } = await this.findCartById(cartId);

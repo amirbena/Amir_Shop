@@ -1,15 +1,14 @@
 import bcrypt from 'bcrypt';
 import joi, { validate } from "joi";
 import jwt from 'jsonwebtoken';
-import User, { IUser,IUserInput ,validateUser, ILogin } from "../models/user.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import User, { IUser, IUserInput, validateUser, ILogin } from "../models/user.model";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import GeneralService from "./generalService";
-import config from '../../common/config.json';
-const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
+
 class UserService extends GeneralService {
 
-    public static async createUser(user: IUserInput, jwtKey: string): Promise<{ status: HTTP_STATUS, details: string, token: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async createUser(user: IUserInput, jwtKey: string): Promise<{ status: number, details: string, token: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let token = '';
         let details = "";
         try {
@@ -41,8 +40,8 @@ class UserService extends GeneralService {
             token
         }
     }
-    public static async makeUserAdmin(_id: any): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async makeUserAdmin(_id: any): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: foundUserStatus, details: foundUserDetails, user: foundUser } = await this.findUserById(_id);
@@ -63,9 +62,9 @@ class UserService extends GeneralService {
             details
         }
     }
-    public static async userLogin(detailsforQuerying: ILogin, jwtLogin: string): Promise<{ status: HTTP_STATUS, details: string, token?: string }> {
+    public static async userLogin(detailsforQuerying: ILogin, jwtLogin: string): Promise<{ status: number, details: string, token?: string }> {
         const { email, password } = detailsforQuerying;
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         let token: string = "";
         try {
@@ -99,7 +98,7 @@ class UserService extends GeneralService {
         }
     }
     public static async updateUser(_id: any, detailstoUpdate: object) {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!_id) {
@@ -126,8 +125,8 @@ class UserService extends GeneralService {
     public static async getAllUsers(): Promise<IUser[]> {
         return await User.find();
     }
-    public static async deleteUser(_id: any): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deleteUser(_id: any): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (_id === "") {
