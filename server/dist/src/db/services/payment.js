@@ -68,10 +68,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var payment_model_1 = __importStar(require("../models/payment.model"));
 var product_model_1 = __importDefault(require("../models/product.model"));
 var generalService_1 = __importDefault(require("../services/generalService"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var cart_1 = __importDefault(require("../services/cart"));
 var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
-var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
 var PaymentService = /** @class */ (function (_super) {
     __extends(PaymentService, _super);
     function PaymentService() {
@@ -83,42 +82,42 @@ var PaymentService = /** @class */ (function (_super) {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _d.label = 1;
                     case 1:
                         _d.trys.push([1, 6, , 7]);
                         error = payment_model_1.validatePayment(payment).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         userId = payment.userId, paymentMethodId = payment.paymentMethodId, cartId = payment.cartId;
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _d.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
                         return [4 /*yield*/, this.findUserById(paymentMethodId)];
                     case 3:
                         _b = _d.sent(), statusPaymentMethod = _b.status, detailsPaymentMethod = _b.details;
-                        if (statusPaymentMethod !== CONTINUE) {
+                        if (statusPaymentMethod !== http_status_codes_1.CONTINUE) {
                             status = statusPaymentMethod;
                             throw new Error(detailsPaymentMethod);
                         }
                         return [4 /*yield*/, this.findUserById(cartId)];
                     case 4:
                         _c = _d.sent(), statusCart = _c.status, detailsCart = _c.details;
-                        if (statusCart !== CONTINUE) {
+                        if (statusCart !== http_status_codes_1.CONTINUE) {
                             status = statusCart;
                             throw new Error(detailsCart);
                         }
                         return [4 /*yield*/, payment_model_1.default.create(payment)];
                     case 5:
                         result = _d.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = result.toJSON();
                         return [3 /*break*/, 7];
                     case 6:
@@ -139,7 +138,7 @@ var PaymentService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
@@ -149,7 +148,7 @@ var PaymentService = /** @class */ (function (_super) {
                         paymentQuerying = _c.sent();
                         statusPayment = paymentQuerying.status, detailsPayment = paymentQuerying.details;
                         payment = paymentQuerying.payment;
-                        if (statusPayment !== CONTINUE) {
+                        if (statusPayment !== http_status_codes_1.CONTINUE) {
                             status = statusPayment;
                             throw new Error(detailsPayment);
                         }
@@ -157,14 +156,14 @@ var PaymentService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.updateProduct(payment.cartId)];
                     case 3:
                         _a = _c.sent(), statusUpdating = _a.status, detailsUpdating = _a.details;
-                        if (statusUpdating !== CONTINUE) {
+                        if (statusUpdating !== http_status_codes_1.CONTINUE) {
                             status = statusUpdating;
                             throw new Error(" " + detailsUpdating);
                         }
                         return [4 /*yield*/, cart_1.default.deleteCartById(payment.cartId)];
                     case 4:
                         _b = _c.sent(), statusCart = _b.status, detailsCart = _b.details;
-                        if (statusCart !== OK) {
+                        if (statusCart !== http_status_codes_1.OK) {
                             status = statusCart;
                             throw new Error(detailsCart);
                         }
@@ -173,18 +172,91 @@ var PaymentService = /** @class */ (function (_super) {
                         ex_2 = _c.sent();
                         details = ex_2.message;
                         return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                    case 6: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    PaymentService.getPayments = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, payments, ex_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, payment_model_1.default.find()];
+                    case 2:
+                        payments = _a.sent();
+                        status = http_status_codes_1.OK;
+                        details = payments.toString();
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                payments: payments
+                            }];
+                    case 3:
+                        ex_3 = _a.sent();
+                        details = ex_3.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
+    PaymentService.deletePayment = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, deletedCount, ex_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        if (!id) {
+                            status = http_status_codes_1.BAD_REQUEST;
+                            throw new Error("Bad request");
+                        }
+                        return [4 /*yield*/, payment_model_1.default.deleteOne({ _id: id })];
+                    case 2:
+                        deletedCount = (_a.sent()).deletedCount;
+                        if (!deletedCount) {
+                            status = http_status_codes_1.NOT_FOUND;
+                            throw new Error("id is not found into db");
+                        }
+                        status = http_status_codes_1.OK;
+                        details = "Item deleted in succeed";
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_4 = _a.sent();
+                        details = ex_4.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
                 }
             });
         });
     };
     PaymentService.updateProduct = function (cartId) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_1, _a, status, details, _b, statusCart, detailsCart, cart, cartDetailsProducts, iterableCartDetails, cartDetail, iterableCartDetails_1, iterableCartDetails_1_1, productId, product, e_1_1, ex_3;
+            var e_1, _a, status, details, _b, statusCart, detailsCart, cart, cartDetailsProducts, iterableCartDetails, cartDetail, iterableCartDetails_1, iterableCartDetails_1_1, productId, product, e_1_1, ex_5;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
@@ -192,7 +264,7 @@ var PaymentService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findCartById(cartId)];
                     case 2:
                         _b = _c.sent(), statusCart = _b.status, detailsCart = _b.details, cart = _b.cart;
-                        if (statusCart !== CONTINUE) {
+                        if (statusCart !== http_status_codes_1.CONTINUE) {
                             status = statusCart;
                             throw new Error(detailsCart);
                         }
@@ -215,7 +287,7 @@ var PaymentService = /** @class */ (function (_super) {
                     case 7:
                         product = _c.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("one of products not found into db");
                         }
                         product.amount -= cartDetail.amountBuying;
@@ -242,12 +314,12 @@ var PaymentService = /** @class */ (function (_super) {
                         return [7 /*endfinally*/];
                     case 16: return [7 /*endfinally*/];
                     case 17:
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         details = "succeed to update";
                         return [3 /*break*/, 19];
                     case 18:
-                        ex_3 = _c.sent();
-                        details = ex_3.message;
+                        ex_5 = _c.sent();
+                        details = ex_5.message;
                         return [3 /*break*/, 19];
                     case 19: return [2 /*return*/, {
                             status: status,

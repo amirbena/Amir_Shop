@@ -45,8 +45,7 @@ var cart_model_1 = __importDefault(require("./../models/cart.model"));
 var paymentMethod_model_1 = __importDefault(require("../models/paymentMethod.model"));
 var payment_model_1 = __importDefault(require("../models/payment.model"));
 var comment_model_1 = __importDefault(require("../models/comment.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
+var http_status_codes_1 = require("http-status-codes");
 var GeneralService = /** @class */ (function () {
     function GeneralService() {
     }
@@ -56,23 +55,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, user_model_1.default.findById(id)];
                     case 2:
                         user = _a.sent();
                         if (!user) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("user is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 user: user
@@ -95,23 +94,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, category_model_1.default.findById(id)];
                     case 2:
                         category = _a.sent();
                         if (!category) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("category is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 category: category
@@ -134,23 +133,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, cart_model_1.default.findById(id)];
                     case 2:
                         cart = _a.sent();
                         if (!cart) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 cart: cart
@@ -173,23 +172,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, product_model_1.default.findById(id)];
                     case 2:
                         product = _a.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 product: product
@@ -212,25 +211,25 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, paymentMethod_model_1.default.findById(id)];
                     case 2:
                         paymentMethod = _a.sent();
                         if (!paymentMethod) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Payment Method not found into db");
                         }
                         paymentMethod = paymentMethod;
                         details = paymentMethod.toString();
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 details: details,
@@ -254,23 +253,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, comment_model_1.default.findById(id)];
                     case 2:
                         comment = _a.sent();
                         if (!comment) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("comment is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 comment: comment
@@ -293,23 +292,23 @@ var GeneralService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid parameter at id");
                         }
                         return [4 /*yield*/, payment_model_1.default.findById(id)];
                     case 2:
                         payment = _a.sent();
                         if (!payment) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("payment is not found in db");
                         }
-                        status = CONTINUE;
+                        status = http_status_codes_1.CONTINUE;
                         return [2 /*return*/, {
                                 status: status,
                                 payment: payment

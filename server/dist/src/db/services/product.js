@@ -68,9 +68,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
 var comment_model_1 = __importDefault(require("../models/comment.model"));
 var product_model_1 = __importStar(require("../models/product.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalService_1 = __importDefault(require("./generalService"));
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
 var ProductService = /** @class */ (function (_super) {
     __extends(ProductService, _super);
     function ProductService() {
@@ -82,34 +81,34 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
                         error = product_model_1.validateProduct(product).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, this.findCategoryById(product.category_id)];
                     case 2:
                         _a = _c.sent(), statusCategory = _a.status, detailsCategory = _a.details;
-                        if (statusCategory !== CONTINUE) {
+                        if (statusCategory !== http_status_codes_1.CONTINUE) {
                             status = statusCategory;
                             throw new Error(detailsCategory);
                         }
                         return [4 /*yield*/, this.findUserById(product.admin_id)];
                     case 3:
                         _b = _c.sent(), statusAdmin = _b.status, detailsAdmin = _b.details;
-                        if (statusAdmin !== CONTINUE) {
+                        if (statusAdmin !== http_status_codes_1.CONTINUE) {
                             status = statusAdmin;
                             throw new Error(detailsAdmin);
                         }
                         return [4 /*yield*/, product_model_1.default.create(product)];
                     case 4:
                         productAdded = _c.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = productAdded.toJSON();
                         return [2 /*return*/, {
                                 status: status,
@@ -134,33 +133,33 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("invalid product id - undefinded / null");
                         }
                         return [4 /*yield*/, product_model_1.default.findById(productId)];
                     case 2:
                         product = _c.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found into db");
                         }
                         return [4 /*yield*/, this.findCategoryById(product.category_id)];
                     case 3:
                         _a = _c.sent(), statusCategory = _a.status, detailsCategory = _a.details, category = _a.category;
-                        if (statusCategory !== CONTINUE) {
+                        if (statusCategory !== http_status_codes_1.CONTINUE) {
                             status = statusCategory;
                             throw new Error(detailsCategory);
                         }
                         return [4 /*yield*/, this.findUserById(product.admin_id)];
                     case 4:
                         _b = _c.sent(), statusAdmin = _b.status, detailsAdmin = _b.details, admin = _b.user;
-                        if (statusAdmin !== CONTINUE) {
+                        if (statusAdmin !== http_status_codes_1.CONTINUE) {
                             status = statusAdmin;
                             throw new Error(detailsAdmin);
                         }
@@ -174,7 +173,7 @@ var ProductService = /** @class */ (function (_super) {
                             amount: amount,
                             image_url: image_url
                         };
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Succeed found";
                         return [2 /*return*/, {
                                 status: status,
@@ -199,7 +198,7 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         detailedProducts = [];
                         _e.label = 1;
@@ -209,7 +208,7 @@ var ProductService = /** @class */ (function (_super) {
                     case 2:
                         products = _e.sent();
                         if (!products.length) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("not found products into db");
                         }
                         _e.label = 3;
@@ -226,7 +225,7 @@ var ProductService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.getDetailedProductById(product._id)];
                     case 7:
                         _d = _e.sent(), productStatus = _d.status, detailedProductStatus = _d.details, detailedProduct = _d.detailedProduct;
-                        if (productStatus !== OK) {
+                        if (productStatus !== http_status_codes_1.OK) {
                             status = productStatus;
                             throw new Error(detailedProductStatus);
                         }
@@ -251,7 +250,7 @@ var ProductService = /** @class */ (function (_super) {
                         return [7 /*endfinally*/];
                     case 15: return [7 /*endfinally*/];
                     case 16:
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "succeeed to find";
                         return [3 /*break*/, 18];
                     case 17:
@@ -273,23 +272,23 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Product is null or undefined");
                         }
                         return [4 /*yield*/, product_model_1.default.findOneAndUpdate({ _id: productId }, detailsToUpdate)];
                     case 2:
                         updatedProduct = _a.sent();
                         if (!updatedProduct) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Product updated";
                         return [3 /*break*/, 4];
                     case 3:
@@ -310,7 +309,7 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _e.label = 1;
                     case 1:
@@ -318,7 +317,7 @@ var ProductService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findProductById(id)];
                     case 2:
                         _b = _e.sent(), statusProduct = _b.status, detailsProduct = _b.details, product = _b.product;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusProduct;
                             throw new Error(detailsProduct);
                         }
@@ -362,7 +361,7 @@ var ProductService = /** @class */ (function (_super) {
                     case 15: return [7 /*endfinally*/];
                     case 16:
                         avgRank = avgRank / comments.length;
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         return [2 /*return*/, {
                                 status: status,
                                 avgRank: avgRank
@@ -395,23 +394,23 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("productId is invalid");
                         }
                         return [4 /*yield*/, product_model_1.default.findByIdAndDelete(productId)];
                     case 2:
                         product = _a.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "delete is succeed";
                         return [3 /*break*/, 4];
                     case 3:

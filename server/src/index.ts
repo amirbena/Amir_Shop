@@ -3,12 +3,13 @@ import connection from './db/startup/dbconnection';
 import ServerApplication from "./app";
 import logger from './startup/logger';
 import intializeRoutes from './startup/intialzeRoutes';
+import config from 'config'
 import { Request, Response } from 'express';
 let server;
 
 
 connection().then(result => {
-    const PORT = process.env.PORT || 5000;
+    const PORT = config.get("PORT") || 5000;
     server = new ServerApplication(PORT as number, intializeRoutes()); /* Need to change it */
     server.app.get("/", (request: Request, response: Response) => {
         response.send('<h1>Amir shop Application</h1>');

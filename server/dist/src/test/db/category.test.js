@@ -43,7 +43,7 @@ var mocha_1 = require("mocha");
 var mongoose_1 = require("mongoose");
 var category_model_1 = __importDefault(require("../../db/models/category.model"));
 var chai_1 = require("chai");
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 mocha_1.describe("Category module testing", function () {
     mocha_1.describe("POST/: addCategory", function () {
@@ -104,7 +104,7 @@ mocha_1.describe("Category module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.CategoryService.addCategory({ category_name: "AB" })];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_3 = _a.sent();
@@ -122,7 +122,7 @@ mocha_1.describe("Category module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.CategoryService.addCategory({ category_name: "AB" })];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_4 = _a.sent();
@@ -140,7 +140,7 @@ mocha_1.describe("Category module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.CategoryService.addCategory({ category_name: "Phones" })];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [4 /*yield*/, category_model_1.default.find({})];
                     case 2:
                         categories = _a.sent();
@@ -306,23 +306,23 @@ mocha_1.describe("Category module testing", function () {
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById("")];
                         case 1:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById(undefined)];
                         case 2:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById(null)];
                         case 3:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById({})];
                         case 4:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById([])];
                         case 5:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [3 /*break*/, 7];
                         case 6:
                             ex_12 = _a.sent();
@@ -340,7 +340,7 @@ mocha_1.describe("Category module testing", function () {
                             return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById(mongoose_1.Types.ObjectId)];
                         case 1:
                             status = (_a.sent()).status;
-                            chai_1.expect(status).be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                            chai_1.expect(status).be.equal(http_status_codes_1.NOT_FOUND);
                             return [3 /*break*/, 3];
                         case 2:
                             ex_13 = _a.sent();
@@ -363,7 +363,7 @@ mocha_1.describe("Category module testing", function () {
                         case 2:
                             _a = _b.sent(), status = _a.status, category = _a.category;
                             checkedCategory = category;
-                            chai_1.expect(status).be.equal(HTTP_Enum_1.default.OK);
+                            chai_1.expect(status).be.equal(http_status_codes_1.OK);
                             chai_1.expect(checkedCategory).haveOwnProperty("category_name", "Toys");
                             return [3 /*break*/, 4];
                         case 3:
@@ -434,23 +434,23 @@ mocha_1.describe("Category module testing", function () {
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory("")];
                         case 1:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(undefined)];
                         case 2:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(null)];
                         case 3:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory([])];
                         case 4:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory({})];
                         case 5:
                             object = _a.sent();
-                            chai_1.expect(object.status).be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
                             return [3 /*break*/, 7];
                         case 6:
                             ex_17 = _a.sent();
@@ -469,7 +469,7 @@ mocha_1.describe("Category module testing", function () {
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(id)];
                         case 1:
                             status = (_a.sent()).status;
-                            chai_1.expect(status).be.equals(HTTP_Enum_1.default.NOT_FOUND);
+                            chai_1.expect(status).be.equals(http_status_codes_1.NOT_FOUND);
                             return [3 /*break*/, 3];
                         case 2:
                             ex_18 = _a.sent();
@@ -492,7 +492,7 @@ mocha_1.describe("Category module testing", function () {
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(id)];
                         case 2:
                             status = (_a.sent()).status;
-                            chai_1.expect(status).be.equals(HTTP_Enum_1.default.OK);
+                            chai_1.expect(status).be.equals(http_status_codes_1.OK);
                             return [4 /*yield*/, category_model_1.default.findOne({ category_name: "Toys" })];
                         case 3:
                             object = _a.sent();
