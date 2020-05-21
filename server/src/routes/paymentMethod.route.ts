@@ -1,12 +1,11 @@
 import { IPaymentMethod } from './../db/models/paymentMethod.model';
 import { Request, Response } from "express";
 import Services from "../db/startup/dbServices";
-import HTTP_STATUS from '../common/HTTP_Enum';
+import { OK } from 'http-status-codes';
 import authMiddlware from "./middlewares/auth.middleware";
 import adminMiddleware from './middlewares/admin.middleware';
 import GeneralRoute from './generalRoute.route';
 
-const { OK } = HTTP_STATUS;
 const { PaymentMethodService } = Services;
 export default class PaymentMethod extends GeneralRoute {
     constructor() {

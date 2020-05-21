@@ -1,10 +1,10 @@
 import { beforeEach, afterEach, it, describe } from "mocha";
+import { BAD_REQUEST, OK, NOT_FOUND } from "http-status-codes";
 import Category from '../../db/models/category.model';
 import User from '../../db/models/user.model';
 import Product, { IProduct } from "../../db/models/product.model";
 import { Types } from "mongoose";
 import { expect } from 'chai';
-import HTTP_STATUS from '../../common/HTTP_Enum';
 import database from '../../db/index';
 
 
@@ -77,7 +77,7 @@ describe("Product Module testing", () => {
                 image_url: ""
             }
             const { status } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it("should get BAD_REQUEST when category is invalid", async () => {
             const product = {
@@ -89,7 +89,7 @@ describe("Product Module testing", () => {
                 image_url: "GGKGGKGKGKG"
             }
             const { status } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it("should get NOT_FOUND  when category not found", async () => {
             const product = {
@@ -101,7 +101,7 @@ describe("Product Module testing", () => {
                 image_url: "GGKGGKGKGKG"
             }
             const { status } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            expect(status).to.be.equal(NOT_FOUND);
         })
         it("should get BAD_REQUEST when admin is invalid", async () => {
             const product = {
@@ -113,7 +113,7 @@ describe("Product Module testing", () => {
                 image_url: "GGKGGKGKGKG"
             }
             const { status } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it("should get NOT_FOUND  when category not found", async () => {
             const product = {
@@ -125,7 +125,7 @@ describe("Product Module testing", () => {
                 image_url: "GGKGGKGKGKG"
             }
             const { status } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            expect(status).to.be.equal(NOT_FOUND);
         })
         it("should get OK status, and get new product", async () => {
             const users = await User.find({})
@@ -139,7 +139,7 @@ describe("Product Module testing", () => {
                 image_url: "GGKGGKGKGKG"
             }
             const { status, product: productAdded } = await database.Services.ProductService.addProduct(product);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            expect(status).to.be.equal(OK);
             const productAdd = (productAdded as IProduct);
             expect(productAdd).to.include({
                 admin_id: users[1]._id,

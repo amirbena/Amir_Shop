@@ -1,11 +1,11 @@
 import Category, { ICategory, ICategoryInput, validateCategory } from "../models/category.model";
-import HTTP_STATUS from "../../common/HTTP_Enum";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from "http-status-codes";
 import GeneralService from "./generalService";
 
-const { OK, BAD_REQUEST, CONTINUE, INTERNAL_SERVER_ERROR, NOT_FOUND } = HTTP_STATUS;
+
 class CategoryService extends GeneralService {
-    public static async addCategory(category: ICategoryInput): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addCategory(category: ICategoryInput): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details = "";
         try {
             const { error } = validateCategory(category);
@@ -33,8 +33,8 @@ class CategoryService extends GeneralService {
     public static async getAllCategories(): Promise<ICategory[]> {
         return await Category.find();
     }
-    public static async getCategoryById(_id: any): Promise<{ status: HTTP_STATUS, details: string, category?: ICategory }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getCategoryById(_id: any): Promise<{ status: number, details: string, category?: ICategory }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusCheck, details: detailsCheck, category } = await this.findCategoryById(_id);
@@ -58,8 +58,8 @@ class CategoryService extends GeneralService {
             details
         }
     }
-    public static async deleteCategory(_id: any): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deleteCategory(_id: any): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!_id) {

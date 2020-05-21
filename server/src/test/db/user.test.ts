@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { expect } from 'chai';
 import iterableArray from '../../common/iterableArray';
 import User,{ IUser } from '../../db/models/user.model';
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import { BAD_REQUEST, OK, NOT_FOUND } from "http-status-codes";
 import database from '../../db/index';
 import userModel from '../../db/models/user.model';
 
@@ -17,7 +17,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -52,7 +52,7 @@ describe("User Model testing", () => {
                 password: "aa"
             };
             const { status } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should get status of BAD_REQUEST of found user in db', async () => {
             const object = {
@@ -62,7 +62,7 @@ describe("User Model testing", () => {
                 password: '123456'
             }
             const { status } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should get status OK  and return token not empty ', async () => {
             const object = {
@@ -72,7 +72,7 @@ describe("User Model testing", () => {
                 password: '123456'
             }
             const { status, token } = await database.Services.UserService.createUser(object, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            expect(status).to.be.equal(OK);
             expect(token).to.be.not.equal('');
         })
     })
@@ -82,7 +82,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -110,17 +110,17 @@ describe("User Model testing", () => {
         })
         it('should get BAD_REQUEST if input is empty', async () => {
             const { status } = await database.Services.UserService.makeUserAdmin('');
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should get status of NOT_FOUND if user doesn\'t exist in db', async () => {
             const { status } = await database.Services.UserService.makeUserAdmin("ABCDRE116789");
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            expect(status).to.be.equal(NOT_FOUND);
         })
         it('should get status of OK if user changed mode to admin', async () => {
             const userPoped = await userModel.findOne({ fullName: "Tal Leon" });
             const user = (userPoped as IUser);
             const { status } = await database.Services.UserService.makeUserAdmin(user._id);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            expect(status).to.be.equal(OK);
         });
     })
     describe('Testing GET/: ->userLogin()', () => {
@@ -129,7 +129,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -161,7 +161,7 @@ describe("User Model testing", () => {
                 password: "124"
             };
             const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should return NOT_FOUND if data if email is exist in DB', async () => {
             const loginSchema = {
@@ -169,7 +169,7 @@ describe("User Model testing", () => {
                 password: "ABCDEFG"
             }
             const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            expect(status).to.be.equal(NOT_FOUND);
         })
         it('should return NOT_FOUND if data if password doesn\'t match ', async () => {
             const loginSchema = {
@@ -177,7 +177,7 @@ describe("User Model testing", () => {
                 password: "ABCDEFG"
             }
             const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.NOT_FOUND);
+            expect(status).to.be.equal(NOT_FOUND);
         })
         it('should return OK if user login is valid', async () => {
             const userResult = await userModel.findOne({ fullName: "Tal Leon" });
@@ -195,7 +195,7 @@ describe("User Model testing", () => {
                 password: user.password
             }
             const { status } = await database.Services.UserService.userLogin(loginSchema, jwtKey);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            expect(status).to.be.equal(OK);
         })
     })
     describe('PUT/: updateUser', () => {
@@ -207,7 +207,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -235,11 +235,11 @@ describe("User Model testing", () => {
         })
         it('should get BAD_REQUEST if input is empty', async () => {
             const { status } = await database.Services.UserService.updateUser('', detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should get NOT_FOUND if user is not found into db', async () => {
             const { status } = await database.Services.UserService.updateUser('ABCDEF12355', detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should get status OK if update is Succceed', async () => {
             const userResult = await userModel.findOne({ fullName: "Tal Leon" });
@@ -248,7 +248,7 @@ describe("User Model testing", () => {
             }
             const user = (userResult as IUser);
             const { status } = await database.Services.UserService.updateUser(user.id, detailsToUpdate);
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
     })
     describe("GET/: GETALLUSERS", () => {
@@ -257,7 +257,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -300,7 +300,7 @@ describe("User Model testing", () => {
             const salt = await bcrypt.genSalt(20);
             const encryptedPasswords: string[] = [];
             let password;
-            for await (password of iterableArray(passwords)) {
+            for await (password of await iterableArray(passwords)) {
                 const encrypted = await bcrypt.hash(password, salt);
                 encryptedPasswords.push(encrypted);
             }
@@ -328,16 +328,16 @@ describe("User Model testing", () => {
         })
         it('should return BAD_REQUEST status', async () => {
             const { status } = await database.Services.UserService.deleteUser("");
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should return NOT_FOUND status', async () => {
             const { status } = await database.Services.UserService.deleteUser("A5123456");
-            expect(status).to.be.equal(HTTP_STATUS.BAD_REQUEST);
+            expect(status).to.be.equal(BAD_REQUEST);
         })
         it('should  return status OK , and delete Tal Leon user', async () => {
             const user = await User.findOne({ fullName: "Tal Leon" });
             const { status } = await database.Services.UserService.deleteUser((user as IUser)._id);
-            expect(status).to.be.equal(HTTP_STATUS.OK);
+            expect(status).to.be.equal(OK);
             const result = await User.findById((user as IUser)._id);
             expect(result).to.be.equal(null);
         })

@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
+import { OK,INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import Services from "../db/startup/dbServices";
 import GeneralRoute from './generalRoute.route';
 import authMiddlware from "./middlewares/auth.middleware";
 import adminMiddleware from "./middlewares/admin.middleware";
 import iterableArray from '../common/iterableArray';
-import HTTP_STATUS from "../common/HTTP_Enum";
+import { IDetailedProduct } from "../db/services/product";
 
 const { ProductService } = Services;
 
@@ -48,11 +49,11 @@ export default class ProductRoute extends GeneralRoute {
         if (!detailedProducts) return res.status(status).send({ status, details });
         let detailedProduct;
         const detailedAvgProducts = [];
-        for await (detailedProduct of iterableArray(detailedProducts)) {
+        for await (detailedProduct of await iterableArray(detailedProducts)) {
             const {
                 status: statusChecking,
                 details: detailsChecking,
-                avgRank } = await ProductService.getAvgRankForEachProduct(detailedProduct.id);
+                avgRank } = await ProductService.getAvgRankForEachProduct((detailedProduct as IDetailedProduct)._id);
             if (detailsChecking) return res.status(statusChecking).send({
                 status: statusChecking,
                 details: detailsChecking
@@ -85,12 +86,12 @@ export default class ProductRoute extends GeneralRoute {
         try {
             const products = await ProductService.getProducts();
             return res.send({
-                status: HTTP_STATUS.OK,
+                status: OK,
                 details: products
             })
         } catch (ex) {
-            return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
-                status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+            return res.status(INTERNAL_SERVER_ERROR).send({
+                status: INTERNAL_SERVER_ERROR,
                 details: (ex as Error).message
             })
         }

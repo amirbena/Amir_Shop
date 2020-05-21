@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express";
+import { OK } from "http-status-codes";
 import Services from "../db/startup/dbServices";
-import HTTP_STATUS from '../common/HTTP_Enum';
 import authMiddlware from "./middlewares/auth.middleware";
 import adminMiddleware from './middlewares/admin.middleware';
 import GeneralRoute from './generalRoute.route';
@@ -30,7 +30,7 @@ export default class PaymentRoute extends GeneralRoute {
     }
     getPayments = async (req: Request, res: Response) => {
         const { status, details, payments } = await PaymentService.getPayments();
-        if (status !== HTTP_STATUS.OK) {
+        if (status !== OK) {
             return res.status(status).send({
                 status,
                 details

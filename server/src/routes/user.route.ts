@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
+import { NOT_FOUND,OK } from 'http-status-codes';
 import Services from "../db/startup/dbServices";
-import HTTP_STATUS from '../common/HTTP_Enum';
 import adminMiddleware from './middlewares/admin.middleware';
 import authMiddleware from './middlewares/auth.middleware';
 import GeneralRoute from './generalRoute.route';
 const { UserService, CartService } = Services;
-const { NOT_FOUND, OK } = HTTP_STATUS;
+
 
 export default class UserRoute extends GeneralRoute{
     private jwtPrivateKey: string;

@@ -1,10 +1,11 @@
 
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from "http-status-codes";
 import { ICategory } from '../models/category.model';
 import { IUser } from '../models/user.model';
 import iterableArray from '../../common/iterableArray';
 import Comment, { IComment } from '../models/comment.model';
 import Product, { IProduct, validateProduct, IProductInput } from "../models/product.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+
 import GeneralService from './generalService';
 
 export interface IDetailedProduct {
@@ -16,12 +17,12 @@ export interface IDetailedProduct {
     amount: number;
     image_url: string;
 }
-const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
+
 export default class ProductService extends GeneralService {
 
     public static async addProduct(product: IProductInput)
-        : Promise<{ status: HTTP_STATUS, details: string, product?: IProduct }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string, product?: IProduct }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { error } = validateProduct(product);
@@ -56,8 +57,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async getDetailedProductById(productId: string)
-        : Promise<{ status: HTTP_STATUS, details: string, detailedProduct?: IDetailedProduct }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string, detailedProduct?: IDetailedProduct }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {
@@ -105,8 +106,8 @@ export default class ProductService extends GeneralService {
             details
         }
     }
-    public static async getDetailedProducts(): Promise<{ status: HTTP_STATUS, details: string, detailedProducts: IDetailedProduct[] }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getDetailedProducts(): Promise<{ status: number, details: string, detailedProducts: IDetailedProduct[] }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         const detailedProducts: IDetailedProduct[] = [];
         try {
@@ -136,8 +137,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async updateProductDetails(productId: string, detailsToUpdate: object)
-        : Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {
@@ -160,8 +161,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async getAvgRankForEachProduct(id: string)
-        : Promise<{ status: HTTP_STATUS, details?: string, avgRank?: number }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details?: string, avgRank?: number }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusProduct, details: detailsProduct, product } = await this.findProductById(id);
@@ -196,8 +197,8 @@ export default class ProductService extends GeneralService {
         return await Product.find();
     }
     public static async deleteProduct(productId: string)
-        : Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {

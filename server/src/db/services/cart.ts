@@ -1,13 +1,12 @@
 import Cart, { validateCart, ICart, ICartValidator, ICartDetails } from "../models/cart.model";
-import HTTP_STATUS from "../../common/HTTP_Enum";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from "http-status-codes";
 import GeneralService from "./generalService";
 import { IProduct } from "../models/product.model";
 
-const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STATUS;
 
 export default class CartService extends GeneralService {
-    public static async createNewCart(userId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async createNewCart(userId: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
 
         try {
@@ -27,8 +26,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async addItemtoCart(userId: string, cartDetails: ICartDetails): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addItemtoCart(userId: string, cartDetails: ICartDetails): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusUser, details: detailsUser } = await this.findUserById(userId);
@@ -68,8 +67,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async deleteAllCartAccordingUser(userId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deleteAllCartAccordingUser(userId: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusUser, details: detailsUser } = await this.findUserById(userId);
@@ -92,8 +91,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async changeElementsforProduct(userId: string, changedDetails: ICartDetails, sign: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async changeElementsforProduct(userId: string, changedDetails: ICartDetails, sign: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusUser, details: detailsUser } = await this.findUserById(userId);
@@ -152,8 +151,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async deleteSpecificCart(userId: string, dateString: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deleteSpecificCart(userId: string, dateString: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         const date = new Date(dateString);
         try {
@@ -177,8 +176,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async deleteCartById(cartId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deleteCartById(cartId: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { deletedCount } = await Cart.deleteOne({ _id: cartId });
@@ -196,8 +195,8 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async getCartbyUserAndDate(userId: string, dateString: string): Promise<{ status: HTTP_STATUS, details: string, cart?: ICart }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getCartbyUserAndDate(userId: string, dateString: string): Promise<{ status: number, details: string, cart?: ICart }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         const date = new Date(dateString);
         try {

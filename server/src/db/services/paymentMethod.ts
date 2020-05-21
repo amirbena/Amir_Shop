@@ -1,14 +1,14 @@
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from "http-status-codes";
 import PaymentMethod, { IPaymentMethod, validatePaymentMethod } from "../models/paymentMethod.model";
-import HTTP_STATUS from "../../common/HTTP_Enum";
 import GeneralService from "./generalService";
 
 
-const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STATUS;
+
 
 
 export default class PaymentMethodService extends GeneralService {
-    public static async addPaymentMethod(paymentMethod: IPaymentMethod): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addPaymentMethod(paymentMethod: IPaymentMethod): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { error } = validatePaymentMethod(paymentMethod);
@@ -32,8 +32,8 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async getAllPaymentMethods(): Promise<{ status: HTTP_STATUS, details: string, paymentMethods?: IPaymentMethod[] }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getAllPaymentMethods(): Promise<{ status: number, details: string, paymentMethods?: IPaymentMethod[] }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const paymentMethods = await PaymentMethod.find();
@@ -52,8 +52,8 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async deletePaymentMethod(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deletePaymentMethod(id: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -75,7 +75,7 @@ export default class PaymentMethodService extends GeneralService {
             details
         }
     }
-    public static async findPaymentMethodAccordingId(id: string): Promise<{ status: HTTP_STATUS, details: string, paymentMethod?: IPaymentMethod }> {
+    public static async findPaymentMethodAccordingId(id: string): Promise<{ status: number, details: string, paymentMethod?: IPaymentMethod }> {
         const { status, details, paymentMethod } = await super.findPaymentMethodAccordingId(id);
         if (status !== CONTINUE) {
             return {

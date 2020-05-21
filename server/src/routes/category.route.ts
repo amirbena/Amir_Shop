@@ -1,11 +1,10 @@
 import  { Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
-import HTTP_STATUS from '../common/HTTP_Enum';
+import { OK, INTERNAL_SERVER_ERROR } from "http-status-codes";
 import GeneralRoute from './generalRoute.route';
 import authMiddlware from "./middlewares/auth.middleware";
 import adminMiddleware from "./middlewares/admin.middleware";
 const { CategoryService } = Services;
-const { OK,  INTERNAL_SERVER_ERROR } = HTTP_STATUS;
 
 export default class CategroyRoute  extends GeneralRoute{
 

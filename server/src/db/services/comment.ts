@@ -1,11 +1,10 @@
 import Comment, { IComment, validateComment } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 import { IProduct } from "../models/product.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from "http-status-codes";
 import GeneralService from './generalService';
 
 
-const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 export interface IDetailedComment {
     id: string;
     user: IUser;
@@ -17,8 +16,8 @@ export interface IDetailedComment {
 }
 export default class CommentService extends GeneralService {
     public static async addComment(comment: IComment):
-        Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         const { error } = validateComment(comment);
         if (error) {
@@ -60,8 +59,8 @@ export default class CommentService extends GeneralService {
         }
     }
     public static async getDetailedComment(id: string):
-        Promise<{ status: HTTP_STATUS, details?: string, detailedComment?: IDetailedComment }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+        Promise<{ status: number, details?: string, detailedComment?: IDetailedComment }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
@@ -105,8 +104,8 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async updateComment(id: string, detailsToUpdate: object): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+    public static async updateComment(id: string, detailsToUpdate: object): Promise<{ status: number, details: string }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
@@ -128,8 +127,8 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async deleteComment(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+    public static async deleteComment(id: string): Promise<{ status: number, details: string }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
