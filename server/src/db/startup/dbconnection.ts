@@ -1,21 +1,11 @@
 import mongoose from 'mongoose';
 import winston from '../../startup/logger';
-import path from "path";
-import configJson from "../../common/config.json";
-import { config } from 'dotenv';
-export default async function () {
-    const regularPath: string =configJson.urlForDotEnvs;
-    const absoultePath: string = process.env.NODE_ENV === 'test' ? path.join(regularPath,'.test.env') : path.join(regularPath,'.env')
+import configJson from "config";
+export default function () {
+    const absoultePath: string = configJson.get("DB_PATH");
     winston.info(absoultePath);
-    config({ path: absoultePath });
-    if (typeof process.env.DB_PATH !== 'undefined') {
-        try {
-            const connection = await mongoose.connect(process.env.DB_PATH,{ useNewUrlParser: true, useUnifiedTopology: true });
-            winston.info(`Connected to ${process.env.DB_PATH} in ${process.env.NODE_ENV} enviroment`);
-            return connection;
-        } catch (ex) {
-            winston.error(` Can't connect  ${(ex as Error).message}`);
-        }
-    }
-    winston.error(`Can't connect, please check .env files/ enviromnent variables`);
+    const connection = mongoose.connect(absoultePath, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false });
+    connection.then(() => winston.info(`Connected to ${absoultePath} in ${process.env.NODE_ENV} enviroment`))
+        .catch(ex => winston.error(`Can't connect  ${(ex as Error).message}`));
+    return connection;
 }

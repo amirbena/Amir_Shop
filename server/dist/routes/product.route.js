@@ -74,7 +74,7 @@ var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var iterableArray_1 = __importDefault(require("../common/iterableArray"));
-var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var ProductService = dbServices_1.default.ProductService;
 var ProductRoute = /** @class */ (function (_super) {
     __extends(ProductRoute, _super);
@@ -125,15 +125,17 @@ var ProductRoute = /** @class */ (function (_super) {
                         detailedAvgProducts = [];
                         _f.label = 2;
                     case 2:
-                        _f.trys.push([2, 8, 9, 14]);
-                        _c = __asyncValues(iterableArray_1.default(detailedProducts));
-                        _f.label = 3;
-                    case 3: return [4 /*yield*/, _c.next()];
-                    case 4:
-                        if (!(_d = _f.sent(), !_d.done)) return [3 /*break*/, 7];
-                        detailedProduct = _d.value;
-                        return [4 /*yield*/, ProductService.getAvgRankForEachProduct(detailedProduct.id)];
+                        _f.trys.push([2, 9, 10, 15]);
+                        return [4 /*yield*/, iterableArray_1.default(detailedProducts)];
+                    case 3:
+                        _c = __asyncValues.apply(void 0, [_f.sent()]);
+                        _f.label = 4;
+                    case 4: return [4 /*yield*/, _c.next()];
                     case 5:
+                        if (!(_d = _f.sent(), !_d.done)) return [3 /*break*/, 8];
+                        detailedProduct = _d.value;
+                        return [4 /*yield*/, ProductService.getAvgRankForEachProduct(detailedProduct._id)];
+                    case 6:
                         _e = _f.sent(), statusChecking = _e.status, detailsChecking = _e.details, avgRank = _e.avgRank;
                         if (detailsChecking)
                             return [2 /*return*/, res.status(statusChecking).send({
@@ -142,26 +144,26 @@ var ProductRoute = /** @class */ (function (_super) {
                                 })];
                         detailedProduct = __assign({}, detailedProduct, { avgRank: avgRank });
                         detailedAvgProducts.push(detailedProduct);
-                        _f.label = 6;
-                    case 6: return [3 /*break*/, 3];
-                    case 7: return [3 /*break*/, 14];
-                    case 8:
+                        _f.label = 7;
+                    case 7: return [3 /*break*/, 4];
+                    case 8: return [3 /*break*/, 15];
+                    case 9:
                         e_1_1 = _f.sent();
                         e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 14];
-                    case 9:
-                        _f.trys.push([9, , 12, 13]);
-                        if (!(_d && !_d.done && (_a = _c.return))) return [3 /*break*/, 11];
-                        return [4 /*yield*/, _a.call(_c)];
+                        return [3 /*break*/, 15];
                     case 10:
+                        _f.trys.push([10, , 13, 14]);
+                        if (!(_d && !_d.done && (_a = _c.return))) return [3 /*break*/, 12];
+                        return [4 /*yield*/, _a.call(_c)];
+                    case 11:
                         _f.sent();
-                        _f.label = 11;
-                    case 11: return [3 /*break*/, 13];
-                    case 12:
+                        _f.label = 12;
+                    case 12: return [3 /*break*/, 14];
+                    case 13:
                         if (e_1) throw e_1.error;
                         return [7 /*endfinally*/];
-                    case 13: return [7 /*endfinally*/];
-                    case 14:
+                    case 14: return [7 /*endfinally*/];
+                    case 15:
                         res.send({
                             status: status,
                             details: details,
@@ -210,13 +212,13 @@ var ProductRoute = /** @class */ (function (_super) {
                     case 1:
                         products = _a.sent();
                         return [2 /*return*/, res.send({
-                                status: HTTP_Enum_1.default.OK,
+                                status: http_status_codes_1.OK,
                                 details: products
                             })];
                     case 2:
                         ex_1 = _a.sent();
-                        return [2 /*return*/, res.status(HTTP_Enum_1.default.INTERNAL_SERVER_ERROR).send({
-                                status: HTTP_Enum_1.default.INTERNAL_SERVER_ERROR,
+                        return [2 /*return*/, res.status(http_status_codes_1.INTERNAL_SERVER_ERROR).send({
+                                status: http_status_codes_1.INTERNAL_SERVER_ERROR,
                                 details: ex_1.message
                             })];
                     case 3: return [2 /*return*/];

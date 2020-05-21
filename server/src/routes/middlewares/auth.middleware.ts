@@ -1,10 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import HTTP_STATUS from '../../common/HTTP_Enum';
-
-
-
-const { BAD_REQUEST,UNAUTHORIZED } = HTTP_STATUS;
+import { BAD_REQUEST,UNAUTHORIZED } from 'http-status-codes';
 
 
 

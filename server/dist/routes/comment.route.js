@@ -52,11 +52,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
-var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var CommentService = dbServices_1.default.CommentService;
-var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR;
 var CommentRoute = /** @class */ (function (_super) {
     __extends(CommentRoute, _super);
     function CommentRoute() {
@@ -68,7 +67,7 @@ var CommentRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, CommentService.addComment(req.body)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({ details: details })];
                         res.send({ details: details });
                         return [2 /*return*/];
@@ -90,7 +89,7 @@ var CommentRoute = /** @class */ (function (_super) {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_1 = _a.sent();
-                        return [2 /*return*/, res.status(INTERNAL_SERVER_ERROR).send({
+                        return [2 /*return*/, res.status(http_status_codes_1.INTERNAL_SERVER_ERROR).send({
                                 details: ex_1.message
                             })];
                     case 3: return [2 /*return*/];
@@ -104,7 +103,7 @@ var CommentRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, CommentService.updateComment(req.body.id, req.body)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({ details: details })];
                         res.send({
                             details: details
@@ -120,7 +119,7 @@ var CommentRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, CommentService.deleteComment(req.body.id)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({ details: details })];
                         res.send({
                             details: details

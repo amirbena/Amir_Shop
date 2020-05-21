@@ -1,10 +1,9 @@
 import  {  Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
-import HTTP_STATUS from '../common/HTTP_Enum';
+import { OK,  INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import GeneralRoute from './generalRoute.route';
 import authMiddlware from "./middlewares/auth.middleware";
 const { CommentService } = Services;
-const { OK,  INTERNAL_SERVER_ERROR } = HTTP_STATUS;
 
 
 export default class CommentRoute extends GeneralRoute {

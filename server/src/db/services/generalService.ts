@@ -5,12 +5,11 @@ import Cart, { ICart } from './../models/cart.model';
 import PaymentMethod, { IPaymentMethod } from "../models/paymentMethod.model";
 import Payment, { IPayment } from "../models/payment.model";
 import Comment, { IComment } from "../models/comment.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import { NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } from 'http-status-codes';
 
-const { NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 export default class GeneralService {
-    protected static async findUserById(id: string): Promise<{ status: HTTP_STATUS, details?: string, user?: IUser }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findUserById(id: any): Promise<{ status: number, details?: string, user?: IUser }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -35,8 +34,8 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findCategoryById(id: string): Promise<{ status: HTTP_STATUS, details?: string, category?: ICategory }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findCategoryById(id: any): Promise<{ status: number, details?: string, category?: ICategory }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -61,8 +60,8 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findCartById(id: string): Promise<{ status: HTTP_STATUS, details?: string, cart?: ICart }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findCartById(id: any): Promise<{ status: number, details?: string, cart?: ICart }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -87,8 +86,8 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findProductById(id: string): Promise<{ status: HTTP_STATUS, details?: string, product?: IProduct }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findProductById(id: any): Promise<{ status: number, details?: string, product?: IProduct }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -113,8 +112,8 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findPaymentMethodAccordingId(id: string): Promise<{ status: HTTP_STATUS, details: string, paymentMethod?: IPaymentMethod }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findPaymentMethodAccordingId(id: any): Promise<{ status: number, details: string, paymentMethod?: IPaymentMethod }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -127,7 +126,7 @@ export default class GeneralService {
                 throw new Error("Payment Method not found into db");
             }
             paymentMethod = (paymentMethod as IPaymentMethod);
-            details= paymentMethod.toString();
+            details = paymentMethod.toString();
             status = CONTINUE;
             return {
                 status,
@@ -142,8 +141,8 @@ export default class GeneralService {
             details,
         }
     }
-    protected static async findCommentById(id: string): Promise<{ status: HTTP_STATUS, details?: string, comment?: IComment }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findCommentById(id: any): Promise<{ status: number, details?: string, comment?: IComment }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -168,8 +167,8 @@ export default class GeneralService {
             details
         }
     }
-    protected static async findPaymentById(id: string): Promise<{ status: HTTP_STATUS, details?: string, payment?: IPayment }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    protected static async findPaymentById(id: any): Promise<{ status: number, details?: string, payment?: IPayment }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {

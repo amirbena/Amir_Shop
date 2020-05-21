@@ -52,12 +52,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
-var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var UserService = dbServices_1.default.UserService, CartService = dbServices_1.default.CartService;
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK;
 var UserRoute = /** @class */ (function (_super) {
     __extends(UserRoute, _super);
     function UserRoute() {
@@ -70,8 +69,8 @@ var UserRoute = /** @class */ (function (_super) {
                     case 1:
                         users = _a.sent();
                         if (!users.length)
-                            return [2 /*return*/, res.status(NOT_FOUND).send({
-                                    status: NOT_FOUND,
+                            return [2 /*return*/, res.status(http_status_codes_1.NOT_FOUND).send({
+                                    status: http_status_codes_1.NOT_FOUND,
                                     details: "<h1> no users into DB</h1>"
                                 })];
                         res.send(users);
@@ -86,7 +85,7 @@ var UserRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, UserService.createUser(req.body, this.jwtPrivateKey)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, token = _a.token;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details, status: status
                                 })];
@@ -107,7 +106,7 @@ var UserRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, UserService.userLogin(req.body, this.jwtPrivateKey)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, token = _a.token;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details,
                                     status: status
@@ -129,7 +128,7 @@ var UserRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, UserService.makeUserAdmin(req.body.id_will_admin)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details,
                                     status: status
@@ -145,7 +144,7 @@ var UserRoute = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, UserService.getUserById(req.body.id)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details,
                                     status: status
@@ -163,7 +162,7 @@ var UserRoute = /** @class */ (function (_super) {
                         return [4 /*yield*/, CartService.deleteAllCartAccordingUser(id)];
                     case 1:
                         _a = _c.sent(), cartStatus = _a.status, cartDetails = _a.details;
-                        if (cartStatus !== OK) {
+                        if (cartStatus !== http_status_codes_1.OK) {
                             return [2 /*return*/, res.status(cartStatus).send({
                                     status: cartStatus,
                                     details: cartDetails
@@ -172,7 +171,7 @@ var UserRoute = /** @class */ (function (_super) {
                         return [4 /*yield*/, UserService.deleteUser(id)];
                     case 2:
                         _b = _c.sent(), status = _b.status, details = _b.details;
-                        if (status !== OK)
+                        if (status !== http_status_codes_1.OK)
                             return [2 /*return*/, res.status(status).send({
                                     details: details,
                                     status: status

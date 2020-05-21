@@ -68,9 +68,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
 var comment_model_1 = __importDefault(require("../models/comment.model"));
 var product_model_1 = __importStar(require("../models/product.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalService_1 = __importDefault(require("./generalService"));
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
 var ProductService = /** @class */ (function (_super) {
     __extends(ProductService, _super);
     function ProductService() {
@@ -82,36 +81,40 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
                         error = product_model_1.validateProduct(product).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, this.findCategoryById(product.category_id)];
                     case 2:
                         _a = _c.sent(), statusCategory = _a.status, detailsCategory = _a.details;
-                        if (statusCategory !== CONTINUE) {
+                        if (statusCategory !== http_status_codes_1.CONTINUE) {
                             status = statusCategory;
                             throw new Error(detailsCategory);
                         }
                         return [4 /*yield*/, this.findUserById(product.admin_id)];
                     case 3:
                         _b = _c.sent(), statusAdmin = _b.status, detailsAdmin = _b.details;
-                        if (statusAdmin !== CONTINUE) {
+                        if (statusAdmin !== http_status_codes_1.CONTINUE) {
                             status = statusAdmin;
                             throw new Error(detailsAdmin);
                         }
                         return [4 /*yield*/, product_model_1.default.create(product)];
                     case 4:
                         productAdded = _c.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = productAdded.toJSON();
-                        return [3 /*break*/, 6];
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                product: productAdded
+                            }];
                     case 5:
                         ex_1 = _c.sent();
                         details = ex_1.message;
@@ -126,49 +129,51 @@ var ProductService = /** @class */ (function (_super) {
     };
     ProductService.getDetailedProductById = function (productId) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, product, _a, statusCategory, detailsCategory, category, _b, statusAdmin, detailsAdmin, admin, detailedProduct, ex_2;
+            var status, details, product, _a, statusCategory, detailsCategory, category, _b, statusAdmin, detailsAdmin, admin, _id, name, price_for_each, amount, image_url, detailedProduct, ex_2;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("invalid product id - undefinded / null");
                         }
                         return [4 /*yield*/, product_model_1.default.findById(productId)];
                     case 2:
                         product = _c.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found into db");
                         }
                         return [4 /*yield*/, this.findCategoryById(product.category_id)];
                     case 3:
                         _a = _c.sent(), statusCategory = _a.status, detailsCategory = _a.details, category = _a.category;
-                        if (statusCategory !== CONTINUE) {
+                        if (statusCategory !== http_status_codes_1.CONTINUE) {
                             status = statusCategory;
                             throw new Error(detailsCategory);
                         }
                         return [4 /*yield*/, this.findUserById(product.admin_id)];
                     case 4:
                         _b = _c.sent(), statusAdmin = _b.status, detailsAdmin = _b.details, admin = _b.user;
-                        if (statusAdmin !== CONTINUE) {
+                        if (statusAdmin !== http_status_codes_1.CONTINUE) {
                             status = statusAdmin;
                             throw new Error(detailsAdmin);
                         }
+                        _id = product._id, name = product.name, price_for_each = product.price_for_each, amount = product.amount, image_url = product.image_url;
                         detailedProduct = {
-                            _id: product._id,
+                            _id: _id,
                             category: category,
                             admin: admin,
-                            price_for_each: product.price_for_each,
-                            amount: product.amount,
-                            image_url: product.image_url
+                            name: name,
+                            price_for_each: price_for_each,
+                            amount: amount,
+                            image_url: image_url
                         };
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Succeed found";
                         return [2 /*return*/, {
                                 status: status,
@@ -193,64 +198,66 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         detailedProducts = [];
                         _e.label = 1;
                     case 1:
-                        _e.trys.push([1, 16, , 17]);
+                        _e.trys.push([1, 17, , 18]);
                         return [4 /*yield*/, product_model_1.default.find()];
                     case 2:
                         products = _e.sent();
                         if (!products.length) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("not found products into db");
                         }
                         _e.label = 3;
                     case 3:
-                        _e.trys.push([3, 9, 10, 15]);
-                        _b = __asyncValues(iterableArray_1.default(products));
-                        _e.label = 4;
-                    case 4: return [4 /*yield*/, _b.next()];
-                    case 5:
-                        if (!(_c = _e.sent(), !_c.done)) return [3 /*break*/, 8];
-                        product = _c.value;
-                        return [4 /*yield*/, this.getDetailedProductById(product)];
+                        _e.trys.push([3, 10, 11, 16]);
+                        return [4 /*yield*/, iterableArray_1.default(products)];
+                    case 4:
+                        _b = __asyncValues.apply(void 0, [_e.sent()]);
+                        _e.label = 5;
+                    case 5: return [4 /*yield*/, _b.next()];
                     case 6:
+                        if (!(_c = _e.sent(), !_c.done)) return [3 /*break*/, 9];
+                        product = _c.value;
+                        return [4 /*yield*/, this.getDetailedProductById(product._id)];
+                    case 7:
                         _d = _e.sent(), productStatus = _d.status, detailedProductStatus = _d.details, detailedProduct = _d.detailedProduct;
-                        if (productStatus !== OK) {
+                        if (productStatus !== http_status_codes_1.OK) {
                             status = productStatus;
                             throw new Error(detailedProductStatus);
                         }
-                        detailedProducts.push(product);
-                        _e.label = 7;
-                    case 7: return [3 /*break*/, 4];
-                    case 8: return [3 /*break*/, 15];
-                    case 9:
+                        detailedProducts.push(detailedProduct);
+                        _e.label = 8;
+                    case 8: return [3 /*break*/, 5];
+                    case 9: return [3 /*break*/, 16];
+                    case 10:
                         e_1_1 = _e.sent();
                         e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 15];
-                    case 10:
-                        _e.trys.push([10, , 13, 14]);
-                        if (!(_c && !_c.done && (_a = _b.return))) return [3 /*break*/, 12];
-                        return [4 /*yield*/, _a.call(_b)];
+                        return [3 /*break*/, 16];
                     case 11:
+                        _e.trys.push([11, , 14, 15]);
+                        if (!(_c && !_c.done && (_a = _b.return))) return [3 /*break*/, 13];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 12:
                         _e.sent();
-                        _e.label = 12;
-                    case 12: return [3 /*break*/, 14];
-                    case 13:
+                        _e.label = 13;
+                    case 13: return [3 /*break*/, 15];
+                    case 14:
                         if (e_1) throw e_1.error;
                         return [7 /*endfinally*/];
-                    case 14: return [7 /*endfinally*/];
-                    case 15:
-                        status = OK;
-                        details = "succeeed to find";
-                        return [3 /*break*/, 17];
+                    case 15: return [7 /*endfinally*/];
                     case 16:
+                        status = http_status_codes_1.OK;
+                        details = "succeeed to find";
+                        return [3 /*break*/, 18];
+                    case 17:
                         ex_3 = _e.sent();
                         details = ex_3.message;
-                        return [3 /*break*/, 17];
-                    case 17: return [2 /*return*/, {
+                        return [3 /*break*/, 18];
+                    case 18: return [2 /*return*/, {
                             status: status,
                             details: details,
                             detailedProducts: detailedProducts
@@ -265,23 +272,23 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Product is null or undefined");
                         }
                         return [4 /*yield*/, product_model_1.default.findOneAndUpdate({ _id: productId }, detailsToUpdate)];
                     case 2:
                         updatedProduct = _a.sent();
                         if (!updatedProduct) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Product updated";
                         return [3 /*break*/, 4];
                     case 3:
@@ -302,15 +309,15 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _e.label = 1;
                     case 1:
-                        _e.trys.push([1, 16, , 17]);
+                        _e.trys.push([1, 17, , 18]);
                         return [4 /*yield*/, this.findProductById(id)];
                     case 2:
                         _b = _e.sent(), statusProduct = _b.status, detailsProduct = _b.details, product = _b.product;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusProduct;
                             throw new Error(detailsProduct);
                         }
@@ -323,45 +330,47 @@ var ProductService = /** @class */ (function (_super) {
                         avgRank = 0;
                         _e.label = 4;
                     case 4:
-                        _e.trys.push([4, 9, 10, 15]);
-                        _c = __asyncValues(iterableArray_1.default(comments));
-                        _e.label = 5;
-                    case 5: return [4 /*yield*/, _c.next()];
-                    case 6:
-                        if (!(_d = _e.sent(), !_d.done)) return [3 /*break*/, 8];
+                        _e.trys.push([4, 10, 11, 16]);
+                        return [4 /*yield*/, iterableArray_1.default(comments)];
+                    case 5:
+                        _c = __asyncValues.apply(void 0, [_e.sent()]);
+                        _e.label = 6;
+                    case 6: return [4 /*yield*/, _c.next()];
+                    case 7:
+                        if (!(_d = _e.sent(), !_d.done)) return [3 /*break*/, 9];
                         comment = _d.value;
                         avgRank += comment.rank;
-                        _e.label = 7;
-                    case 7: return [3 /*break*/, 5];
-                    case 8: return [3 /*break*/, 15];
-                    case 9:
+                        _e.label = 8;
+                    case 8: return [3 /*break*/, 6];
+                    case 9: return [3 /*break*/, 16];
+                    case 10:
                         e_2_1 = _e.sent();
                         e_2 = { error: e_2_1 };
-                        return [3 /*break*/, 15];
-                    case 10:
-                        _e.trys.push([10, , 13, 14]);
-                        if (!(_d && !_d.done && (_a = _c.return))) return [3 /*break*/, 12];
-                        return [4 /*yield*/, _a.call(_c)];
+                        return [3 /*break*/, 16];
                     case 11:
+                        _e.trys.push([11, , 14, 15]);
+                        if (!(_d && !_d.done && (_a = _c.return))) return [3 /*break*/, 13];
+                        return [4 /*yield*/, _a.call(_c)];
+                    case 12:
                         _e.sent();
-                        _e.label = 12;
-                    case 12: return [3 /*break*/, 14];
-                    case 13:
+                        _e.label = 13;
+                    case 13: return [3 /*break*/, 15];
+                    case 14:
                         if (e_2) throw e_2.error;
                         return [7 /*endfinally*/];
-                    case 14: return [7 /*endfinally*/];
-                    case 15:
+                    case 15: return [7 /*endfinally*/];
+                    case 16:
                         avgRank = avgRank / comments.length;
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         return [2 /*return*/, {
                                 status: status,
                                 avgRank: avgRank
                             }];
-                    case 16:
+                    case 17:
                         ex_5 = _e.sent();
                         details = ex_5.message;
-                        return [3 /*break*/, 17];
-                    case 17: return [2 /*return*/, {
+                        return [3 /*break*/, 18];
+                    case 18: return [2 /*return*/, {
                             details: details,
                             status: status
                         }];
@@ -385,23 +394,23 @@ var ProductService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!productId) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("productId is invalid");
                         }
                         return [4 /*yield*/, product_model_1.default.findByIdAndDelete(productId)];
                     case 2:
                         product = _a.sent();
                         if (!product) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("product is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "delete is succeed";
                         return [3 /*break*/, 4];
                     case 3:

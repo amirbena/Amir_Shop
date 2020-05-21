@@ -18,10 +18,10 @@ const PaymentMethodSchema: Schema = new Schema({
 });
 
 
-export default mongoose.model<IPaymentMethod>("Payments Methods", PaymentMethodSchema);
+export default mongoose.model<IPaymentMethod>("Payments_Methods", PaymentMethodSchema);
 
 
-export function validatePaymentMethod(model: IPaymentMethod) {
+export function validatePaymentMethod(model: { paymentMethod: string }) {
     const schema = {
         paymentMethod: Joi.string().required().min(3).max(55)
     }

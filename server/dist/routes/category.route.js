@@ -52,12 +52,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
-var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var CategoryService = dbServices_1.default.CategoryService;
-var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR;
 var CategroyRoute = /** @class */ (function (_super) {
     __extends(CategroyRoute, _super);
     function CategroyRoute() {
@@ -84,13 +83,13 @@ var CategroyRoute = /** @class */ (function (_super) {
                     case 1:
                         categories = _a.sent();
                         return [2 /*return*/, res.send({
-                                status: OK,
+                                status: http_status_codes_1.OK,
                                 details: categories
                             })];
                     case 2:
                         ex_1 = _a.sent();
-                        return [2 /*return*/, res.status(INTERNAL_SERVER_ERROR).send({
-                                status: INTERNAL_SERVER_ERROR,
+                        return [2 /*return*/, res.status(http_status_codes_1.INTERNAL_SERVER_ERROR).send({
+                                status: http_status_codes_1.INTERNAL_SERVER_ERROR,
                                 details: ex_1.message
                             })];
                     case 3: return [2 /*return*/];

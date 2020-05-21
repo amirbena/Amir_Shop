@@ -1,16 +1,15 @@
-import { ICartDetails } from './../models/cart.model';
 import Payment, { IPayment, validatePayment, IPaymentValidator } from "../models/payment.model";
 import Product from '../models/product.model';
 import GeneralService from '../services/generalService';
-import HTTP_STATUS from "../../common/HTTP_Enum";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import CartService from '../services/cart';
 import iterableArray from '../../common/iterableArray';
-import { ICart } from "../models/cart.model";
-const { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } = HTTP_STATUS;
+import { ICart, ICartDetails } from "../models/cart.model";
+
 
 export default class PaymentService extends GeneralService {
-    public static async addPayment(payment: IPaymentValidator): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addPayment(payment: IPaymentValidator): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { error } = validatePayment(payment);
@@ -45,8 +44,8 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    public static async paymentPaid(paymentId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async paymentPaid(paymentId: string) {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const paymentQuerying = await this.findPaymentById(paymentId);
@@ -76,8 +75,8 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    public static async getPayments(): Promise<{ status: HTTP_STATUS, details: string, payments?: IPayment[] }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getPayments(): Promise<{ status: number, details: string, payments?: IPayment[] }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const payments = await Payment.find();
@@ -96,8 +95,8 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    public static async deletePayment(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async deletePayment(id: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!id) {
@@ -119,8 +118,8 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
-    private static async updateProduct(cartId: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    private static async updateProduct(cartId: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusCart, details: detailsCart, cart } = await this.findCartById(cartId);
@@ -129,15 +128,16 @@ export default class PaymentService extends GeneralService {
                 throw new Error(detailsCart);
             }
             const cartDetailsProducts = (cart as ICart).products;
-            let cartDetail: ICartDetails;
-            for await (cartDetail of iterableArray(cartDetailsProducts)) {
+            const iterableCartDetails= await iterableArray<ICartDetails>(cartDetailsProducts);
+            let cartDetail:ICartDetails| undefined;
+            for await (cartDetail of iterableCartDetails) {
                 const productId = (cartDetail as ICartDetails).productId;
                 const product = await Product.findById(productId);
                 if (!product) {
                     status = NOT_FOUND;
                     throw new Error("one of products not found into db")
                 }
-                product.amount -= cartDetail.amountBuying;
+                product.amount -= (cartDetail as ICartDetails).amountBuying;
                 await product.save();
             }
             status = CONTINUE;

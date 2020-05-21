@@ -52,11 +52,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
-var HTTP_Enum_1 = __importDefault(require("../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
-var OK = HTTP_Enum_1.default.OK;
 var PaymentMethodService = dbServices_1.default.PaymentMethodService;
 var PaymentMethod = /** @class */ (function (_super) {
     __extends(PaymentMethod, _super);
@@ -69,7 +68,7 @@ var PaymentMethod = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, beforePaymentMethods = _a.paymentMethods;
-                        if (status !== OK) {
+                        if (status !== http_status_codes_1.OK) {
                             return [2 /*return*/, res.status(status).send({
                                     status: status,
                                     details: details
@@ -119,7 +118,7 @@ var PaymentMethod = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
-                        if (status !== OK) {
+                        if (status !== http_status_codes_1.OK) {
                             return [2 /*return*/, res.status(status).send({
                                     status: status,
                                     details: details

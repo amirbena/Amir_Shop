@@ -62,9 +62,8 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var joi_1 = __importStar(require("joi"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var user_model_1 = __importStar(require("../models/user.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalService_1 = __importDefault(require("./generalService"));
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
 var UserService = /** @class */ (function (_super) {
     __extends(UserService, _super);
     function UserService() {
@@ -76,7 +75,7 @@ var UserService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         token = '';
                         details = "";
                         _b.label = 1;
@@ -84,17 +83,17 @@ var UserService = /** @class */ (function (_super) {
                         _b.trys.push([1, 6, , 7]);
                         error = user_model_1.validateUser(user).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, user_model_1.default.findOne({ email: user.email })];
                     case 2:
                         foundUser = _b.sent();
                         if (foundUser) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("User isn't found into DB");
                         }
-                        return [4 /*yield*/, bcrypt_1.default.genSalt(20)];
+                        return [4 /*yield*/, bcrypt_1.default.genSalt()];
                     case 3:
                         salt = _b.sent();
                         _a = user;
@@ -105,7 +104,7 @@ var UserService = /** @class */ (function (_super) {
                     case 5:
                         createdUser = _b.sent();
                         if (createdUser) {
-                            status = OK;
+                            status = http_status_codes_1.OK;
                             details = createdUser.toJSON();
                             token = this.generateAuthToken(createdUser, jwtKey);
                         }
@@ -129,19 +128,15 @@ var UserService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 4, , 5]);
-                        if (!_id) {
-                            status = BAD_REQUEST;
-                            throw new Error("You have null/ undefinded value- please put real value");
-                        }
                         return [4 /*yield*/, this.findUserById(_id)];
                     case 2:
                         _a = _b.sent(), foundUserStatus = _a.status, foundUserDetails = _a.details, foundUser = _a.user;
-                        if (foundUserStatus !== CONTINUE && foundUser) {
+                        if (foundUserStatus !== http_status_codes_1.CONTINUE && !foundUser) {
                             status = foundUserStatus;
                             throw new Error(foundUserDetails);
                         }
@@ -150,7 +145,7 @@ var UserService = /** @class */ (function (_super) {
                         return [4 /*yield*/, user.save()];
                     case 3:
                         user = _b.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = user.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
@@ -172,7 +167,7 @@ var UserService = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         email = detailsforQuerying.email, password = detailsforQuerying.password;
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         token = "";
                         _a.label = 1;
@@ -180,14 +175,14 @@ var UserService = /** @class */ (function (_super) {
                         _a.trys.push([1, 4, , 5]);
                         error = this.validateLogin(detailsforQuerying).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, user_model_1.default.findOne({ email: email })];
                     case 2:
                         user = _a.sent();
                         if (!user) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("current email not found, please change it");
                         }
                         user = user;
@@ -195,10 +190,10 @@ var UserService = /** @class */ (function (_super) {
                     case 3:
                         validPassword = _a.sent();
                         if (!validPassword) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             details = "please type another password";
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = user.toJSON();
                         token = this.generateAuthToken(user, jwtLogin);
                         return [3 /*break*/, 5];
@@ -215,36 +210,73 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
+    UserService.getUserById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var status, details, _a, userStatus, userDetails, user, ex_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
+                        details = "";
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.findUserById(id)];
+                    case 2:
+                        _a = _b.sent(), userStatus = _a.status, userDetails = _a.details, user = _a.user;
+                        if (userStatus !== http_status_codes_1.CONTINUE) {
+                            status = userStatus;
+                            throw new Error(userDetails);
+                        }
+                        status = http_status_codes_1.OK;
+                        details = "found";
+                        return [2 /*return*/, {
+                                status: status,
+                                details: details,
+                                user: user
+                            }];
+                    case 3:
+                        ex_4 = _b.sent();
+                        details = ex_4.message;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, {
+                            status: status,
+                            details: details
+                        }];
+                }
+            });
+        });
+    };
     UserService.updateUser = function (_id, detailstoUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, user, ex_4;
+            var status, details, user, ex_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!_id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("each of details is invalid- _id is mongoose object id, details to update is object");
                         }
                         return [4 /*yield*/, user_model_1.default.findByIdAndUpdate(_id, detailstoUpdate)];
                     case 2:
                         user = _a.sent();
                         if (!user) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("user with given ID is not found into db");
                             ;
                         }
                         user = user;
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = user.toJSON();
                         return [3 /*break*/, 4];
                     case 3:
-                        ex_4 = _a.sent();
-                        details = ex_4.message;
+                        ex_5 = _a.sent();
+                        details = ex_5.message;
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/, {
                             status: status,
@@ -264,66 +296,29 @@ var UserService = /** @class */ (function (_super) {
             });
         });
     };
-    UserService.getUserById = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var status, details, _a, userStatus, userDetails, user, ex_5;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        status = INTERNAL_SERVER_ERROR;
-                        details = "";
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.findUserById(id)];
-                    case 2:
-                        _a = _b.sent(), userStatus = _a.status, userDetails = _a.details, user = _a.user;
-                        if (userStatus !== CONTINUE) {
-                            status = userStatus;
-                            throw new Error(userDetails);
-                        }
-                        status = OK;
-                        details = "found";
-                        return [2 /*return*/, {
-                                status: status,
-                                details: details,
-                                user: user
-                            }];
-                    case 3:
-                        ex_5 = _b.sent();
-                        details = ex_5.message;
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, {
-                            status: status,
-                            details: details
-                        }];
-                }
-            });
-        });
-    };
     UserService.deleteUser = function (_id) {
         return __awaiter(this, void 0, void 0, function () {
             var status, details, result, ex_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!_id) {
-                            status = BAD_REQUEST;
+                        if (_id === "") {
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("ID isn't given");
                         }
-                        return [4 /*yield*/, user_model_1.default.deleteOne({ _id: _id })];
+                        return [4 /*yield*/, user_model_1.default.findByIdAndDelete(_id)];
                     case 2:
                         result = _a.sent();
                         if (!result) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Given ID isn't found in DB");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Succeed deleted";
                         return [3 /*break*/, 4];
                     case 3:
