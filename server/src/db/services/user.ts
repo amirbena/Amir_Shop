@@ -97,6 +97,30 @@ class UserService extends GeneralService {
             token
         }
     }
+    public static async getUserById(id: string): Promise<{ status: number, details: string, user?: IUser }> {
+        let status: number = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            const { status: userStatus, details: userDetails, user } = await this.findUserById(id);
+            if (userStatus !== CONTINUE) {
+                status = userStatus;
+                throw new Error(userDetails);
+            }
+            status = OK;
+            details = "found";
+            return {
+                status,
+                details,
+                user: user as IUser
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
     public static async updateUser(_id: any, detailstoUpdate: object) {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";

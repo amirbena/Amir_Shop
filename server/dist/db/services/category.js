@@ -59,9 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var category_model_1 = __importStar(require("../models/category.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var generalService_1 = __importDefault(require("./generalService"));
-var OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, CONTINUE = HTTP_Enum_1.default.CONTINUE, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
+var http_status_codes_1 = require("http-status-codes");
 var CategoryService = /** @class */ (function (_super) {
     __extends(CategoryService, _super);
     function CategoryService() {
@@ -73,21 +72,21 @@ var CategoryService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
                         error = category_model_1.validateCategory(category).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, category_model_1.default.findOne({ category_name: category.category_name })];
                     case 2:
                         insertedCategory = _a.sent();
                         if (insertedCategory) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("category is found in db");
                         }
                         return [4 /*yield*/, category_model_1.default.create(category)];
@@ -95,7 +94,7 @@ var CategoryService = /** @class */ (function (_super) {
                         insertedCategory = _a.sent();
                         if (!insertedCategory)
                             throw new Error("Something happend when insert db into status");
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = insertedCategory.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
@@ -126,7 +125,7 @@ var CategoryService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _b.label = 1;
                     case 1:
@@ -134,11 +133,11 @@ var CategoryService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findCategoryById(_id)];
                     case 2:
                         _a = _b.sent(), statusCheck = _a.status, detailsCheck = _a.details, category = _a.category;
-                        if (statusCheck !== CONTINUE) {
+                        if (statusCheck !== http_status_codes_1.CONTINUE) {
                             status = statusCheck;
                             throw new Error(detailsCheck);
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         categoryAfter = category;
                         details = categoryAfter.toString();
                         return [2 /*return*/, {
@@ -164,23 +163,23 @@ var CategoryService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!_id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("_id is null/ undefined ");
                         }
                         return [4 /*yield*/, category_model_1.default.deleteOne({ _id: _id })];
                     case 2:
                         deletedItem = _a.sent();
                         if (!deletedItem) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("item is not found on DB");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Succeed delete";
                         return [3 /*break*/, 4];
                     case 3:

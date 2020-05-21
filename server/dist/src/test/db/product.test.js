@@ -45,7 +45,7 @@ var user_model_1 = __importDefault(require("../../db/models/user.model"));
 var product_model_1 = __importDefault(require("../../db/models/product.model"));
 var mongoose_1 = require("mongoose");
 var chai_1 = require("chai");
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 mocha_1.describe("Product Module testing", function () {
     mocha_1.describe("POST/:  - addProduct()", function () {
@@ -174,7 +174,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_3 = _a.sent();
@@ -200,7 +200,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_4 = _a.sent();
@@ -226,7 +226,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_5 = _a.sent();
@@ -252,7 +252,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_6 = _a.sent();
@@ -278,7 +278,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_7 = _a.sent();
@@ -310,7 +310,7 @@ mocha_1.describe("Product Module testing", function () {
                         return [4 /*yield*/, index_1.default.Services.ProductService.addProduct(product)];
                     case 3:
                         _a = _b.sent(), status = _a.status, productAdded = _a.product;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         productAdd = productAdded;
                         chai_1.expect(productAdd).to.include({
                             admin_id: users[1]._id,

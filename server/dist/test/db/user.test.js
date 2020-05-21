@@ -51,7 +51,7 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var chai_1 = require("chai");
 var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
 var user_model_1 = __importDefault(require("../../db/models/user.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 var user_model_2 = __importDefault(require("../../db/models/user.model"));
 mocha_1.describe("User Model testing", function () {
@@ -168,7 +168,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.createUser(object, jwtKey)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_2 = _a.sent();
@@ -192,7 +192,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.createUser(object, jwtKey)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_3 = _a.sent();
@@ -216,7 +216,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.createUser(object, jwtKey)];
                     case 1:
                         _a = _b.sent(), status = _a.status, token = _a.token;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         chai_1.expect(token).to.be.not.equal('');
                         return [3 /*break*/, 3];
                     case 2:
@@ -333,7 +333,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.makeUserAdmin('')];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_6 = _a.sent();
@@ -351,7 +351,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.makeUserAdmin("ABCDRE116789")];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_7 = _a.sent();
@@ -373,7 +373,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.makeUserAdmin(user._id)];
                     case 2:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [3 /*break*/, 4];
                     case 3:
                         ex_8 = _a.sent();
@@ -493,7 +493,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.userLogin(loginSchema, jwtKey)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_10 = _a.sent();
@@ -515,7 +515,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.userLogin(loginSchema, jwtKey)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_11 = _a.sent();
@@ -537,7 +537,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.userLogin(loginSchema, jwtKey)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_12 = _a.sent();
@@ -573,7 +573,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.userLogin(loginSchema, jwtKey)];
                     case 3:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [3 /*break*/, 5];
                     case 4:
                         ex_13 = _a.sent();
@@ -692,7 +692,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.updateUser('', detailsToUpdate)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_15 = _a.sent();
@@ -710,7 +710,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.updateUser('ABCDEF12355', detailsToUpdate)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_16 = _a.sent();
@@ -735,7 +735,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.updateUser(user.id, detailsToUpdate)];
                     case 2:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 4];
                     case 3:
                         ex_17 = _a.sent();
@@ -989,7 +989,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.deleteUser("")];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         error_7 = _a.sent();
@@ -1007,7 +1007,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.deleteUser("A5123456")];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_22 = _a.sent();
@@ -1028,7 +1028,7 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.deleteUser(user._id)];
                     case 2:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [4 /*yield*/, user_model_1.default.findById(user._id)];
                     case 3:
                         result = _a.sent();

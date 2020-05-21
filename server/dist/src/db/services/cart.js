@@ -59,9 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var cart_model_1 = __importStar(require("../models/cart.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var generalService_1 = __importDefault(require("./generalService"));
-var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
+var http_status_codes_1 = require("http-status-codes");
 var CartService = /** @class */ (function (_super) {
     __extends(CartService, _super);
     function CartService() {
@@ -73,7 +72,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _b.label = 1;
                     case 1:
@@ -81,14 +80,14 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
                         return [4 /*yield*/, cart_model_1.default.create({ userId: userId })];
                     case 3:
                         object = _b.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = object.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
@@ -109,7 +108,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
@@ -117,7 +116,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -127,20 +126,20 @@ var CartService = /** @class */ (function (_super) {
                         };
                         error = cart_model_1.validateCart(schema).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, cart_model_1.default.findOne({ userId: userId, date: new Date() })];
                     case 3:
                         cart = _c.sent();
                         if (!cart) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Cart not found");
                         }
                         return [4 /*yield*/, this.findProductById(cartDetails.productId)];
                     case 4:
                         _b = _c.sent(), statusProduct = _b.status, detailsProduct = _b.details, product = _b.product;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusProduct;
                             throw new Error(detailsProduct);
                         }
@@ -149,7 +148,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, cart.save()];
                     case 5:
                         cart = _c.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = cart.toJSON();
                         return [3 /*break*/, 7];
                     case 6:
@@ -170,7 +169,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
@@ -178,7 +177,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -186,10 +185,10 @@ var CartService = /** @class */ (function (_super) {
                     case 3:
                         _b = _c.sent(), ok = _b.ok, deletedCount = _b.deletedCount;
                         if (!deletedCount) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("No Carts found in this user");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Succeed delete all carts  that belong that belongs to this user";
                         return [3 /*break*/, 5];
                     case 4:
@@ -210,7 +209,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
@@ -218,7 +217,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _c.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -228,26 +227,26 @@ var CartService = /** @class */ (function (_super) {
                         };
                         error = cart_model_1.validateCart(schema).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error(error.details[0].message);
                         }
                         return [4 /*yield*/, cart_model_1.default.findOne({ userId: userId, date: new Date() })];
                     case 3:
                         cart = _c.sent();
                         if (!cart) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Cart not found");
                         }
                         return [4 /*yield*/, this.findProductById(changedDetails.productId)];
                     case 4:
                         _b = _c.sent(), statusProduct = _b.status, detailsProudct = _b.details, product = _b.product;
-                        if (statusProduct !== OK) {
+                        if (statusProduct !== http_status_codes_1.OK) {
                             status = statusProduct;
                             throw new Error(detailsProudct);
                         }
                         addToCart = cart.products.find(function (cartdetail) { return changedDetails.productId === cartdetail.productId; });
                         if (!addToCart) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("detals not found");
                         }
                         index = cart.products.findIndex(function (cartdetail) { return changedDetails.productId === cartdetail.productId; });
@@ -269,7 +268,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, cart.save()];
                     case 5:
                         cart = _c.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = cart.toJSON();
                         return [3 /*break*/, 7];
                     case 6:
@@ -290,7 +289,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         date = new Date(dateString);
                         _b.label = 1;
@@ -299,7 +298,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -307,10 +306,10 @@ var CartService = /** @class */ (function (_super) {
                     case 3:
                         deletedCount = (_b.sent()).deletedCount;
                         if (!deletedCount) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Can't find current cart");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "succeed deleting";
                         return [3 /*break*/, 5];
                     case 4:
@@ -331,7 +330,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
@@ -340,10 +339,10 @@ var CartService = /** @class */ (function (_super) {
                     case 2:
                         deletedCount = (_a.sent()).deletedCount;
                         if (!deletedCount) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("cart is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "cart deleted";
                         return [3 /*break*/, 4];
                     case 3:
@@ -364,7 +363,7 @@ var CartService = /** @class */ (function (_super) {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         date = new Date(dateString);
                         _b.label = 1;
@@ -373,7 +372,7 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findUserById(userId)];
                     case 2:
                         _a = _b.sent(), statusUser = _a.status, detailsUser = _a.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -381,11 +380,11 @@ var CartService = /** @class */ (function (_super) {
                     case 3:
                         cart = _b.sent();
                         if (!cart) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("the cart is not found");
                         }
                         cart = cart;
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = cart.toJSON();
                         return [2 /*return*/, {
                                 status: status,
@@ -417,14 +416,14 @@ var CartService = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.findCartById(cartId)];
                     case 2:
                         _a = _b.sent(), status = _a.status, cartDetails = _a.details, cart = _a.cart;
-                        if (status !== OK) {
+                        if (status !== http_status_codes_1.OK) {
                             return [2 /*return*/, {
                                     status: status,
                                     details: cartDetails
                                 }];
                         }
                         return [2 /*return*/, {
-                                status: OK,
+                                status: http_status_codes_1.OK,
                                 details: details,
                                 cart: cart
                             }];

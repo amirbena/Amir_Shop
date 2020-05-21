@@ -59,9 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var comment_model_1 = __importStar(require("../models/comment.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
 var generalService_1 = __importDefault(require("./generalService"));
-var NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND, OK = HTTP_Enum_1.default.OK, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE;
+var http_status_codes_1 = require("http-status-codes");
 var CommentService = /** @class */ (function (_super) {
     __extends(CommentService, _super);
     function CommentService() {
@@ -73,11 +72,11 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         error = comment_model_1.validateComment(comment).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             details = error.details[0].message;
                             return [2 /*return*/, {
                                     status: status,
@@ -94,27 +93,27 @@ var CommentService = /** @class */ (function (_super) {
                     case 2:
                         commentAdded = _c.sent();
                         if (commentAdded) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("the comment is exist in db");
                         }
                         return [4 /*yield*/, this.findProductById(comment.product_id)];
                     case 3:
                         _a = _c.sent(), statusProduct = _a.status, detailsProduct = _a.details;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusProduct;
                             throw new Error(detailsProduct);
                         }
                         return [4 /*yield*/, this.findUserById(comment.user_id)];
                     case 4:
                         _b = _c.sent(), statusUser = _b.status, detailsUser = _b.details;
-                        if (statusUser !== CONTINUE) {
+                        if (statusUser !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
                         return [4 /*yield*/, comment_model_1.default.create(comment)];
                     case 5:
                         commentAdded = _c.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = commentAdded.toJSON();
                         return [3 /*break*/, 7];
                     case 6:
@@ -135,33 +134,33 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = NOT_FOUND;
+                        status = http_status_codes_1.NOT_FOUND;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }
                         return [4 /*yield*/, comment_model_1.default.findById(id)];
                     case 2:
                         comment = _c.sent();
                         if (!comment) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("comment is not found into db");
                         }
                         return [4 /*yield*/, this.findProductById(comment.product_id)];
                     case 3:
                         _a = _c.sent(), statusProduct = _a.status, detailsProduct = _a.details, product = _a.product;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusProduct;
                             throw new Error(detailsProduct);
                         }
                         return [4 /*yield*/, this.findUserById(comment.user_id)];
                     case 4:
                         _b = _c.sent(), statusUser = _b.status, detailsUser = _b.details, user = _b.user;
-                        if (statusProduct !== CONTINUE) {
+                        if (statusProduct !== http_status_codes_1.CONTINUE) {
                             status = statusUser;
                             throw new Error(detailsUser);
                         }
@@ -173,7 +172,7 @@ var CommentService = /** @class */ (function (_super) {
                             comment: comment.comment,
                             rank: comment.rank
                         };
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         return [2 /*return*/, {
                                 status: status,
                                 detailedComment: detailedComment
@@ -196,23 +195,23 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = NOT_FOUND;
+                        status = http_status_codes_1.NOT_FOUND;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }
                         return [4 /*yield*/, comment_model_1.default.findByIdAndUpdate(id, detailsToUpdate)];
                     case 2:
                         comment = _a.sent();
                         if (!comment) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("comment is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Object updated";
                         return [3 /*break*/, 4];
                     case 3:
@@ -233,23 +232,23 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = NOT_FOUND;
+                        status = http_status_codes_1.NOT_FOUND;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }
                         return [4 /*yield*/, comment_model_1.default.findByIdAndDelete(id)];
                     case 2:
                         comment = _a.sent();
                         if (!comment) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("comment is not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "Comment deleted";
                         return [3 /*break*/, 4];
                     case 3:

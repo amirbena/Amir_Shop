@@ -43,7 +43,7 @@ var mocha_1 = require("mocha");
 var paymentMethod_model_1 = __importDefault(require("../../db/models/paymentMethod.model"));
 var chai_1 = require("chai");
 var mongoose_1 = require("mongoose");
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 var PaymentMethodService = index_1.default.Services.PaymentMethodService;
 mocha_1.describe("Payment Method Service Check", function () {
@@ -101,12 +101,12 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.addPaymentMethod(paymentMethod)];
                     case 1:
                         paymentMethodReturned = _a.sent();
-                        chai_1.expect(paymentMethodReturned.status).to.be.eqls(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethodReturned.status).to.be.eqls(http_status_codes_1.BAD_REQUEST);
                         paymentMethod.paymentMethod = "";
                         return [4 /*yield*/, PaymentMethodService.addPaymentMethod(paymentMethod)];
                     case 2:
                         paymentMethodReturned = _a.sent();
-                        chai_1.expect(paymentMethodReturned.status).to.be.eqls(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethodReturned.status).to.be.eqls(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 4];
                     case 3:
                         ex_3 = _a.sent();
@@ -129,7 +129,7 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.addPaymentMethod(paymentMethod)];
                     case 2:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 4];
                     case 3:
                         ex_4 = _a.sent();
@@ -152,7 +152,7 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.addPaymentMethod(paymentMethod)];
                     case 2:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         chai_1.expect(details).to.haveOwnProperty("paymentMethod", "Paypal");
                         return [3 /*break*/, 4];
                     case 3:
@@ -217,7 +217,7 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
                     case 2:
                         _a = _b.sent(), status = _a.status, paymentMethods = _a.paymentMethods;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         chai_1.expect(paymentMethods).length(0);
                         return [3 /*break*/, 4];
                     case 3:
@@ -236,7 +236,7 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
                     case 1:
                         _a = _b.sent(), status = _a.status, paymentMethods = _a.paymentMethods;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         chai_1.expect(paymentMethods).length(2);
                         return [3 /*break*/, 3];
                     case 2:
@@ -298,23 +298,23 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod("")];
                     case 1:
                         paymentMethod = _a.sent();
-                        chai_1.expect(paymentMethod.status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod({})];
                     case 2:
                         paymentMethod = _a.sent();
-                        chai_1.expect(paymentMethod.status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod([])];
                     case 3:
                         paymentMethod = _a.sent();
-                        chai_1.expect(paymentMethod.status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(null)];
                     case 4:
                         paymentMethod = _a.sent();
-                        chai_1.expect(paymentMethod.status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(undefined)];
                     case 5:
                         paymentMethod = _a.sent();
-                        chai_1.expect(paymentMethod.status).to.be.equal(HTTP_Enum_1.default.BAD_REQUEST);
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
                         return [3 /*break*/, 7];
                     case 6:
                         ex_12 = _a.sent();
@@ -333,7 +333,7 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(id)];
                     case 1:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.NOT_FOUND);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [3 /*break*/, 3];
                     case 2:
                         ex_13 = _a.sent();
@@ -355,12 +355,113 @@ mocha_1.describe("Payment Method Service Check", function () {
                         return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(id)];
                     case 2:
                         status = (_a.sent()).status;
-                        chai_1.expect(status).to.be.equal(HTTP_Enum_1.default.OK);
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [3 /*break*/, 4];
                     case 3:
                         ex_14 = _a.sent();
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    mocha_1.describe("GET /:id", function () {
+        mocha_1.beforeEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var ex_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, paymentMethod_model_1.default.create({
+                                paymentMethod: "Credit Card"
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, paymentMethod_model_1.default.create({
+                                paymentMethod: "Cash"
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_15 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var ex_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, paymentMethod_model_1.default.deleteMany({})];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_16 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it("should return BAD_REQUEST if id is invalid", function () { return __awaiter(_this, void 0, void 0, function () {
+            var paymentMethod, ex_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 7, , 8]);
+                        paymentMethod = void 0;
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(null)];
+                    case 1:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(undefined)];
+                    case 2:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId("")];
+                    case 3:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId({})];
+                    case 4:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId([])];
+                    case 5:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(1)];
+                    case 6:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [3 /*break*/, 8];
+                    case 7:
+                        ex_17 = _a.sent();
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it("should return NOT_FOUND status when id is not found into db", function () { return __awaiter(_this, void 0, void 0, function () {
+            var id, status, ex_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        id = mongoose_1.Types.ObjectId();
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(id)];
+                    case 1:
+                        status = (_a.sent()).status;
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_18 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });

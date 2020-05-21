@@ -59,9 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var paymentMethod_model_1 = __importStar(require("../models/paymentMethod.model"));
-var HTTP_Enum_1 = __importDefault(require("../../common/HTTP_Enum"));
+var http_status_codes_1 = require("http-status-codes");
 var generalService_1 = __importDefault(require("./generalService"));
-var OK = HTTP_Enum_1.default.OK, INTERNAL_SERVER_ERROR = HTTP_Enum_1.default.INTERNAL_SERVER_ERROR, CONTINUE = HTTP_Enum_1.default.CONTINUE, BAD_REQUEST = HTTP_Enum_1.default.BAD_REQUEST, NOT_FOUND = HTTP_Enum_1.default.NOT_FOUND;
 var PaymentMethodService = /** @class */ (function (_super) {
     __extends(PaymentMethodService, _super);
     function PaymentMethodService() {
@@ -73,27 +72,27 @@ var PaymentMethodService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
                         error = paymentMethod_model_1.validatePaymentMethod(paymentMethod).error;
                         if (error) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("Invalid input of payment method");
                         }
                         return [4 /*yield*/, paymentMethod_model_1.default.findOne({ paymentMethod: paymentMethod.paymentMethod })];
                     case 2:
                         result = _a.sent();
                         if (result) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("has exsiting same payment method");
                         }
                         return [4 /*yield*/, paymentMethod_model_1.default.create(paymentMethod)];
                     case 3:
                         result = _a.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = result.toJSON();
                         return [3 /*break*/, 5];
                     case 4:
@@ -114,7 +113,7 @@ var PaymentMethodService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
@@ -122,7 +121,7 @@ var PaymentMethodService = /** @class */ (function (_super) {
                         return [4 /*yield*/, paymentMethod_model_1.default.find()];
                     case 2:
                         paymentMethods = _a.sent();
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = paymentMethods.toString();
                         return [2 /*return*/, {
                                 status: status,
@@ -146,23 +145,23 @@ var PaymentMethodService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = INTERNAL_SERVER_ERROR;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (!id) {
-                            status = BAD_REQUEST;
+                            status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("invalid id is given");
                         }
                         return [4 /*yield*/, paymentMethod_model_1.default.deleteOne({ _id: id })];
                     case 2:
                         deletedCount = (_a.sent()).deletedCount;
                         if (!deletedCount) {
-                            status = NOT_FOUND;
+                            status = http_status_codes_1.NOT_FOUND;
                             throw new Error("Payment Method not found");
                         }
-                        status = OK;
+                        status = http_status_codes_1.OK;
                         details = "The item is deleted succeed";
                         return [3 /*break*/, 4];
                     case 3:
@@ -179,13 +178,15 @@ var PaymentMethodService = /** @class */ (function (_super) {
     };
     PaymentMethodService.findPaymentMethodAccordingId = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, status, details, paymentMethod;
+            var _a, status, details, paymentMethod, ex_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, _super.findPaymentMethodAccordingId.call(this, id)];
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, _super.findPaymentMethodAccordingId.call(this, id)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
-                        if (status !== CONTINUE) {
+                        if (status !== http_status_codes_1.CONTINUE) {
                             return [2 /*return*/, {
                                     status: status,
                                     details: details
@@ -196,6 +197,13 @@ var PaymentMethodService = /** @class */ (function (_super) {
                                 details: details,
                                 paymentMethod: paymentMethod
                             }];
+                    case 2:
+                        ex_4 = _b.sent();
+                        return [2 /*return*/, {
+                                status: http_status_codes_1.INTERNAL_SERVER_ERROR,
+                                details: ex_4.message
+                            }];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
