@@ -1,15 +1,16 @@
-import {  Request, Response } from "express";
+import { Request, Response } from "express";
 import GeneralRoute from './generalRoute.route'
 import Services from "../db/startup/dbServices";
 import authMiddlware from "./middlewares/auth.middleware";
+import { ICartDetails } from "../db/models/cart.model";
 
 const { CartService } = Services;
 
 
-export default class CartRoute  extends GeneralRoute{
+export default class CartRoute extends GeneralRoute {
     constructor() {
         super();
-        this.path= '/carts';
+        this.path = '/carts';
         this.intializeRoutes();
     }
     private intializeRoutes() {
@@ -31,7 +32,7 @@ export default class CartRoute  extends GeneralRoute{
     addNewItemToCart = async (req: Request, res: Response) => {
         const { cartDetails } = req.body;
         const { id } = req.body.user;
-        const { status, details } = await CartService.addItemtoCart(id, cartDetails);
+        const { status, details } = await CartService.addItemtoCart(id, (cartDetails as ICartDetails));
         return res.status(status).send({
             status,
             details
@@ -40,7 +41,7 @@ export default class CartRoute  extends GeneralRoute{
     changeDetailsForUser = async (req: Request, res: Response) => {
         const { changedDetails, sign } = req.body;
         const { id } = req.body.user;
-        const { status, details } = await CartService.changeElementsforProduct(id, changedDetails, sign);
+        const { status, details } = await CartService.changeElementsforProduct(id, changedDetails as ICartDetails, sign);
         return res.status(status).send({
             status,
             details
@@ -65,7 +66,7 @@ export default class CartRoute  extends GeneralRoute{
     getCartByUserAndDate = async (req: Request, res: Response) => {
         const { dateString } = req.body;
         const { id } = req.body.user;
-        const {status, details } = await CartService.getCartbyUserAndDate(id, dateString);
+        const { status, details } = await CartService.getCartbyUserAndDate(id, dateString);
         return res.status(status).send({
             status,
             details

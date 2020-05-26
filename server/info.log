@@ -13,3 +13,13 @@
   message: 'App listens to 5000 PORT',
   timestamp: '2020-04-19T15:04:06.126Z'
 }
+{
+  message: 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false/amiros_shop_test',
+  level: 'info',
+  timestamp: '2020-05-26T20:24:10.855Z'
+}
+{
+  message: 'Connected to mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false/amiros_shop_test in test enviroment',
+  level: 'info',
+  timestamp: '2020-05-26T20:24:13.136Z'
+}

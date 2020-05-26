@@ -7,5 +7,4 @@ coverage/
 node_modules
 
 #logs 
-error.log
-info.log
+*.log
