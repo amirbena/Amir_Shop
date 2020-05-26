@@ -8,7 +8,13 @@ export interface IComment extends Document {
     comment: string;
     rank: number;
 }
-
+export interface ICommentInput {
+    user_id: string;
+    product_id: string;
+    title: string;
+    comment: string;
+    rank: number;
+}
 const CommentSchema: Schema = new Schema({
     user_id: {
         type: Schema.Types.ObjectId,
@@ -38,11 +44,11 @@ const CommentSchema: Schema = new Schema({
 })
 export default mongoose.model<IComment>("Comment", CommentSchema);
 
-export function validateComment(comment: IComment) {
+export function validateComment(comment: ICommentInput) {
     const schema = {
         user_id: Joi.required(),
         product_id: Joi.required(),
-        title:Joi.string().required().min(5).max(50),
+        title: Joi.string().required().min(5).max(50),
         comment: Joi.string().min(20).max(255),
         rank: Joi.number().min(0).max(50)
     }

@@ -172,87 +172,14 @@ var PaymentService = /** @class */ (function (_super) {
                         ex_2 = _c.sent();
                         details = ex_2.message;
                         return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/, {
-                            status: status,
-                            details: details
-                        }];
-                }
-            });
-        });
-    };
-    PaymentService.getPayments = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var status, details, payments, ex_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
-                        details = "";
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, payment_model_1.default.find()];
-                    case 2:
-                        payments = _a.sent();
-                        status = http_status_codes_1.OK;
-                        details = payments.toString();
-                        return [2 /*return*/, {
-                                status: status,
-                                details: details,
-                                payments: payments
-                            }];
-                    case 3:
-                        ex_3 = _a.sent();
-                        details = ex_3.message;
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, {
-                            status: status,
-                            details: details
-                        }];
-                }
-            });
-        });
-    };
-    PaymentService.deletePayment = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var status, details, deletedCount, ex_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
-                        details = "";
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        if (!id) {
-                            status = http_status_codes_1.BAD_REQUEST;
-                            throw new Error("Bad request");
-                        }
-                        return [4 /*yield*/, payment_model_1.default.deleteOne({ _id: id })];
-                    case 2:
-                        deletedCount = (_a.sent()).deletedCount;
-                        if (!deletedCount) {
-                            status = http_status_codes_1.NOT_FOUND;
-                            throw new Error("id is not found into db");
-                        }
-                        status = http_status_codes_1.OK;
-                        details = "Item deleted in succeed";
-                        return [3 /*break*/, 4];
-                    case 3:
-                        ex_4 = _a.sent();
-                        details = ex_4.message;
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, {
-                            status: status,
-                            details: details
-                        }];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
     PaymentService.updateProduct = function (cartId) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_1, _a, status, details, _b, statusCart, detailsCart, cart, cartDetailsProducts, iterableCartDetails, cartDetail, iterableCartDetails_1, iterableCartDetails_1_1, productId, product, e_1_1, ex_5;
+            var e_1, _a, status, details, _b, statusCart, detailsCart, cart, cartDetailsProducts, iterableCartDetails, cartDetail, iterableCartDetails_1, iterableCartDetails_1_1, productId, product, e_1_1, ex_3;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -318,8 +245,8 @@ var PaymentService = /** @class */ (function (_super) {
                         details = "succeed to update";
                         return [3 /*break*/, 19];
                     case 18:
-                        ex_5 = _c.sent();
-                        details = ex_5.message;
+                        ex_3 = _c.sent();
+                        details = ex_3.message;
                         return [3 /*break*/, 19];
                     case 19: return [2 /*return*/, {
                             status: status,

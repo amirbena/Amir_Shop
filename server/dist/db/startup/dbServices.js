@@ -17,5 +17,5 @@ exports.default = {
     CommentService: comment_1.default,
     PaymentMethodService: paymentMethod_1.default,
     PaymentService: payment_1.default,
-    CartService: cart_1.default
+    CartService: cart_1.default,
 };

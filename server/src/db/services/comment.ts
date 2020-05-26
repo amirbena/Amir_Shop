@@ -1,4 +1,4 @@
-import Comment, { IComment, validateComment } from "../models/comment.model";
+import Comment, { IComment, validateComment, ICommentInput } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 import { IProduct } from "../models/product.model";
 
@@ -15,8 +15,9 @@ export interface IDetailedComment {
     rank: number
 
 }
+
 export default class CommentService extends GeneralService {
-    public static async addComment(comment: IComment):
+    public static async addComment(comment: ICommentInput):
         Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
