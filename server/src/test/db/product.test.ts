@@ -1,5 +1,6 @@
 import { beforeEach, afterEach, it, describe } from "mocha";
 import Category from '../../db/models/category.model';
+import mochaAsync from '../mochaAsync';
 import User from '../../db/models/user.model';
 import Product, { IProduct } from "../../db/models/product.model";
 import { Types } from "mongoose";
@@ -11,7 +12,7 @@ import database from '../../db/index';
 
 describe("Product Module testing", () => {
     describe("POST/:  - addProduct()", () => {
-        beforeEach(async () => {
+        beforeEach(mochaAsync(async () => {
             try {
                 await User.create({
                     fullName: "Amir Benassayag",
@@ -63,17 +64,20 @@ describe("Product Module testing", () => {
                     image_url: "axtttklgmg.png"
                 })
                 // tslint:disable-next-line: no-empty
-            } catch (ex) { }
-        });
-        afterEach(async () => {
+            } catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
+        }));
+        afterEach(mochaAsync(async () => {
             try {
                 await Product.deleteMany({});
                 await User.deleteMany({});
                 await Category.deleteMany({});
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) {}
-        })
+            catch (ex) { }
+        }));
         it("should get BAD_REQUEST when product is invalid", async () => {
             try {
                 const product = {
@@ -88,7 +92,10 @@ describe("Product Module testing", () => {
                 expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
         })
         it("should get BAD_REQUEST when category is invalid", async () => {
             try {
@@ -104,7 +111,10 @@ describe("Product Module testing", () => {
                 expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
         })
         it("should get NOT_FOUND  when category not found", async () => {
             try {
@@ -120,7 +130,10 @@ describe("Product Module testing", () => {
                 expect(status).to.be.equal(NOT_FOUND);
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
         })
         it("should get BAD_REQUEST when admin is invalid", async () => {
             try {
@@ -136,7 +149,10 @@ describe("Product Module testing", () => {
                 expect(status).to.be.equal(BAD_REQUEST);
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
         })
         it("should get NOT_FOUND  when category not found", async () => {
             try {
@@ -152,7 +168,10 @@ describe("Product Module testing", () => {
                 expect(status).to.be.equal(NOT_FOUND);
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
         })
         it("should get OK status, and get new product", async () => {
             try {
@@ -179,7 +198,10 @@ describe("Product Module testing", () => {
                 });
             }
             // tslint:disable-next-line: no-empty
-            catch (ex) { }
+            catch (ex) {
+                // tslint:disable-next-line: no-console
+                console.log((ex as Error).message)
+            }
 
         })
     })

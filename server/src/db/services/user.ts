@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import joi, { validate } from "joi";
+import joi, { validate, valid } from "joi";
 import jwt from 'jsonwebtoken';
 import User, { IUser, IUserInput, validateUser, ILogin } from "../models/user.model";
 import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
@@ -82,7 +82,7 @@ class UserService extends GeneralService {
             const validPassword = await bcrypt.compare(password, user.password);
             if (!validPassword) {
                 status = NOT_FOUND;
-                details = "please type another password";
+                throw new Error("please type another password");
             }
             status = OK;
             details = user.toJSON();

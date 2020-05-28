@@ -64,7 +64,7 @@ class CategoryService extends GeneralService {
                 status = BAD_REQUEST;
                 throw new Error("_id is null/ undefined ");
             }
-            const deletedItem = await Category.deleteOne({ _id });
+            const deletedItem = await Category.findByIdAndDelete(_id);
             if (!deletedItem) {
                 status = NOT_FOUND;
                 throw new Error("item is not found on DB");

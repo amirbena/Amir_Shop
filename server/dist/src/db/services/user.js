@@ -191,7 +191,7 @@ var UserService = /** @class */ (function (_super) {
                         validPassword = _a.sent();
                         if (!validPassword) {
                             status = http_status_codes_1.NOT_FOUND;
-                            details = "please type another password";
+                            throw new Error("please type another password");
                         }
                         status = http_status_codes_1.OK;
                         details = user.toJSON();

@@ -41,6 +41,7 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var mocha_1 = require("mocha");
 var category_model_1 = __importDefault(require("../../db/models/category.model"));
+var mochaAsync_1 = __importDefault(require("../mochaAsync"));
 var user_model_1 = __importDefault(require("../../db/models/user.model"));
 var product_model_1 = __importDefault(require("../../db/models/product.model"));
 var mongoose_1 = require("mongoose");
@@ -49,7 +50,7 @@ var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 mocha_1.describe("Product Module testing", function () {
     mocha_1.describe("POST/:  - addProduct()", function () {
-        mocha_1.beforeEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        mocha_1.beforeEach(mochaAsync_1.default(function () { return __awaiter(_this, void 0, void 0, function () {
             var users, categories, ex_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -129,12 +130,14 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 12];
                     case 11:
                         ex_1 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_1.message);
                         return [3 /*break*/, 12];
                     case 12: return [2 /*return*/];
                 }
             });
-        }); });
-        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+        }); }));
+        mocha_1.afterEach(mochaAsync_1.default(function () { return __awaiter(_this, void 0, void 0, function () {
             var ex_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -156,7 +159,7 @@ mocha_1.describe("Product Module testing", function () {
                     case 5: return [2 /*return*/];
                 }
             });
-        }); });
+        }); }));
         mocha_1.it("should get BAD_REQUEST when product is invalid", function () { return __awaiter(_this, void 0, void 0, function () {
             var product, status, ex_3;
             return __generator(this, function (_a) {
@@ -178,6 +181,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_3 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_3.message);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -204,6 +209,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_4 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_4.message);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -230,6 +237,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_5 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_5.message);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -256,6 +265,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_6 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_6.message);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -282,6 +293,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 3];
                     case 2:
                         ex_7 = _a.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_7.message);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -323,6 +336,8 @@ mocha_1.describe("Product Module testing", function () {
                         return [3 /*break*/, 5];
                     case 4:
                         ex_8 = _b.sent();
+                        // tslint:disable-next-line: no-console
+                        console.log(ex_8.message);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

@@ -74,18 +74,14 @@ var CommentService = /** @class */ (function (_super) {
                     case 0:
                         status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
-                        error = comment_model_1.validateComment(comment).error;
-                        if (error) {
-                            status = http_status_codes_1.BAD_REQUEST;
-                            details = error.details[0].message;
-                            return [2 /*return*/, {
-                                    status: status,
-                                    details: details
-                                }];
-                        }
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 6, , 7]);
+                        error = comment_model_1.validateComment(comment).error;
+                        if (error) {
+                            status = http_status_codes_1.BAD_REQUEST;
+                            throw new Error(error.details[0].message);
+                        }
                         return [4 /*yield*/, comment_model_1.default.findOne({
                                 title: comment.title,
                                 comment: comment.comment
@@ -265,10 +261,22 @@ var CommentService = /** @class */ (function (_super) {
     };
     CommentService.getComments = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var comments, ex_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, comment_model_1.default.find()];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, comment_model_1.default.find({})];
+                    case 1:
+                        comments = _a.sent();
+                        return [2 /*return*/, {
+                                status: http_status_codes_1.OK,
+                                comments: comments
+                            }];
+                    case 2:
+                        ex_5 = _a.sent();
+                        return [2 /*return*/, { status: http_status_codes_1.INTERNAL_SERVER_ERROR }];
+                    case 3: return [2 /*return*/];
                 }
             });
         });

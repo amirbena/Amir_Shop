@@ -1,5 +1,6 @@
 import { beforeEach, afterEach, it, describe } from "mocha";
 import PaymentMethod, { IPaymentMethod } from "../../db/models/paymentMethod.model";
+import mochaAsync from '../mochaAsync';
 import { expect, should } from 'chai';
 import { Types } from "mongoose";
 import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
@@ -9,7 +10,7 @@ const { PaymentMethodService } = database.Services;
 
 describe("Payment Method Service Check", () => {
     describe("POST/: ", () => {
-        beforeEach(async () => {
+        beforeEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.create({
                     paymentMethod: "Credit Card"
@@ -21,14 +22,14 @@ describe("Payment Method Service Check", () => {
 
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        afterEach(async () => {
+        }));
+        afterEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.deleteMany({});
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
+        }))
         it("Should return BAD_REQUEST when input invalid", async () => {
             let paymentMethodReturned;
             try {
@@ -69,7 +70,7 @@ describe("Payment Method Service Check", () => {
         })
     })
     describe("GET/:", () => {
-        beforeEach(async () => {
+        beforeEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.create({
                     paymentMethod: "Credit Card"
@@ -81,14 +82,14 @@ describe("Payment Method Service Check", () => {
 
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        afterEach(async () => {
+        }));
+        afterEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.deleteMany({});
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
+        }))
         it('should return array with 0 elements', async () => {
             try {
                 await PaymentMethod.deleteMany({});
@@ -110,7 +111,7 @@ describe("Payment Method Service Check", () => {
         })
     })
     describe("DELETE/: ", () => {
-        beforeEach(async () => {
+        beforeEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.create({
                     paymentMethod: "Credit Card"
@@ -122,53 +123,28 @@ describe("Payment Method Service Check", () => {
 
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        afterEach(async () => {
+        }));
+        afterEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.deleteMany({});
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        it("should return BAD_REQUEST when id is invalid", async () => {
-            let paymentMethod;
-            try {
-                paymentMethod = await PaymentMethodService.deletePaymentMethod("");
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.deletePaymentMethod({});
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.deletePaymentMethod([]);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.deletePaymentMethod(null);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.deletePaymentMethod(undefined);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-            }
-            // tslint:disable-next-line: no-empty
-            catch (ex) { }
-        })
-        it("should return NOT_FOUND  when id is not found into DB", async () => {
-            try {
-                const id = Types.ObjectId();
-                const { status } = await PaymentMethodService.deletePaymentMethod(id);
-                expect(status).to.be.equal(NOT_FOUND);
-            }
-            // tslint:disable-next-line: no-empty
-            catch (ex) { }
-        })
-        it("should return OK , and delete Cash Method from DB", async () => {
-            try {
-                const paymentMethod = await PaymentMethod.findOne({ paymentMethod: "Cash" });
-                const id = (paymentMethod as IPaymentMethod)._id;
-                const { status } = await PaymentMethodService.deletePaymentMethod(id);
-                expect(status).to.be.equal(OK);
-            }
-            // tslint:disable-next-line: no-empty
-            catch (ex) { }
-        })
+        }))
+        it("should return NOT_FOUND  when id is not found into DB", mochaAsync(async () => {
+            const id = Types.ObjectId();
+            const { status } = await PaymentMethodService.deletePaymentMethod(id);
+            expect(status).to.be.equal(NOT_FOUND);
+        }))
+        it("should return OK , and delete Cash Method from DB", mochaAsync(async () => {
+            const paymentMethod = await PaymentMethod.findOne({ paymentMethod: "Cash" });
+            const id = (paymentMethod as IPaymentMethod)._id;
+            const { status } = await PaymentMethodService.deletePaymentMethod(id);
+            expect(status).to.be.equal(OK);
+        }))
     })
     describe("GET /:id", () => {
-        beforeEach(async () => {
+        beforeEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.create({
                     paymentMethod: "Credit Card"
@@ -180,41 +156,18 @@ describe("Payment Method Service Check", () => {
 
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        afterEach(async () => {
+        }));
+        afterEach(mochaAsync(async () => {
             try {
                 await PaymentMethod.deleteMany({});
             }
             // tslint:disable-next-line: no-empty
             catch (ex) { }
-        })
-        it("should return BAD_REQUEST if id is invalid", async () => {
-            try {
-                let paymentMethod;
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId(null);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId(undefined);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId("");
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId({});
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId([]);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-                paymentMethod = await PaymentMethodService.findPaymentMethodAccordingId(1);
-                expect(paymentMethod.status).to.be.equal(BAD_REQUEST);
-            }
-            // tslint:disable-next-line: no-empty
-            catch (ex) { }
-        })
-        it("should return NOT_FOUND status when id is not found into db", async () => {
-            try {
-                const id = Types.ObjectId();
-                const { status } = await PaymentMethodService.findPaymentMethodAccordingId(id);
-                expect(status).to.be.equal(NOT_FOUND);
-            }
-            // tslint:disable-next-line: no-empty
-            catch (ex) { }
-        })
+        }))
+        it("should return NOT_FOUND status when id is not found into db", mochaAsync(async () => {
+            const id = Types.ObjectId();
+            const { status } = await PaymentMethodService.findPaymentMethodAccordingId(id);
+            expect(status).to.be.equal(NOT_FOUND);
+        }));
     })
 })

@@ -1,12 +1,13 @@
+import { Types } from 'mongoose';
 import Cart, { validateCart, ICart, ICartValidator, ICartDetails } from "../models/cart.model";
 
 import GeneralService from "./generalService";
 import { IProduct } from "../models/product.model";
-import {OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND} from 'http-status-codes';
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 
 
 export default class CartService extends GeneralService {
-    public static async createNewCart(userId: string): Promise<{ status: number, details: string }> {
+    public static async createNewCart(userId: string | Types.ObjectId): Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
 
@@ -27,7 +28,7 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async addItemtoCart(userId: string, cartDetails: ICartDetails): Promise<{ status: number, details: string }> {
+    public static async addItemtoCart(userId: any, cartDetails: ICartDetails): Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -68,7 +69,7 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async deleteAllCartAccordingUser(userId: string): Promise<{ status: number, details: string }> {
+    public static async deleteAllCartAccordingUser(userId: any): Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
@@ -227,21 +228,21 @@ export default class CartService extends GeneralService {
             details
         }
     }
-    public static async getCartById(cartId: string){
+    public static async getCartById(cartId: string) {
         let details: string = "";
         try {
-           const {status, details:cartDetails,cart}= await this.findCartById(cartId);
-           if(status !==OK){
-               return {
-                   status,
-                   details: cartDetails
-               }
-           }
-           return {
-               status:OK,
-               details,
-               cart :cart as ICart
-           }
+            const { status, details: cartDetails, cart } = await this.findCartById(cartId);
+            if (status !== OK) {
+                return {
+                    status,
+                    details: cartDetails
+                }
+            }
+            return {
+                status: OK,
+                details,
+                cart: cart as ICart
+            }
         } catch (ex) {
             details = (ex as Error).message;
         }

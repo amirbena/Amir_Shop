@@ -21,16 +21,12 @@ export default class CommentService extends GeneralService {
         Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
-        const { error } = validateComment(comment);
-        if (error) {
-            status = BAD_REQUEST;
-            details = error.details[0].message;
-            return {
-                status,
-                details
-            }
-        }
         try {
+            const { error } = validateComment(comment);
+            if (error) {
+                status = BAD_REQUEST;
+                throw new Error(error.details[0].message);
+            }
             let commentAdded = await Comment.findOne({
                 title: comment.title,
                 comment: comment.comment
@@ -152,7 +148,16 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async getComments(): Promise<IComment[]> {
-        return await Comment.find();
+    public static async getComments(): Promise<{ status: number, comments?: IComment[] }> {
+        try {
+            const comments = await Comment.find({});
+            return {
+                status: OK,
+                comments
+            }
+
+        } catch (ex) {
+            return { status: INTERNAL_SERVER_ERROR };
+        }
     }
 }
