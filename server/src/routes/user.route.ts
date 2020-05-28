@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Services from "../db/startup/dbServices";
-import { NOT_FOUND, OK } from 'http-status-codes'
+import { NOT_FOUND, OK } from 'http-status-codes';
+import config from 'config'
 import adminMiddleware from './middlewares/admin.middleware';
 import authMiddleware from './middlewares/auth.middleware';
 import GeneralRoute from './generalRoute.route';
@@ -10,7 +11,7 @@ export default class UserRoute extends GeneralRoute{
     private jwtPrivateKey: string;
     constructor() {
         super();
-        this.jwtPrivateKey = (process.env.jwtPrivateKey as string);
+        this.jwtPrivateKey = config.get("jwtPrivateKey");
         this.path = "/users";
         this.intiailzeRoutes()
     }

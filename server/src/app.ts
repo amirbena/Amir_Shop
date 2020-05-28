@@ -1,8 +1,7 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
-import {IRouteService} from './routes/generalRoute.route';
+import { IRouteService } from './routes/generalRoute.route';
 import logger from './startup/logger';
-
+import cors from "cors";
 
 export default class ServerApplication {
     public app: Application;
@@ -14,7 +13,9 @@ export default class ServerApplication {
         this.intializeControllers(controllers);
     }
     private intializeMiddlewares() {
-        this.app.use(bodyParser.json());
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(cors());
     }
     private intializeControllers(controllers: IRouteService[]) {
         controllers.forEach((controller) => {
@@ -23,7 +24,7 @@ export default class ServerApplication {
     }
 
     public listen() {
-        const server= this.app.listen(this.port, () => {
+        const server = this.app.listen(this.port, () => {
             logger.log("info", `App listens to ${this.port} PORT`);
         });
         return server;
