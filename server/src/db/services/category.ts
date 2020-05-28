@@ -1,12 +1,9 @@
-import Category, { ICategory, validateCategory } from "../models/category.model";
-import { Types } from "mongoose";
-import HTTP_STATUS from "../../common/HTTP_Enum";
+import Category, { ICategory, ICategoryInput, validateCategory } from "../models/category.model";
 import GeneralService from "./generalService";
-
-const {OK,BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND}=HTTP_STATUS;
+import { OK, BAD_REQUEST, CONTINUE, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status-codes';
 class CategoryService extends GeneralService {
-    public static async addCategory(category: ICategory): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addCategory(category: ICategoryInput): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details = "";
         try {
             const { error } = validateCategory(category);
@@ -22,7 +19,7 @@ class CategoryService extends GeneralService {
             insertedCategory = await Category.create(category);
             if (!insertedCategory) throw new Error("Something happend when insert db into status");
             status = OK;
-            details = insertedCategory.toString();
+            details = insertedCategory.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -34,16 +31,40 @@ class CategoryService extends GeneralService {
     public static async getAllCategories(): Promise<ICategory[]> {
         return await Category.find();
     }
-
-    public static async deleteCategory(_id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getCategoryById(_id: any): Promise<{ status: number, details: string, category?: ICategory }> {
+        let status: number = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            const { status: statusCheck, details: detailsCheck, category } = await this.findCategoryById(_id);
+            if (statusCheck !== CONTINUE) {
+                status = statusCheck;
+                throw new Error(detailsCheck);
+            }
+            status = OK;
+            const categoryAfter = (category as ICategory);
+            details = categoryAfter.toString();
+            return {
+                status,
+                details,
+                category
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async deleteCategory(_id: any): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!_id) {
                 status = BAD_REQUEST;
                 throw new Error("_id is null/ undefined ");
             }
-            const deletedItem = await Category.deleteOne({ _id });
+            const deletedItem = await Category.findByIdAndDelete(_id);
             if (!deletedItem) {
                 status = NOT_FOUND;
                 throw new Error("item is not found on DB");

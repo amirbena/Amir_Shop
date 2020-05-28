@@ -1,13 +1,11 @@
-import { Types } from 'mongoose';
-
-import Comment, { IComment, validateComment } from "../models/comment.model";
+import Comment, { IComment, validateComment, ICommentInput } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 import { IProduct } from "../models/product.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+
 import GeneralService from './generalService';
+import { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } from 'http-status-codes';
 
 
-const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
 export interface IDetailedComment {
     id: string;
     user: IUser;
@@ -17,21 +15,18 @@ export interface IDetailedComment {
     rank: number
 
 }
+
 export default class CommentService extends GeneralService {
-    public static async addComment(comment: IComment):
-        Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addComment(comment: ICommentInput):
+        Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
-        const { error } = validateComment(comment);
-        if (error) {
-            status = BAD_REQUEST;
-            details = error.details[0].message;
-            return {
-                status,
-                details
-            }
-        }
         try {
+            const { error } = validateComment(comment);
+            if (error) {
+                status = BAD_REQUEST;
+                throw new Error(error.details[0].message);
+            }
             let commentAdded = await Comment.findOne({
                 title: comment.title,
                 comment: comment.comment
@@ -52,7 +47,7 @@ export default class CommentService extends GeneralService {
             }
             commentAdded = await Comment.create(comment);
             status = OK;
-            details = commentAdded.toString();
+            details = commentAdded.toJSON();
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -62,8 +57,8 @@ export default class CommentService extends GeneralService {
         }
     }
     public static async getDetailedComment(id: string):
-        Promise<{ status: HTTP_STATUS, details?: string, detailedComment?: IDetailedComment }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+        Promise<{ status: number, details?: string, detailedComment?: IDetailedComment }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
@@ -107,8 +102,8 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async updateComment(id: string, detailsToUpdate: object): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+    public static async updateComment(id: string, detailsToUpdate: object): Promise<{ status: number, details: string }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
@@ -130,8 +125,8 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async deleteComment(id: string): Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = NOT_FOUND;
+    public static async deleteComment(id: string): Promise<{ status: number, details: string }> {
+        let status: number = NOT_FOUND;
         let details: string = "";
         try {
             if (!id) {
@@ -153,7 +148,16 @@ export default class CommentService extends GeneralService {
             details
         }
     }
-    public static async getComments(): Promise<IComment[]> {
-        return await Comment.find();
+    public static async getComments(): Promise<{ status: number, comments?: IComment[] }> {
+        try {
+            const comments = await Comment.find({});
+            return {
+                status: OK,
+                comments
+            }
+
+        } catch (ex) {
+            return { status: INTERNAL_SERVER_ERROR };
+        }
     }
 }

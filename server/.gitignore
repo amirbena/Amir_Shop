@@ -1,11 +1,11 @@
 #config
-src/common/config.json
+config/
 #dependencies
+coverage/
+.nyc_output/
 #modules
 node_modules
 
-
-# environments
-
-src/db/config/.env
-src/db/config/.test.env
+#logs 
+error.log
+info.log

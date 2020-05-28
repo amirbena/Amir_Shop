@@ -1,27 +1,27 @@
 
-import { Types } from 'mongoose';
 import { ICategory } from '../models/category.model';
 import { IUser } from '../models/user.model';
 import iterableArray from '../../common/iterableArray';
-import Comment from '../models/comment.model';
-import Product, { IProduct, validateProduct } from "../models/product.model";
-import HTTP_STATUS from '../../common/HTTP_Enum';
+import Comment, { IComment } from '../models/comment.model';
+import Product, { IProduct, validateProduct, IProductInput } from "../models/product.model";
+import { OK, INTERNAL_SERVER_ERROR, CONTINUE, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import GeneralService from './generalService';
 
 export interface IDetailedProduct {
-    _id: string;
+    _id: any;
     category: ICategory;
     admin: IUser;
+    name: string;
     price_for_each: number;
     amount: number;
     image_url: string;
 }
-const { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } = HTTP_STATUS;
+
 export default class ProductService extends GeneralService {
 
-    public static async AddProduct(product: IProduct)
-        : Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async addProduct(product: IProductInput)
+        : Promise<{ status: number, details: string, product?: IProduct }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { error } = validateProduct(product);
@@ -41,7 +41,12 @@ export default class ProductService extends GeneralService {
             }
             const productAdded = await Product.create(product);
             status = OK;
-            details = productAdded.toString();
+            details = productAdded.toJSON();
+            return {
+                status,
+                details,
+                product: productAdded
+            }
         } catch (ex) {
             details = (ex as Error).message;
         }
@@ -51,8 +56,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async getDetailedProductById(productId: string)
-        : Promise<{ status: HTTP_STATUS, details: string, detailedProduct?: IDetailedProduct }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string, detailedProduct?: IDetailedProduct }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {
@@ -74,13 +79,15 @@ export default class ProductService extends GeneralService {
                 status = statusAdmin;
                 throw new Error(detailsAdmin);
             }
+            const { _id, name, price_for_each, amount, image_url } = product;
             const detailedProduct = {
-                _id: product._id as string,
+                _id: _id as string,
                 category: category as ICategory,
                 admin: admin as IUser,
-                price_for_each: product.price_for_each as number,
-                amount: product.amount as number,
-                image_url: product.image_url as string
+                name: name as string,
+                price_for_each: price_for_each as number,
+                amount: amount as number,
+                image_url: image_url as string
             }
             status = OK;
             details = "Succeed found";
@@ -98,8 +105,8 @@ export default class ProductService extends GeneralService {
             details
         }
     }
-    public static async getDetailedProducts(): Promise<{ status: HTTP_STATUS, details: string, detailedProducts: IDetailedProduct[] }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+    public static async getDetailedProducts(): Promise<{ status: number, details: string, detailedProducts: IDetailedProduct[] }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         const detailedProducts: IDetailedProduct[] = [];
         try {
@@ -109,13 +116,13 @@ export default class ProductService extends GeneralService {
                 throw new Error("not found products into db")
             }
             // tslint:disable-next-line: prefer-const
-            for await (let product of iterableArray(products)) {
-                const { status: productStatus, details: detailedProductStatus, detailedProduct } = await this.getDetailedProductById(product);
+            for await (let product of await iterableArray<IProduct>(products)) {
+                const { status: productStatus, details: detailedProductStatus, detailedProduct } = await this.getDetailedProductById((product as IProduct)._id);
                 if (productStatus !== OK) {
                     status = productStatus;
                     throw new Error(detailedProductStatus);
                 }
-                detailedProducts.push(product);
+                detailedProducts.push((detailedProduct as IDetailedProduct));
             }
             status = OK;
             details = "succeeed to find";
@@ -129,8 +136,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async updateProductDetails(productId: string, detailsToUpdate: object)
-        : Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {
@@ -153,8 +160,8 @@ export default class ProductService extends GeneralService {
         }
     }
     public static async  getAvgRankForEachProduct(id: string)
-        : Promise<{ status: HTTP_STATUS, details?: string, avgRank?: number }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details?: string, avgRank?: number }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             const { status: statusProduct, details: detailsProduct, product } = await this.findProductById(id);
@@ -168,11 +175,11 @@ export default class ProductService extends GeneralService {
             }
             let avgRank = 0;
             // tslint:disable-next-line: prefer-const
-            for await (let comment of iterableArray(comments)) {
-                avgRank += comment.rank;
+            for await (let comment of await iterableArray<IComment>(comments)) {
+                avgRank += (comment as IComment).rank;
             }
             avgRank = avgRank / comments.length;
-            status= OK;
+            status = OK;
             return {
                 status,
                 avgRank
@@ -189,8 +196,8 @@ export default class ProductService extends GeneralService {
         return await Product.find();
     }
     public static async deleteProduct(productId: string)
-        : Promise<{ status: HTTP_STATUS, details: string }> {
-        let status: HTTP_STATUS = INTERNAL_SERVER_ERROR;
+        : Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
             if (!productId) {

@@ -1,0 +1,7 @@
+const mochaAsync = (fn: any) => {
+    return (done: any) => {
+        fn.call()
+            .then(done, (err: Error) => { done(err); });
+    };
+};
+export default mochaAsync;
