@@ -9,8 +9,8 @@ let server;
 
 
 connection().then(result => {
-    const PORT = config.get("PORT") || 5000;
-    server = new ServerApplication(PORT as number, intializeRoutes()); /* Need to change it */
+    const PORT: number = config.get("PORT") || 5000;
+    server = new ServerApplication(PORT, intializeRoutes());
     server.app.get("/", (request: Request, response: Response) => {
         response.send('<h1>Amir shop Application</h1>');
     })
