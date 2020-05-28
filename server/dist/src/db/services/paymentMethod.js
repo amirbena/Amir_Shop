@@ -125,6 +125,7 @@ var PaymentMethodService = /** @class */ (function (_super) {
                         details = paymentMethods.toString();
                         return [2 /*return*/, {
                                 status: status,
+                                details: details,
                                 paymentMethods: paymentMethods
                             }];
                     case 3:

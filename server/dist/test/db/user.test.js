@@ -158,7 +158,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_2 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -177,7 +185,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_3 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -294,7 +310,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_6 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -306,7 +330,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_7 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -322,7 +354,15 @@ mocha_1.describe("User Model testing", function () {
                     case 2:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_8 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -424,7 +464,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_10 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -441,7 +489,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_11 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -458,7 +514,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_12 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -475,7 +539,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 5];
+                    case 4:
+                        ex_13 = _a.sent();
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -575,7 +647,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_15 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -586,8 +666,17 @@ mocha_1.describe("User Model testing", function () {
                     case 0: return [4 /*yield*/, index_1.default.Services.UserService.updateUser(mongoose_1.Types.ObjectId(), detailsToUpdate)];
                     case 1:
                         status = (_a.sent()).status;
+<<<<<<< HEAD
                         chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [2 /*return*/];
+=======
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_16 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -602,8 +691,17 @@ mocha_1.describe("User Model testing", function () {
                         return [4 /*yield*/, index_1.default.Services.UserService.updateUser(user._id, detailsToUpdate)];
                     case 2:
                         status = (_a.sent()).status;
+<<<<<<< HEAD
                         chai_1.expect(status).to.be.equal(http_status_codes_1.OK);
                         return [2 /*return*/];
+=======
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_17 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -821,7 +919,15 @@ mocha_1.describe("User Model testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_7 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -832,8 +938,17 @@ mocha_1.describe("User Model testing", function () {
                     case 0: return [4 /*yield*/, index_1.default.Services.UserService.deleteUser(mongoose_1.Types.ObjectId())];
                     case 1:
                         status = (_a.sent()).status;
+<<<<<<< HEAD
                         chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
                         return [2 /*return*/];
+=======
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_22 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
