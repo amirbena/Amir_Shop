@@ -4,8 +4,6 @@ import GeneralService from "./generalService";
 
 
 
-
-
 export default class PaymentMethodService extends GeneralService {
     public static async addPaymentMethod(paymentMethod: { paymentMethod: string }): Promise<{ status: number, details: string }> {
         let status: number = INTERNAL_SERVER_ERROR;
@@ -41,6 +39,7 @@ export default class PaymentMethodService extends GeneralService {
             details = paymentMethods.toString();
             return {
                 status,
+                details,
                 paymentMethods
             }
         } catch (ex) {

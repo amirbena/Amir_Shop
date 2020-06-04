@@ -378,4 +378,105 @@ mocha_1.describe("Payment Method Service Check", function () {
             });
         }); }));
     });
+    mocha_1.describe("GET /:id", function () {
+        mocha_1.beforeEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var ex_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, paymentMethod_model_1.default.create({
+                                paymentMethod: "Credit Card"
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, paymentMethod_model_1.default.create({
+                                paymentMethod: "Cash"
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        ex_15 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.afterEach(function () { return __awaiter(_this, void 0, void 0, function () {
+            var ex_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, paymentMethod_model_1.default.deleteMany({})];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_16 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it("should return BAD_REQUEST if id is invalid", function () { return __awaiter(_this, void 0, void 0, function () {
+            var paymentMethod, ex_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 7, , 8]);
+                        paymentMethod = void 0;
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(null)];
+                    case 1:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(undefined)];
+                    case 2:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId("")];
+                    case 3:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId({})];
+                    case 4:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId([])];
+                    case 5:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(1)];
+                    case 6:
+                        paymentMethod = _a.sent();
+                        chai_1.expect(paymentMethod.status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+                        return [3 /*break*/, 8];
+                    case 7:
+                        ex_17 = _a.sent();
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/];
+                }
+            });
+        }); });
+        mocha_1.it("should return NOT_FOUND status when id is not found into db", function () { return __awaiter(_this, void 0, void 0, function () {
+            var id, status, ex_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        id = mongoose_1.Types.ObjectId();
+                        return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(id)];
+                    case 1:
+                        status = (_a.sent()).status;
+                        chai_1.expect(status).to.be.equal(http_status_codes_1.NOT_FOUND);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_18 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
 });
