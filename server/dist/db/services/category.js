@@ -172,7 +172,7 @@ var CategoryService = /** @class */ (function (_super) {
                             status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("_id is null/ undefined ");
                         }
-                        return [4 /*yield*/, category_model_1.default.deleteOne({ _id: _id })];
+                        return [4 /*yield*/, category_model_1.default.findByIdAndDelete(_id)];
                     case 2:
                         deletedItem = _a.sent();
                         if (!deletedItem) {

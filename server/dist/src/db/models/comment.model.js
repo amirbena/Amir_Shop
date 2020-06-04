@@ -26,8 +26,7 @@ var CommentSchema = new mongoose_1.Schema({
     },
     comment: {
         type: mongoose_1.Schema.Types.String,
-        required: true,
-        minlength: 20
+        required: true
     },
     rank: {
         type: mongoose_1.Schema.Types.Number,
@@ -41,8 +40,8 @@ function validateComment(comment) {
     var schema = {
         user_id: joi_1.default.required(),
         product_id: joi_1.default.required(),
-        title: joi_1.default.string().required().min(5).max(50),
-        comment: joi_1.default.string().min(20).max(255),
+        title: joi_1.default.string().required().min(3).max(50),
+        comment: joi_1.default.string().required().min(20).max(255),
         rank: joi_1.default.number().min(0).max(50)
     };
     return joi_1.validate(comment, schema);
