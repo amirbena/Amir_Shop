@@ -5,10 +5,12 @@ import './App.css';
 
 function App() {
   return (
-    <Switch>
-      <Route path="/start"><StartPage /></Route>
-      <Redirect from="/" to="/start" />
-    </Switch>
+    <main className="container">
+      <Switch>
+        <Route path="/start"><StartPage /></Route>
+        <Redirect from="/" to="/start" />
+      </Switch>
+    </main>
   );
 }
 
