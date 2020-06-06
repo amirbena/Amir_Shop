@@ -47,6 +47,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -58,9 +65,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var comment_model_1 = __importStar(require("../models/comment.model"));
-var generalService_1 = __importDefault(require("./generalService"));
 var http_status_codes_1 = require("http-status-codes");
+var comment_model_1 = __importStar(require("../models/comment.model"));
+var iterableArray_1 = __importDefault(require("../../common/iterableArray"));
+var generalService_1 = __importDefault(require("./generalService"));
 var CommentService = /** @class */ (function (_super) {
     __extends(CommentService, _super);
     function CommentService() {
@@ -84,7 +92,9 @@ var CommentService = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, comment_model_1.default.findOne({
                                 title: comment.title,
-                                comment: comment.comment
+                                comment: comment.comment,
+                                user_id: comment.user_id,
+                                product_id: comment.product_id
                             })];
                     case 2:
                         commentAdded = _c.sent();
@@ -130,12 +140,12 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        status = http_status_codes_1.NOT_FOUND;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
-                        if (!id) {
+                        if (!id || id === "") {
                             status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }
@@ -187,7 +197,7 @@ var CommentService = /** @class */ (function (_super) {
     };
     CommentService.updateComment = function (id, detailsToUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, details, comment, ex_3;
+            var status, details, comment, shouldContinue, ex_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -195,8 +205,8 @@ var CommentService = /** @class */ (function (_super) {
                         details = "";
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        if (!id) {
+                        _a.trys.push([1, 4, , 5]);
+                        if (!id || id === "") {
                             status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }
@@ -207,17 +217,69 @@ var CommentService = /** @class */ (function (_super) {
                             status = http_status_codes_1.NOT_FOUND;
                             throw new Error("comment is not found");
                         }
+                        return [4 /*yield*/, this.filteringObjectsToUpdate(detailsToUpdate)];
+                    case 3:
+                        shouldContinue = _a.sent();
+                        if (!shouldContinue) {
+                            status = http_status_codes_1.BAD_REQUEST;
+                            throw new Error("Invalid input of object updating");
+                        }
                         status = http_status_codes_1.OK;
                         details = "Object updated";
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 5];
+                    case 4:
                         ex_3 = _a.sent();
                         details = ex_3.message;
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, {
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/, {
                             status: status,
                             details: details
                         }];
+                }
+            });
+        });
+    };
+    CommentService.filteringObjectsToUpdate = function (detailsToUpdate) {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_1, _a, keys, _b, _c, key, e_1_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        keys = Object.keys(detailsToUpdate);
+                        _d.label = 1;
+                    case 1:
+                        _d.trys.push([1, 7, 8, 13]);
+                        return [4 /*yield*/, iterableArray_1.default(keys)];
+                    case 2:
+                        _b = __asyncValues.apply(void 0, [_d.sent()]);
+                        _d.label = 3;
+                    case 3: return [4 /*yield*/, _b.next()];
+                    case 4:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 6];
+                        key = _c.value;
+                        if (key !== 'user_id' && key !== 'product_id' && key !== 'title' && key !== 'comment' && key !== 'rank') {
+                            return [2 /*return*/, false];
+                        }
+                        _d.label = 5;
+                    case 5: return [3 /*break*/, 3];
+                    case 6: return [3 /*break*/, 13];
+                    case 7:
+                        e_1_1 = _d.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3 /*break*/, 13];
+                    case 8:
+                        _d.trys.push([8, , 11, 12]);
+                        if (!(_c && !_c.done && (_a = _b.return))) return [3 /*break*/, 10];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 9:
+                        _d.sent();
+                        _d.label = 10;
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        if (e_1) throw e_1.error;
+                        return [7 /*endfinally*/];
+                    case 12: return [7 /*endfinally*/];
+                    case 13: return [2 /*return*/, true];
                 }
             });
         });
@@ -228,12 +290,12 @@ var CommentService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        status = http_status_codes_1.NOT_FOUND;
+                        status = http_status_codes_1.INTERNAL_SERVER_ERROR;
                         details = "";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        if (!id) {
+                        if (!id || id === "") {
                             status = http_status_codes_1.BAD_REQUEST;
                             throw new Error("id is invalid");
                         }

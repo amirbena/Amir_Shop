@@ -1,9 +1,10 @@
+import { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } from 'http-status-codes';
 import Comment, { IComment, validateComment, ICommentInput } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 import { IProduct } from "../models/product.model";
-
+import iterableArray from '../../common/iterableArray';
 import GeneralService from './generalService';
-import { NOT_FOUND, OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CONTINUE } from 'http-status-codes';
+
 
 
 export interface IDetailedComment {
@@ -29,7 +30,9 @@ export default class CommentService extends GeneralService {
             }
             let commentAdded = await Comment.findOne({
                 title: comment.title,
-                comment: comment.comment
+                comment: comment.comment,
+                user_id: comment.user_id,
+                product_id: comment.product_id
             })
             if (commentAdded) {
                 status = BAD_REQUEST;
@@ -58,10 +61,10 @@ export default class CommentService extends GeneralService {
     }
     public static async getDetailedComment(id: string):
         Promise<{ status: number, details?: string, detailedComment?: IDetailedComment }> {
-        let status: number = NOT_FOUND;
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!id) {
+            if (!id || id === "") {
                 status = BAD_REQUEST;
                 throw new Error("id is invalid");
             }
@@ -106,7 +109,7 @@ export default class CommentService extends GeneralService {
         let status: number = NOT_FOUND;
         let details: string = "";
         try {
-            if (!id) {
+            if (!id || id === "") {
                 status = BAD_REQUEST;
                 throw new Error("id is invalid");
             }
@@ -114,6 +117,11 @@ export default class CommentService extends GeneralService {
             if (!comment) {
                 status = NOT_FOUND;
                 throw new Error("comment is not found");
+            }
+            const shouldContinue = await this.filteringObjectsToUpdate(detailsToUpdate);
+            if (!shouldContinue) {
+                status = BAD_REQUEST;
+                throw new Error("Invalid input of object updating");
             }
             status = OK;
             details = "Object updated";
@@ -125,11 +133,20 @@ export default class CommentService extends GeneralService {
             details
         }
     }
+    private static async filteringObjectsToUpdate(detailsToUpdate: object): Promise<boolean> {
+        const keys = Object.keys(detailsToUpdate);
+        for await (const key of await iterableArray(keys)) {
+            if (key !== 'user_id' && key !== 'product_id' && key !== 'title' && key !== 'comment' && key !== 'rank') {
+                return false;
+            }
+        }
+        return true;
+    }
     public static async deleteComment(id: string): Promise<{ status: number, details: string }> {
-        let status: number = NOT_FOUND;
+        let status: number = INTERNAL_SERVER_ERROR;
         let details: string = "";
         try {
-            if (!id) {
+            if (!id || id=== "") {
                 status = BAD_REQUEST;
                 throw new Error("id is invalid");
             }

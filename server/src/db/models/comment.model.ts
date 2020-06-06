@@ -9,8 +9,8 @@ export interface IComment extends Document {
     rank: number;
 }
 export interface ICommentInput {
-    user_id: any;
-    product_id: any;
+    user_id: string;
+    product_id: string;
     title: string;
     comment: string;
     rank: number;
