@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { BAD_REQUEST } from "http-status-codes";
 import { toast } from 'react-toastify'
+
+
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/',
+    baseURL: 'http://localhost:5000/api/'
 });
 instance.interceptors.response.use(null, error => {
     const expectedError = error.response &
