@@ -51,43 +51,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
-var http_status_codes_1 = require("http-status-codes");
-var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
-var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
-var PaymentMethodService = dbServices_1.default.PaymentMethodService;
-var PaymentMethod = /** @class */ (function (_super) {
-    __extends(PaymentMethod, _super);
-    function PaymentMethod() {
+var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
+var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
+var CartService = dbServices_1.default.CartService;
+var CartRoute = /** @class */ (function (_super) {
+    __extends(CartRoute, _super);
+    function CartRoute() {
         var _this = _super.call(this) || this;
-        _this.getPaymentMethods = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, beforePaymentMethods, paymentMethods;
+        _this.createNewCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id, _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
-                    case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, beforePaymentMethods = _a.paymentMethods;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        paymentMethods = beforePaymentMethods;
-                        return [2 /*return*/, res.send({
-                                status: status,
-                                details: details,
-                                paymentMethods: paymentMethods
-                            })];
-                }
-            });
-        }); };
-        _this.addPaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.addPaymentMethod(req.body.paymentMethod)];
+                    case 0:
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.createNewCart(id)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
                         return [2 /*return*/, res.status(status).send({
@@ -97,11 +75,14 @@ var PaymentMethod = /** @class */ (function (_super) {
                 }
             });
         }); };
-        _this.deletePaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details;
+        _this.addNewItemToCart = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var cartDetails, id, _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(req.body.paymentMethod.id)];
+                    case 0:
+                        cartDetails = req.body.cartDetails;
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.addItemtoCart(id, cartDetails)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
                         return [2 /*return*/, res.status(status).send({
@@ -111,37 +92,83 @@ var PaymentMethod = /** @class */ (function (_super) {
                 }
             });
         }); };
-        _this.findPaymentMethodbyId = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, paymentMethod;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId)];
+        _this.changeDetailsForUser = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, changedDetails, sign, id, _b, status, details;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = req.body, changedDetails = _a.changedDetails, sign = _a.sign;
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.changeElementsforProduct(id, changedDetails, sign)];
                     case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        return [2 /*return*/, res.send({
+                        _b = _c.sent(), status = _b.status, details = _b.details;
+                        return [2 /*return*/, res.status(status).send({
                                 status: status,
-                                details: details,
-                                paymentMethod: paymentMethod
+                                details: details
                             })];
                 }
             });
         }); };
-        _this.path = '/paymentMethods';
+        _this.deleteCartByid = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, CartService.deleteCartById(req.body.cartId)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
+                }
+            });
+        }); };
+        _this.deleteSpecificCartbyDate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var dateString, id, _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        dateString = req.body.dateString;
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.deleteSpecificCart(id, dateString)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
+                }
+            });
+        }); };
+        _this.getCartByUserAndDate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var dateString, id, _a, status, details;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        dateString = req.body.dateString;
+                        id = req.body.user.id;
+                        return [4 /*yield*/, CartService.getCartbyUserAndDate(id, dateString)];
+                    case 1:
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        return [2 /*return*/, res.status(status).send({
+                                status: status,
+                                details: details
+                            })];
+                }
+            });
+        }); };
+        _this.path = '/carts';
         _this.intializeRoutes();
         return _this;
     }
-    PaymentMethod.prototype.intializeRoutes = function () {
-        this.router.get(this.path, [auth_middleware_1.default], this.getPaymentMethods);
-        this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addPaymentMethod);
-        this.router.delete(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.deletePaymentMethod);
-        this.router.get(this.path + "/ id ", [auth_middleware_1.default], this.findPaymentMethodbyId);
+    CartRoute.prototype.intializeRoutes = function () {
+        this.router.post(this.path, [auth_middleware_1.default], this.createNewCart);
+        this.router.put(this.path + "/addItem", [auth_middleware_1.default], this.addNewItemToCart);
+        this.router.put(this.path + "/changeCart", [auth_middleware_1.default], this.changeDetailsForUser);
+        this.router.delete(this.path + "/id", [auth_middleware_1.default], this.deleteCartByid);
+        this.router.delete(this.path + "/byDate", [auth_middleware_1.default], this.deleteSpecificCartbyDate);
+        this.router.get(this.path + "/byDate", [auth_middleware_1.default], this.getCartByUserAndDate);
     };
-    return PaymentMethod;
+    return CartRoute;
 }(generalRoute_route_1.default));
-exports.default = PaymentMethod;
+exports.default = CartRoute;

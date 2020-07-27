@@ -53,95 +53,90 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var http_status_codes_1 = require("http-status-codes");
-var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
-var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
 var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
-var PaymentMethodService = dbServices_1.default.PaymentMethodService;
-var PaymentMethod = /** @class */ (function (_super) {
-    __extends(PaymentMethod, _super);
-    function PaymentMethod() {
+var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
+var CommentService = dbServices_1.default.CommentService;
+var CommentRoute = /** @class */ (function (_super) {
+    __extends(CommentRoute, _super);
+    function CommentRoute() {
         var _this = _super.call(this) || this;
-        _this.getPaymentMethods = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, beforePaymentMethods, paymentMethods;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
-                    case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, beforePaymentMethods = _a.paymentMethods;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        paymentMethods = beforePaymentMethods;
-                        return [2 /*return*/, res.send({
-                                status: status,
-                                details: details,
-                                paymentMethods: paymentMethods
-                            })];
-                }
-            });
-        }); };
-        _this.addPaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.addComment = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.addPaymentMethod(req.body.paymentMethod)];
+                    case 0: return [4 /*yield*/, CommentService.addComment(req.body)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        return [2 /*return*/, res.status(status).send({
-                                status: status,
-                                details: details
-                            })];
+                        if (status !== http_status_codes_1.OK)
+                            return [2 /*return*/, res.status(status).send({ details: details })];
+                        res.send({ details: details });
+                        return [2 /*return*/];
                 }
             });
         }); };
-        _this.deletePaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getComments = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var comments, ex_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, CommentService.getComments()];
+                    case 1:
+                        comments = _a.sent();
+                        res.send({
+                            comments: comments
+                        });
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_1 = _a.sent();
+                        return [2 /*return*/, res.status(http_status_codes_1.INTERNAL_SERVER_ERROR).send({
+                                details: ex_1.message
+                            })];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.updateComment = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(req.body.paymentMethod.id)];
+                    case 0: return [4 /*yield*/, CommentService.updateComment(req.body.id, req.body)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        return [2 /*return*/, res.status(status).send({
-                                status: status,
-                                details: details
-                            })];
+                        if (status !== http_status_codes_1.OK)
+                            return [2 /*return*/, res.status(status).send({ details: details })];
+                        res.send({
+                            details: details
+                        });
+                        return [2 /*return*/];
                 }
             });
         }); };
-        _this.findPaymentMethodbyId = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, paymentMethod;
+        _this.deleteComment = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId)];
+                    case 0: return [4 /*yield*/, CommentService.deleteComment(req.body.id)];
                     case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        return [2 /*return*/, res.send({
-                                status: status,
-                                details: details,
-                                paymentMethod: paymentMethod
-                            })];
+                        _a = _b.sent(), status = _a.status, details = _a.details;
+                        if (status !== http_status_codes_1.OK)
+                            return [2 /*return*/, res.status(status).send({ details: details })];
+                        res.send({
+                            details: details
+                        });
+                        return [2 /*return*/];
                 }
             });
         }); };
-        _this.path = '/paymentMethods';
-        _this.intializeRoutes();
+        _this.path = "/comments";
+        _this.intiailzeRoutes();
         return _this;
     }
-    PaymentMethod.prototype.intializeRoutes = function () {
-        this.router.get(this.path, [auth_middleware_1.default], this.getPaymentMethods);
-        this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addPaymentMethod);
-        this.router.delete(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.deletePaymentMethod);
-        this.router.get(this.path + "/ id ", [auth_middleware_1.default], this.findPaymentMethodbyId);
+    CommentRoute.prototype.intiailzeRoutes = function () {
+        this.router.post(this.path, [auth_middleware_1.default], this.addComment);
+        this.router.get(this.path, this.getComments);
+        this.router.put(this.path, [auth_middleware_1.default], this.updateComment);
     };
-    return PaymentMethod;
+    return CommentRoute;
 }(generalRoute_route_1.default));
-exports.default = PaymentMethod;
+exports.default = CommentRoute;

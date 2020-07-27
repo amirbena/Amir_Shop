@@ -53,95 +53,70 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var dbServices_1 = __importDefault(require("../db/startup/dbServices"));
 var http_status_codes_1 = require("http-status-codes");
+var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
 var auth_middleware_1 = __importDefault(require("./middlewares/auth.middleware"));
 var admin_middleware_1 = __importDefault(require("./middlewares/admin.middleware"));
-var generalRoute_route_1 = __importDefault(require("./generalRoute.route"));
-var PaymentMethodService = dbServices_1.default.PaymentMethodService;
-var PaymentMethod = /** @class */ (function (_super) {
-    __extends(PaymentMethod, _super);
-    function PaymentMethod() {
+var CategoryService = dbServices_1.default.CategoryService;
+var CategroyRoute = /** @class */ (function (_super) {
+    __extends(CategroyRoute, _super);
+    function CategroyRoute() {
         var _this = _super.call(this) || this;
-        _this.getPaymentMethods = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, beforePaymentMethods, paymentMethods;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.getAllPaymentMethods()];
-                    case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, beforePaymentMethods = _a.paymentMethods;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        paymentMethods = beforePaymentMethods;
-                        return [2 /*return*/, res.send({
-                                status: status,
-                                details: details,
-                                paymentMethods: paymentMethods
-                            })];
-                }
-            });
-        }); };
-        _this.addPaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.addCategory = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.addPaymentMethod(req.body.paymentMethod)];
+                    case 0: return [4 /*yield*/, CategoryService.addCategory(req.body.category)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        return [2 /*return*/, res.status(status).send({
-                                status: status,
-                                details: details
-                            })];
+                        res.status(status).send({ status: status, details: details });
+                        return [2 /*return*/];
                 }
             });
         }); };
-        _this.deletePaymentMethod = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        _this.getCategories = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var categories, ex_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, CategoryService.getAllCategories()];
+                    case 1:
+                        categories = _a.sent();
+                        return [2 /*return*/, res.send({
+                                status: http_status_codes_1.OK,
+                                details: categories
+                            })];
+                    case 2:
+                        ex_1 = _a.sent();
+                        return [2 /*return*/, res.status(http_status_codes_1.INTERNAL_SERVER_ERROR).send({
+                                status: http_status_codes_1.INTERNAL_SERVER_ERROR,
+                                details: ex_1.message
+                            })];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.deleteCategory = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, status, details;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.deletePaymentMethod(req.body.paymentMethod.id)];
+                    case 0: return [4 /*yield*/, CategoryService.deleteCategory(req.body.categoryId)];
                     case 1:
                         _a = _b.sent(), status = _a.status, details = _a.details;
-                        return [2 /*return*/, res.status(status).send({
-                                status: status,
-                                details: details
-                            })];
+                        res.status(status).send(details);
+                        return [2 /*return*/];
                 }
             });
         }); };
-        _this.findPaymentMethodbyId = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, status, details, paymentMethod;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, PaymentMethodService.findPaymentMethodAccordingId(req.body.paymentMethodId)];
-                    case 1:
-                        _a = _b.sent(), status = _a.status, details = _a.details, paymentMethod = _a.paymentMethod;
-                        if (status !== http_status_codes_1.OK) {
-                            return [2 /*return*/, res.status(status).send({
-                                    status: status,
-                                    details: details
-                                })];
-                        }
-                        return [2 /*return*/, res.send({
-                                status: status,
-                                details: details,
-                                paymentMethod: paymentMethod
-                            })];
-                }
-            });
-        }); };
-        _this.path = '/paymentMethods';
-        _this.intializeRoutes();
+        _this.path = "/categories";
+        _this.intiailzeRoutes();
         return _this;
     }
-    PaymentMethod.prototype.intializeRoutes = function () {
-        this.router.get(this.path, [auth_middleware_1.default], this.getPaymentMethods);
-        this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addPaymentMethod);
-        this.router.delete(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.deletePaymentMethod);
-        this.router.get(this.path + "/ id ", [auth_middleware_1.default], this.findPaymentMethodbyId);
+    CategroyRoute.prototype.intiailzeRoutes = function () {
+        this.router.post(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.addCategory);
+        this.router.get(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.getCategories);
+        this.router.delete(this.path, [auth_middleware_1.default, admin_middleware_1.default], this.deleteCategory);
     };
-    return PaymentMethod;
+    return CategroyRoute;
 }(generalRoute_route_1.default));
-exports.default = PaymentMethod;
+exports.default = CategroyRoute;

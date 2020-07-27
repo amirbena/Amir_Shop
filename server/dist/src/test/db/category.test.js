@@ -43,7 +43,10 @@ var mocha_1 = require("mocha");
 var mongoose_1 = require("mongoose");
 var category_model_1 = __importDefault(require("../../db/models/category.model"));
 var chai_1 = require("chai");
+<<<<<<< HEAD
 var mochaAsync_1 = __importDefault(require("../mochaAsync"));
+=======
+>>>>>>> origin/RoutesFeature
 var http_status_codes_1 = require("http-status-codes");
 var index_1 = __importDefault(require("../../db/index"));
 mocha_1.describe("Category module testing", function () {
@@ -88,7 +91,15 @@ mocha_1.describe("Category module testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_3 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -100,7 +111,15 @@ mocha_1.describe("Category module testing", function () {
                     case 1:
                         status = (_a.sent()).status;
                         chai_1.expect(status).to.be.equal(http_status_codes_1.BAD_REQUEST);
+<<<<<<< HEAD
                         return [2 /*return*/];
+=======
+                        return [3 /*break*/, 3];
+                    case 2:
+                        ex_4 = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                 }
             });
         }); }));
@@ -220,7 +239,49 @@ mocha_1.describe("Category module testing", function () {
                         case 0: return [4 /*yield*/, category_model_1.default.deleteMany({})];
                         case 1:
                             _a.sent();
+<<<<<<< HEAD
                             return [2 /*return*/];
+=======
+                            return [3 /*break*/, 3];
+                        case 2:
+                            ex_11 = _a.sent();
+                            return [3 /*break*/, 3];
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            }); });
+            mocha_1.it("should return BAD_REQUEST of empty id", function () { return __awaiter(_this, void 0, void 0, function () {
+                var object, ex_12;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            _a.trys.push([0, 6, , 7]);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById("")];
+                        case 1:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById(undefined)];
+                        case 2:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById(null)];
+                        case 3:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById({})];
+                        case 4:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.getCategoryById([])];
+                        case 5:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [3 /*break*/, 7];
+                        case 6:
+                            ex_12 = _a.sent();
+                            return [3 /*break*/, 7];
+                        case 7: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                     }
                 });
             }); }));
@@ -232,7 +293,15 @@ mocha_1.describe("Category module testing", function () {
                         case 1:
                             status = (_a.sent()).status;
                             chai_1.expect(status).be.equal(http_status_codes_1.NOT_FOUND);
+<<<<<<< HEAD
                             return [2 /*return*/];
+=======
+                            return [3 /*break*/, 3];
+                        case 2:
+                            ex_13 = _a.sent();
+                            return [3 /*break*/, 3];
+                        case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                     }
                 });
             }); }));
@@ -249,8 +318,17 @@ mocha_1.describe("Category module testing", function () {
                             _a = _b.sent(), status = _a.status, category = _a.category;
                             checkedCategory = category;
                             chai_1.expect(status).be.equal(http_status_codes_1.OK);
+<<<<<<< HEAD
                             chai_1.expect(checkedCategory).property("category_name", "Toys");
                             return [2 /*return*/];
+=======
+                            chai_1.expect(checkedCategory).haveOwnProperty("category_name", "Toys");
+                            return [3 /*break*/, 4];
+                        case 3:
+                            ex_14 = _b.sent();
+                            return [3 /*break*/, 4];
+                        case 4: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                     }
                 });
             }); }));
@@ -297,12 +375,58 @@ mocha_1.describe("Category module testing", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
+<<<<<<< HEAD
+=======
+                            _a.trys.push([0, 6, , 7]);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory("")];
+                        case 1:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(undefined)];
+                        case 2:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(null)];
+                        case 3:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory([])];
+                        case 4:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory({})];
+                        case 5:
+                            object = _a.sent();
+                            chai_1.expect(object.status).be.equal(http_status_codes_1.BAD_REQUEST);
+                            return [3 /*break*/, 7];
+                        case 6:
+                            ex_17 = _a.sent();
+                            return [3 /*break*/, 7];
+                        case 7: return [2 /*return*/];
+                    }
+                });
+            }); });
+            mocha_1.it("should return NOT_FOUND stas of object is not found into DB", function () { return __awaiter(_this, void 0, void 0, function () {
+                var id, status, ex_18;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            _a.trys.push([0, 2, , 3]);
+>>>>>>> origin/RoutesFeature
                             id = mongoose_1.Types.ObjectId();
                             return [4 /*yield*/, index_1.default.Services.CategoryService.deleteCategory(id)];
                         case 1:
                             status = (_a.sent()).status;
                             chai_1.expect(status).be.equals(http_status_codes_1.NOT_FOUND);
+<<<<<<< HEAD
                             return [2 /*return*/];
+=======
+                            return [3 /*break*/, 3];
+                        case 2:
+                            ex_18 = _a.sent();
+                            return [3 /*break*/, 3];
+                        case 3: return [2 /*return*/];
+>>>>>>> origin/RoutesFeature
                     }
                 });
             }); }));

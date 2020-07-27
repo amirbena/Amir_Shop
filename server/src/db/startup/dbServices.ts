@@ -12,6 +12,6 @@ export default {
     CommentService,
     PaymentMethodService,
     PaymentService,
-    CartService,
+    CartService
 
 }

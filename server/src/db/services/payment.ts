@@ -57,8 +57,8 @@ export default class PaymentService extends GeneralService {
             }
             payment = (payment as IPayment);
             const { status: statusUpdating, details: detailsUpdating } = await this.updateProduct(payment.cartId);
-            if(statusUpdating!== CONTINUE){
-                status= statusUpdating;
+            if (statusUpdating !== CONTINUE) {
+                status = statusUpdating;
                 throw new Error(` ${detailsUpdating}`);
             }
             const { status: statusCart, details: detailsCart } = await CartService.deleteCartById(payment.cartId);
@@ -69,6 +69,53 @@ export default class PaymentService extends GeneralService {
             // send user details to array
         } catch (ex) {
             details = (ex as Error).message
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async getPayments(): Promise<{ status: number, details: string, payments?: IPayment[] }> {
+        let status: number = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            const payments = await Payment.find();
+            status = OK;
+            details = payments.toString();
+            return {
+                status,
+                details,
+                payments
+            }
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
+        }
+    }
+    public static async deletePayment(id: string): Promise<{ status: number, details: string }> {
+        let status: number = INTERNAL_SERVER_ERROR;
+        let details: string = "";
+        try {
+            if (!id) {
+                status = BAD_REQUEST;
+                throw new Error("Bad request");
+            }
+            const { deletedCount } = await Payment.deleteOne({ _id: id });
+            if (!deletedCount) {
+                status = NOT_FOUND;
+                throw new Error("id is not found into db");
+            }
+            status = OK;
+            details = "Item deleted in succeed";
+        } catch (ex) {
+            details = (ex as Error).message;
+        }
+        return {
+            status,
+            details
         }
     }
     private static async updateProduct(cartId: string): Promise<{ status: number, details: string }> {
@@ -103,4 +150,5 @@ export default class PaymentService extends GeneralService {
             details
         }
     }
+
 }
